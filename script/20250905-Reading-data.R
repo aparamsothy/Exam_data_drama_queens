@@ -27,3 +27,17 @@ head(patient_data)
 skimr::skim(patient_data)
 
 naniar::gg_miss_var(patient_data)
+
+
+## Create new columns ----
+
+# Remove duplicates before running this line!
+  # Create three new columns for RBC characteristics with mean values for each characteristic
+  # Duplicates are removed by only including distinct patient IDs
+patient_data <- patient_data %>%
+  distinct() %>%
+  pivot_wider(names_from = "mean_RBC_characteristic", values_from = "mean_value" 
+  )
+
+
+
