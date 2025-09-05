@@ -49,6 +49,12 @@ patient_data <- patient_data %>%
     blood_urea_nitrogen = un,                       
   )
 
+## Remove duplicated columns
+#Some columns are duplicates. We need to remove these.
+patient_data <- patient_data %>%
+  select(-wbc_copy)
+
+
 
 ## Unique observations ----
 # Number of rows
@@ -78,7 +84,7 @@ patient_data <- patient_data %>%
 ## Save the tidy data
 fileName <- paste0(here("data", "data_for_analysis", "20250905-tidy-exam-data.txt"))
 write_delim(
-  consult_data, 
+  patient_data, 
   file = fileName,
   delim = "\t"
 )
