@@ -19,8 +19,6 @@ patient_data <- read_delim(
 )
 
 # Explore the data ----
-
-## Overview of the data ----
 glimpse(patient_data)
 head(patient_data)
 
@@ -31,10 +29,18 @@ naniar::gg_miss_var(patient_data)
 ncol(patient_data)   #24
 nrow(patient_data)   #15524
 
-
 skimr::skim(patient_data)  #"patient_id\tdays of life\twbc\twbc_copy\thgb\thct\tplt\trbc\trdw\tmpv\t%neut\tlymph%\tmo…
 
 # For your specific column names:
+patient_data <- patient_data %>% 
+  rename(
+    neut_percent = `%neut`,           
+    lymph_percent = `lymph%`,         
+    days_of_life = `days of life`     
+  )
+
+
+#changing to specific column names:----
 patient_data <- patient_data %>% 
   rename(
     # Patient Demographics
@@ -42,14 +48,14 @@ patient_data <- patient_data %>%
     age_days = days_of_life,                    
     
     # Complete Blood Count (CBC)
-    wbc_count_k_ul = wbc,                       # White blood cells (K/μL)
+    wbc_count = wbc,                       # White blood cells (K/μL)
     wbc_count_duplicate = wbc_copy,             
-    hemoglobin_g_dl = hgb,                      
+    hemoglobin = hgb,                      
     hematocrit_percent = hct,                   
-    platelet_count_k_ul = plt,                  
-    rbc_count_m_ul = rbc,                       
+    platelet_count = plt,                  
+    rbc_count = rbc,                       
     red_cell_dist_width_percent = rdw,          
-    mean_platelet_volume_fl = mpv,            
+    mean_platelet_volume = mpv,            
     
     # CBC Differential
     neutrophils_percent = neut_percent,         
@@ -59,17 +65,20 @@ patient_data <- patient_data %>%
     basophils_percent = baso_percent,            
     
     # Basic Metabolic Panel (BMP)
-    sodium_mmol_l = sod,                        
-    potassium_mmol_l = pot,                     
-    chloride_mmol_l = chlor,                    
-    bicarbonate_mmol_l = co2,                   
-    blood_urea_nitrogen_mg_dl = un,             
+    sodium = sod,                        
+    potassium = pot,                     
+    chloride = chlor,                    
+    bicarbonate= co2,                   
+    blood_urea_nitrogen = un,             
     
     # Clinical Status
     disease_active_status = active,             
     disease_remission_status = remission,       
-    calculated_mean_value = mean_value          
+    mean_value = mean_value          
   )
+
+
+
 
 
 
