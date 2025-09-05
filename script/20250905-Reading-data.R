@@ -39,7 +39,7 @@ patient_data <- patient_data %>%
     # Datafriendly names
     neut_percent = `%neut`,           
     lymph_percent = `lymph%`,         
-    age_days = `days of life`
+    age_days = `days of life`,
     
     # Basic Metabolic Panel (BMP)
     sodium = sod,                        
