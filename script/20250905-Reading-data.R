@@ -27,3 +27,21 @@ head(patient_data)
 skimr::skim(patient_data)
 
 naniar::gg_miss_var(patient_data)
+
+ncol(patient_data)   #24
+nrow(patient_data)   #15524
+
+
+skimr::skim(patient_data)  #"patient_id\tdays of life\twbc\twbc_copy\thgb\thct\tplt\trbc\trdw\tmpv\t%neut\tlymph%\tmo…
+
+# For your specific column names:
+patient_data <- patient_data %>% 
+  rename(
+    neut_percent = `%neut`,           # Remove % and spaces
+    lymph_percent = `lymph%`,         # Remove % and add underscore
+    days_of_life = `days of life`     # Replace spaces with underscores
+  )
+
+
+
+
