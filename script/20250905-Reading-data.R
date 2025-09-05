@@ -29,23 +29,31 @@ skimr::skim(patient_data)
 naniar::gg_miss_var(patient_data)
 
 
+
 ## Unique observations ----
-#Number of rows
+# Number of rows
 patient_data %>%
   count()
 
-#Number of unique observations
+# Number of unique observations
 patient_data %>%
   distinct(patient_id) %>%
   count()
 
-#There are 5167 unique observations, which is about 1/3 of the total number of rows.
+# There are 5167 unique observations, which is about 1/3 of the total number of rows.
 
-#Checking if entire rows are duplicated
+# Checking if entire rows are duplicated
 sum(duplicated(patient_data)) #there are 23 duplicated rows. We need to remove these.
 
 
+## Create new columns ----
 
+# Create three new columns for RBC characteristics with mean values for each characteristic
+ # Duplicates are removed by only including distinct patient IDs
+patient_data <- patient_data %>%
+  distinct() %>%
+  pivot_wider(names_from = "mean_RBC_characteristic", values_from = "mean_value" 
+  )
 
 
 
