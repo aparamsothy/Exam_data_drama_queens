@@ -21,7 +21,7 @@ patient_data <- read_delim(
 # Explore the data ----
 
 ## Overview of the data ----
-glimpse(patient_data)
+glimpse(patient_data) #all columns are numeric, except mean_RBC_characteristic 
 head(patient_data)
 
 skimr::skim(patient_data)
@@ -29,11 +29,27 @@ skimr::skim(patient_data)
 naniar::gg_miss_var(patient_data)
 
 
+
+## Unique observations ----
+# Number of rows
+patient_data %>%
+  count()
+
+# Number of unique observations
+patient_data %>%
+  distinct(patient_id) %>%
+  count()
+
+# There are 5167 unique observations, which is about 1/3 of the total number of rows.
+
+# Checking if entire rows are duplicated
+sum(duplicated(patient_data)) #there are 23 duplicated rows. We need to remove these.
+
+
 ## Create new columns ----
 
-# Remove duplicates before running this line!
-  # Create three new columns for RBC characteristics with mean values for each characteristic
-  # Duplicates are removed by only including distinct patient IDs
+# Create three new columns for RBC characteristics with mean values for each characteristic
+ # Duplicates are removed by only including distinct patient IDs
 patient_data <- patient_data %>%
   distinct() %>%
   pivot_wider(names_from = "mean_RBC_characteristic", values_from = "mean_value" 
