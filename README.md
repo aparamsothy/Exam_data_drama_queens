@@ -1,5 +1,5 @@
-# Exam_data_drama_queens
-RMED901A Exam Assignment
+# 2025 RMED901A Exam
+This project contains the answers to the exam in RMED901A from the group _Data Drama Queens_.
 
 
 ## Folder structure
