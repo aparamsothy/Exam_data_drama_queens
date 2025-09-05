@@ -86,7 +86,8 @@ patient_data <- patient_data %>%
 dim(patient_data) # 5167 rows and 24 columns
 glimpse(patient_data) # All variables are double
 
-## Save the tidy data
+
+# Save the tidy data ----
 fileName <- paste0(here("data", "data_for_analysis", "20250905-tidy-exam-data.txt"))
 write_delim(
   patient_data, 
