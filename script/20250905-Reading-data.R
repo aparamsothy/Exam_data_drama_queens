@@ -19,6 +19,7 @@ patient_data <- read_delim(
 )
 
 # Explore the data ----
+
 ## Overview of the data ----
 glimpse(patient_data) #all columns are numeric, except mean_RBC_characteristic 
 head(patient_data)
@@ -32,7 +33,7 @@ ncol(patient_data)   #24 columns
 nrow(patient_data)   #15524 rows
 
 
-# Changing to specific column names:----
+## Changing to specific column names:----
 patient_data <- patient_data %>% 
   rename(                                              
     
@@ -49,7 +50,7 @@ patient_data <- patient_data %>%
     blood_urea_nitrogen = un,                       
   )
 
-## Remove duplicated columns
+## Remove duplicated columns ----
 #Some columns are duplicates. We need to remove these.
 patient_data <- patient_data %>%
   select(-wbc_copy)
@@ -80,6 +81,10 @@ patient_data <- patient_data %>%
   distinct() %>%
   pivot_wider(names_from = "mean_RBC_characteristic", values_from = "mean_value" 
   )
+
+# Check the dimensions and variable type of the tidied data
+dim(patient_data) # 5167 rows and 24 columns
+glimpse(patient_data) # All variables are double
 
 ## Save the tidy data
 fileName <- paste0(here("data", "data_for_analysis", "20250905-tidy-exam-data.txt"))
