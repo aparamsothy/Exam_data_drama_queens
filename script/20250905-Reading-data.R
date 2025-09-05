@@ -21,7 +21,7 @@ patient_data <- read_delim(
 # Explore the data ----
 
 ## Overview of the data ----
-glimpse(patient_data)
+glimpse(patient_data) #all columns are numeric, except mean_RBC_characteristic 
 head(patient_data)
 
 skimr::skim(patient_data)
