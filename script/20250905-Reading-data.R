@@ -14,7 +14,7 @@ library(tidyverse)
 library(here)
 
 patient_data <- read_delim(
-  here("data", "exam_data.txt"),
+  here("data", "original_data", "exam_data.txt"),
   delim = "\t"
 )
 
@@ -75,6 +75,13 @@ patient_data <- patient_data %>%
   pivot_wider(names_from = "mean_RBC_characteristic", values_from = "mean_value" 
   )
 
+## Save the tidy data
+fileName <- paste0(here("data", "data_for_analysis", "20250905-tidy-exam-data.txt"))
+write_delim(
+  consult_data, 
+  file = fileName,
+  delim = "\t"
+)
 
 
 
