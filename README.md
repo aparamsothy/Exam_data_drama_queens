@@ -12,4 +12,4 @@ This project contains the answers to the exam in RMED901A from the group _Data D
       + `codebook.html`: receieved codebook
       
 * `script`
-    + `20250905-Reading-data.R`: script for reading and tidying data
+    + `20250905-Reading-data.R`: script for reading and tidying data. Outputs `20250905-tidy-exam-data.txt`.
