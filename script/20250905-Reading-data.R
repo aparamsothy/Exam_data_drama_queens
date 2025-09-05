@@ -27,3 +27,25 @@ head(patient_data)
 skimr::skim(patient_data)
 
 naniar::gg_miss_var(patient_data)
+
+
+## Unique observations ----
+#Number of rows
+patient_data %>%
+  count()
+
+#Number of unique observations
+patient_data %>%
+  distinct(patient_id) %>%
+  count()
+
+#There are 5167 unique observations, which is about 1/3 of the total number of rows.
+
+#Checking if entire rows are duplicated
+sum(duplicated(patient_data)) #there are 23 duplicated rows. We need to remove these.
+
+
+
+
+
+
