@@ -37,9 +37,38 @@ skimr::skim(patient_data)  #"patient_id\tdays of life\twbc\twbc_copy\thgb\thct\t
 # For your specific column names:
 patient_data <- patient_data %>% 
   rename(
-    neut_percent = `%neut`,           # Remove % and spaces
-    lymph_percent = `lymph%`,         # Remove % and add underscore
-    days_of_life = `days of life`     # Replace spaces with underscores
+    # Patient Demographics
+    patient_id = patient_id,                    
+    age_days = days_of_life,                    
+    
+    # Complete Blood Count (CBC)
+    wbc_count_k_ul = wbc,                       # White blood cells (K/μL)
+    wbc_count_duplicate = wbc_copy,             
+    hemoglobin_g_dl = hgb,                      
+    hematocrit_percent = hct,                   
+    platelet_count_k_ul = plt,                  
+    rbc_count_m_ul = rbc,                       
+    red_cell_dist_width_percent = rdw,          
+    mean_platelet_volume_fl = mpv,            
+    
+    # CBC Differential
+    neutrophils_percent = neut_percent,         
+    lymphocytes_percent = lymph_percent,        
+    monocytes_percent = mono_percent,           
+    eosinophils_percent = eos_percent,          
+    basophils_percent = baso_percent,            
+    
+    # Basic Metabolic Panel (BMP)
+    sodium_mmol_l = sod,                        
+    potassium_mmol_l = pot,                     
+    chloride_mmol_l = chlor,                    
+    bicarbonate_mmol_l = co2,                   
+    blood_urea_nitrogen_mg_dl = un,             
+    
+    # Clinical Status
+    disease_active_status = active,             
+    disease_remission_status = remission,       
+    calculated_mean_value = mean_value          
   )
 
 
