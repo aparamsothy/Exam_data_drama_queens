@@ -4,6 +4,12 @@ This project contains the answers to the exam in RMED901A from the group _Data D
 
 ## Folder structure
 * `data`
-    + `exam_data.txt`: recieved exam data
-    + `exam_data_join.txt`: recieved exam data no. 2
-    + `codebook.html`: revieved codebook
+    + `data_for_analysis`
+      + `20250905-tidy-exam-data.txt`: tidied version of exam dataset ("medicaldata"")
+    + `original_data`   
+      + `exam_data.txt`: receieved exam data
+      + `exam_data_join.txt`: receieved exam data no. 2
+      + `codebook.html`: receieved codebook
+      
+* `script`
+    + `20250905-Reading-data.R`: script for reading and tidying data
