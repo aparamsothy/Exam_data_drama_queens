@@ -50,7 +50,7 @@ patient_data <- patient_data %>%
  left_join(patient_data_join, join_by("patient_id")) # Join with the other dataset
  
 # Investigate data types
-glimpse(Tidy_patient_data)
+glimpse(patient_data)
 # All data types are numeric. We do not see the need to change them.
 
 # Create new columns ----
@@ -62,18 +62,16 @@ patient_data <- patient_data %>%
   select(patient_id, age_days, blood_urea_nitrogen, everything()) %>% # Set the order of columns
   arrange(patient_id) #arrange by patient ID
 
+# Change numerical to factor variables
+tidy_patient_data <- patient_data %>%
+  mutate(active = if_else(active == 0, factor("No"), factor("Yes"))) %>%
+  mutate(remission = if_else(remission == 0, factor("No"), factor("Yes")))
+
 # Verify that the new column for hemoglobin quartiles makes sense
 patient_data %>%
   count(hgb_quartiles)
 
 # Verify that the categorical column for blood urea nitroden makes sense
-patient_data %>%
-  count(blood_urea_nitrogen_over_30)
-
-# Glipse the new dataset
-glimpse(patient_data)
-
-# Verify that the categorical column for blood urea nitrogen makes sense
 patient_data %>%
   count(blood_urea_nitrogen_over_30)
 
