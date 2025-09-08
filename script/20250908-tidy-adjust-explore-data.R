@@ -63,7 +63,7 @@ patient_data <- patient_data %>%
   arrange(patient_id) #arrange by patient ID
 
 # Change numerical to factor variables
-tidy_patient_data <- patient_data %>%
+patient_data <- patient_data %>%
   mutate(active = if_else(active == 0, factor("No"), factor("Yes"))) %>%
   mutate(remission = if_else(remission == 0, factor("No"), factor("Yes")))
 
