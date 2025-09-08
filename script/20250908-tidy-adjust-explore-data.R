@@ -28,19 +28,11 @@ patient_data_join <- read_delim(
 # Tidy, adjust and explore ----
 Tidy_patient_data <- patient_data %>%
  select(-hct, -rdw) %>% # Remove unnessary columns
- left_join(patient_data_join, join_by("patient_id")) # Join with the other dataset
+ left_join(patient_data_join, join_by("patient_id")) %>% # Join with the other dataset
+ mutate(lymph = wbc * (lymph_percent/100))
 
 # Investigate data types
 glimpse(Tidy_patient_data)
 # All data types are numeric. We do not see the need to change them.
 
-# Create Lymphocytes cell count column
-## (by multiplying the total number of wbc against the lymph_percent)
-library(dplyr)# Load required library
 
-if ("wbc" %in% names(Tidy_patient_data) & "lymph_percent" %in% names(Tidy_patient_data)) {
-  Tidy_patient_data$lymphocytes_count <- Tidy_patient_data$wbc * Tidy_patient_data$lymph_percent / 100
-  print("lymphocytes_count column created")
-} 
-
-glimpse(Tidy_patient_data)
