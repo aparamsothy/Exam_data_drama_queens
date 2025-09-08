@@ -46,7 +46,7 @@ Tidy_patient_data %>%
 
 # Add a column checking if Blood Urea Nitrogen is above 30
 Tidy_patient_data <- Tidy_patient_data %>%
-  mutate(blood_urea_nitrogen_over_30 = blood_urea_nitrogen > 30)
+  mutate(blood_urea_nitrogen_over_30 = if_else(blood_urea_nitrogen > 30, 1, 0))
 
 # Verify that the new column is making sense
 Tidy_patient_data %>%
