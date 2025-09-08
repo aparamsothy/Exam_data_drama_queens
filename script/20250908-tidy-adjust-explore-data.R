@@ -48,7 +48,6 @@ Tidy_patient_data <- patient_data %>%
  select(-hct, -rdw) %>% # Remove unnessary columns
  left_join(patient_data_join, join_by("patient_id")) # Join with the other dataset
  
-
 # Investigate data types
 glimpse(Tidy_patient_data)
 # All data types are numeric. We do not see the need to change them.
@@ -56,35 +55,26 @@ glimpse(Tidy_patient_data)
 # Create new columns ----
 # Cut the hemoglobin level into quartiles 
 Tidy_patient_data <- Tidy_patient_data %>% 
-  mutate(hgb_quartiles = cut(hgb, breaks=4, labels = c("Q1", "Q2", "Q3", "Q4")))
+  mutate(hgb_quartiles = cut(hgb, breaks=4, labels = c("Q1", "Q2", "Q3", "Q4"))) %>% #Cut the hemoglobin level into quartiles 
+  mutate(blood_urea_nitrogen_over_30 = if_else(blood_urea_nitrogen > 30, 1, 0)) %>% #create a column indicating if the blood urea nitrogen is above 30
+  mutate(lymph_count = wbc * (lymph_percent/100)) %>% #add a column for Lymphocytes cell count
+  mutate(sodium_fraction = round(sodium / (sodium + potassium + chloride))) %>% #sodium as a fraction of summed sodium, potassium, and chloride
+  arrange(patient_id) #arrange by patient ID
 
-# Verify that the new column is making sense
+# Verify that the new column for hemoglobin quartiles makes sense
 Tidy_patient_data %>%
   count(hgb_quartiles)
 
-# Add a column checking if Blood Urea Nitrogen is above 30
-Tidy_patient_data <- Tidy_patient_data %>%
-  mutate(blood_urea_nitrogen_over_30 = if_else(blood_urea_nitrogen > 30, 1, 0))
-
-# Verify that the new column is making sense
+# Verify that the categorical column for blood urea nitroden makes sense
 Tidy_patient_data %>%
   count(blood_urea_nitrogen_over_30)
 
-# New column with lymphocyte cell count
-Tidy_patient_data <- Tidy_patient_data %>%
-mutate(lymph_count = wbc * (lymph_percent/100)) 
-
-# New column showing sodium as a fraction of summed sodium, potassium, and chloride
-Tidy_patient_data <- Tidy_patient_data %>%
-mutate(sodium_fraction = round(sodium / (sodium + potassium + chloride), digits = 2))
-
-
-# Arrenge by patient id
-Tidy_patient_data <- Tidy_patient_data %>%
-  arrange(patient_id)
+# Glipse the new dataset
+glimpse(Tidy_patient_data)
 
 # Set the order of columns
 Tidy_patient_data <- Tidy_patient_data %>%
   relocate(c(age_days, blood_urea_nitrogen), .after = patient_id)
+
 
 
