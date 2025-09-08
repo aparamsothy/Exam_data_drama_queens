@@ -73,6 +73,12 @@ patient_data %>%
 # Glipse the new dataset
 glimpse(patient_data)
 
+# Verify that the categorical column for blood urea nitrogen makes sense
+Tidy_patient_data %>%
+  count(blood_urea_nitrogen_over_30)
+
+# Glimpse the new dataset
+glimpse(Tidy_patient_data)
 
 
 
