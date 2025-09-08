@@ -60,7 +60,7 @@ mutate(lymph_count = wbc * (lymph_percent/100))
 Tidy_patient_data %>%
 mutate(sodium_fraction = round(sodium / (sodium + potassium + chloride), digits = 2))
 
-# Arrenge patient id
+# Arrenge by patient id
 Tidy_patient_data %>%
   arrange("patient_id")
 
