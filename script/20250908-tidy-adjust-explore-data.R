@@ -96,7 +96,8 @@ naniar::gg_miss_var(patient_data)
 
 # Stratification by hgb_quartiles ----
 # Stratification by hgb_quartiles and report min, max, mean and sd of rbc (red blood cell counts)
-patient_data %>% group_by(hgb_quartiles) %>%
+patient_data %>% 
+  group_by(hgb_quartiles) %>%
   summarise(
     min_rbc = min(rbc, na.rm = TRUE),
     max_rbc = max(rbc, na.rm = TRUE),
@@ -109,20 +110,21 @@ patient_data %>%
   filter(hgb <= 10) %>%  
   group_by(hgb_quartiles) %>%          
   summarise(
-    hgb10_min_value = min(rbc, na.rm = TRUE),
-    hgb10_max_value = max(rbc, na.rm = TRUE),
-    hgb10_mean_value = mean(rbc, na.rm = TRUE),
-    hgb10_sd_value = sd(rbc, na.rm = TRUE)
+    min_rbc_hgb10 = min(rbc, na.rm = TRUE),
+    max_rbc_hgb10 = max(rbc, na.rm = TRUE),
+    mean_rbc_hgb10 = mean(rbc, na.rm = TRUE),
+    sd_rbc_hgb10 = sd(rbc, na.rm = TRUE)
   )
 
 # among patients with remission of inflammation
-patient_data %>% filter(remission == "Yes") %>%
+patient_data %>% 
+  filter(remission == "Yes") %>%
   group_by(hgb_quartiles) %>%
   summarise(
-    min_rbc = min(rbc, na.rm = TRUE),
-    max_rbc = max(rbc, na.rm = TRUE),
-    mean_rbc = mean(rbc, na.rm = TRUE),
-    sd_rbc = sd(rbc, na.rm = TRUE)
+    min_rbc_remission = min(rbc, na.rm = TRUE),
+    max_rbc_remission = max(rbc, na.rm = TRUE),
+    mean_rbc_remission = mean(rbc, na.rm = TRUE),
+    sd_rbc_remission = sd(rbc, na.rm = TRUE)
   )
 
 # among patients older than around 40 years of age
