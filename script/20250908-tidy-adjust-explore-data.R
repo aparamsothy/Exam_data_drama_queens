@@ -24,11 +24,8 @@ patient_data_join <- read_delim(
   delim = "\t"
 )
 
-<<<<<<< HEAD
-# Remove unnecessary columns from your dataframe: `hct, rdw`
-=======
+
 # Tidy, adjust and explore ----
->>>>>>> 656bc2394eabfb60a352914df6520d8580a13fd4
 Tidy_patient_data <- patient_data %>%
  select(-hct, -rdw) %>% # Remove unnessary columns
   left_join(patient_data_join, join_by("patient_id")) %>% # Join with the other dataset
