@@ -146,7 +146,7 @@ patient_data %>%
             sd_rbc_mono = sd(rbc, na.rm = TRUE))
 
 
-# Create a table of the two categorical columns
+# Create a table of remission vs active inflammation
 table(patient_data$remission, patient_data$active)
 
 
