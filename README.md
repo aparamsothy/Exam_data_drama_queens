@@ -7,9 +7,9 @@ This project contains the answers to the exam in RMED901A from the group _Data D
     + `data_for_analysis`
       + `20250905-tidy-exam-data.txt`: tidied version of exam dataset ("medicaldata"")
     + `original_data`   
-      + `exam_data.txt`: receieved exam data
-      + `exam_data_join.txt`: receieved exam data no. 2
-      + `codebook.html`: receieved codebook
+      + `exam_data.txt`: received exam data
+      + `exam_data_join.txt`: received exam data no. 2
+      + `codebook.html`: received codebook
       
 * `script`
     + `20250905-Reading-data.R`: script for reading and tidying data. Exam task 1. Outputs `20250905-tidy-exam-data.txt`.

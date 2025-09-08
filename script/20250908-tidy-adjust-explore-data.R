@@ -8,7 +8,6 @@
 # Project: RMED901A_Exam_Assignment
 #-------------------------------------------###
 
-
 # Read the data ----
 library(tidyverse)
 library(here)
@@ -51,7 +50,13 @@ patient_data <- patient_data %>%
  
 # Investigate data types
 glimpse(patient_data)
-# All data types are numeric. We do not see the need to change them.
+# All data types are numeric.
+
+# Change numerical to factor variables as specified in the codebook
+patient_data <- patient_data %>%
+  mutate(active = if_else(active == 0, factor("No"), factor("Yes"))) %>%
+  mutate(remission = if_else(remission == 0, factor("No"), factor("Yes")))
+
 
 # Create new columns ----
 patient_data <- patient_data %>% 
@@ -71,7 +76,6 @@ patient_data <- patient_data %>%
 patient_data <- patient_data %>%
   mutate(age_years = round(age_days / 365.25))
 
-glimpse(tidy_patient_data)
 # Verify that the new column for hemoglobin quartiles makes sense
 patient_data %>%
   count(hgb_quartiles)
@@ -93,6 +97,26 @@ naniar::gg_miss_var(patient_data)
 # and the column based on this (blood_urea_nitrogen_over_30).
 # There is also missing values for 15 other columns.
 
+## Stratification by hgb_quartiles ----
+# Stratification by hgb_quartiles and report min, max, mean and sd of rbc (red blood cell counts)
+patient_data %>% group_by(hgb_quartiles) %>%
+  summarise(
+    min_rbc = min(rbc, na.rm = TRUE),
+    max_rbc = max(rbc, na.rm = TRUE),
+    mean_rbc = mean(rbc, na.rm = TRUE),
+    sd_rbc = sd(rbc, na.rm = TRUE)
+  )
+
+# among patients with hgb less than 10
+patient_data %>%
+  filter(hgb <= 10) %>%  
+  group_by(hgb_quartiles) %>%          
+  summarise(
+    hgb10_min_value = min(rbc, na.rm = TRUE),
+    hgb10_max_value = max(rbc, na.rm = TRUE),
+    hgb10_mean_value = mean(rbc, na.rm = TRUE),
+    hgb10_sd_value = sd(rbc, na.rm = TRUE)
+  )
 
 # Only for persons older than around 40 years of age
 patient_data %>%
@@ -103,4 +127,17 @@ patient_data %>%
             min_rbc_age = min(rbc, na.rm = TRUE),
             max_rbc_age = max(rbc, na.rm = TRUE),
             sd_rbc_age = sd(rbc, na.rm = TRUE))
+
+# among patients with remission of inflammation
+patient_data %>% filter(remission == "Yes") %>%
+  group_by(hgb_quartiles) %>%
+  summarise(
+    min_rbc = min(rbc, na.rm = TRUE),
+    max_rbc = max(rbc, na.rm = TRUE),
+    mean_rbc = mean(rbc, na.rm = TRUE),
+    sd_rbc = sd(rbc, na.rm = TRUE)
+  )
+
+# Create a table of the two categorical columns
+table(patient_data$remission, patient_data$active)
 
