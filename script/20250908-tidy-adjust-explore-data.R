@@ -7,3 +7,13 @@
 #               
 # Project: RMED901A_Exam_Assignment
 #-------------------------------------------###
+
+
+# Read the data ----
+library(tidyverse)
+library(here)
+
+patient_data <- read_delim(
+  here("data", "data_for_analysis", "20250905-tidy-exam-data.txt"),
+  delim = "\t"
+)
