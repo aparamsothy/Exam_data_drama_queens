@@ -84,6 +84,26 @@ glimpse(patient_data)
 skimr::skim(patient_data)
 naniar::gg_miss_var(patient_data)
 
+
+# Stratify data by a categorical column for a defined set of observations 
+patient_data %>%
+  filter(hgb <= 10) %>%  
+  group_by(hgb_quartiles) %>%          
+  summarise(
+    hgb10_min_value = min(rbc, na.rm = TRUE),
+    hgb10_max_value = max(rbc, na.rm = TRUE),
+    hgb10_mean_value = mean(rbc, na.rm = TRUE),
+    hgb10_sd_value = sd(rbc, na.rm = TRUE)
+  )
+
+
+# Create a table of the two categorical columns
+table(patient_data$remission, patient_data$active)
+
+
+
+
+
 # There is most missing data for blood_urea_nitrogen 
 # and the column based on this (blood_urea_nitrogen_over_30).
 # There is also missing values for 15 other columns.
@@ -108,5 +128,6 @@ patient_data %>% filter(remission == "Yes") %>%
     mean_rbc = mean(rbc, na.rm = TRUE),
     sd_rbc = sd(rbc, na.rm = TRUE)
   )
+
 
 
