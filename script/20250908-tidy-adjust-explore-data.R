@@ -84,3 +84,19 @@ glimpse(patient_data)
 skimr::skim(patient_data)
 naniar::gg_miss_var(patient_data)
 
+# Stratify data by a categorical column for a defined set of observations 
+patient_data %>%
+  filter(hgb <= 10) %>%  
+  group_by(hgb_quartiles) %>%          
+  summarise(
+    hgb10_min_value = min(rbc, na.rm = TRUE),
+    hgb10_max_value = max(rbc, na.rm = TRUE),
+    hgb10_mean_value = mean(rbc, na.rm = TRUE),
+    hgb10_sd_value = sd(rbc, na.rm = TRUE)
+  )
+
+
+
+
+
+
