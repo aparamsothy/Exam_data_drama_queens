@@ -90,4 +90,13 @@ naniar::gg_miss_var(patient_data)
 
 
 
+# Only for persons with more than 10% of monocytes in WBC
+patient_data %>%
+  filter(!is.na(hgb_quartiles)) %>%
+  group_by(hgb_quartiles) %>%
+  filter(mono_percent > 10) %>%
+  summarize(mean_rbc_mono = mean(rbc, na.rm = TRUE),
+            min_rbc_mono = min(rbc, na.rm = TRUE),
+            max_rbc_mono = max(rbc, na.rm = TRUE),
+            sd_rbc_mono = sd(rbc, na.rm = TRUE))
 
