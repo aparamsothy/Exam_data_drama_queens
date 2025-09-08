@@ -8,7 +8,6 @@
 # Project: RMED901A_Exam_Assignment
 #-------------------------------------------###
 
-
 # Read the data ----
 library(tidyverse)
 library(here)
@@ -59,8 +58,6 @@ patient_data <- patient_data %>%
   mutate(remission = if_else(remission == 0, factor("No"), factor("Yes")))
 
 
-
-
 # Create new columns ----
 patient_data <- patient_data %>% 
   mutate(hgb_quartiles = cut(hgb, breaks=4, labels = c("Q1", "Q2", "Q3", "Q4"))) %>% #Cut the hemoglobin level into quartiles 
@@ -103,7 +100,7 @@ patient_data %>% group_by(hgb_quartiles) %>%
 
 # Stratification by hgb_quartiles and report min, max, mean and sd of rbc (red blood cell counts)
 # among patients with remission of inflammation
-patient_data %>% filter(remission == 1) %>%
+patient_data %>% filter(remission == "Yes") %>%
   group_by(hgb_quartiles) %>%
   summarise(
     min_rbc = min(rbc, na.rm = TRUE),
