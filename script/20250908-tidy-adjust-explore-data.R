@@ -61,6 +61,6 @@ Tidy_patient_data %>%
 mutate(sodium_fraction = round(sodium / (sodium + potassium + chloride), digits = 2))
 
 # Arrenge by patient id
-Tidy_patient_data %>%
-  arrange("patient_id")
+Tidy_patient_data <- Tidy_patient_data %>%
+  arrange(patient_id)
 
