@@ -27,6 +27,6 @@ patient_data_join <- read_delim(
 # Tidy, adjust and explore ----
 Tidy_patient_data <- patient_data %>%
  select(-hct, -rdw) %>% # Remove unnessary columns
-  left_join(patient_data_join, join_by("patient_id")) %>% # Join with the other dataset
-  glimpse() # Overview of variable type
+ left_join(patient_data_join, join_by("patient_id")) # Join with the other dataset
+
 
