@@ -34,4 +34,13 @@ Tidy_patient_data <- patient_data %>%
 glimpse(Tidy_patient_data)
 # All data types are numeric. We do not see the need to change them.
 
+# Create Lymphocytes cell count column
+## (by multiplying the total number of wbc against the lymph_percent)
+library(dplyr)# Load required library
 
+if ("wbc" %in% names(Tidy_patient_data) & "lymph_percent" %in% names(Tidy_patient_data)) {
+  Tidy_patient_data$lymphocytes_count <- Tidy_patient_data$wbc * Tidy_patient_data$lymph_percent / 100
+  print("lymphocytes_count column created")
+} 
+
+glimpse(Tidy_patient_data)
