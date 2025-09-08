@@ -71,14 +71,20 @@ Tidy_patient_data %>%
   count(blood_urea_nitrogen_over_30)
 
 # New column with lymphocyte cell count
-Tidy_patient_data %>%
+Tidy_patient_data <- Tidy_patient_data %>%
 mutate(lymph_count = wbc * (lymph_percent/100)) 
 
 # New column showing sodium as a fraction of summed sodium, potassium, and chloride
 Tidy_patient_data <- Tidy_patient_data %>%
 mutate(sodium_fraction = round(sodium / (sodium + potassium + chloride), digits = 2))
 
+
+# Arrenge by patient id
+Tidy_patient_data <- Tidy_patient_data %>%
+  arrange(patient_id)
+
 # Set the order of columns
 Tidy_patient_data <- Tidy_patient_data %>%
   relocate(c(age_days, blood_urea_nitrogen), .after = patient_id)
+
 
