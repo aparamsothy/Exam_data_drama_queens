@@ -29,4 +29,8 @@ Tidy_patient_data <- patient_data %>%
  select(-hct, -rdw) %>% # Remove unnessary columns
  left_join(patient_data_join, join_by("patient_id")) # Join with the other dataset
 
+# Investigate data types
+glimpse(Tidy_patient_data)
+# All data types are numeric. We do not see the need to change them.
+
 
