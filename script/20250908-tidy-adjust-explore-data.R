@@ -66,21 +66,23 @@ patient_data <- patient_data %>%
 patient_data %>%
   count(hgb_quartiles)
 
-# Verify that the categorical column for blood urea nitroden makes sense
+# Verify that the column for blood urea nitrogen over 30 makes sense
 patient_data %>%
   count(blood_urea_nitrogen_over_30)
 
-# Glipse the new dataset
-glimpse(patient_data)
-
-# Verify that the categorical column for blood urea nitrogen makes sense
-patient_data %>%
-  count(blood_urea_nitrogen_over_30)
-
+# Explore the new dataset with new columns ----
 # Glimpse the new dataset
 glimpse(patient_data)
 
 # Explore the data
 skimr::skim(patient_data)
 naniar::gg_miss_var(patient_data)
+
+# There is most missing data for blood_urea_nitrogen 
+# and the column based on this (blood_urea_nitrogen_over_30).
+# There is also missing values for 15 other columns.
+
+
+
+
 
