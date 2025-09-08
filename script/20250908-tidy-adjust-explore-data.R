@@ -24,6 +24,7 @@ patient_data_join <- read_delim(
   delim = "\t"
 )
 
+# Remove unnecessary columns from your dataframe: `hct, rdw`
 Tidy_patient_data <- patient_data %>%
  select(-hct, -rdw)
 
