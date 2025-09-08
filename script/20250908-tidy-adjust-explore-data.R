@@ -28,7 +28,7 @@ patient_data_join <- read_delim(
 # Tidy, adjust and explore ----
 Tidy_patient_data <- patient_data %>%
  select(-hct, -rdw) %>% # Remove unnessary columns
- left_join(patient_data_join, join_by("patient_id")) %>% # Join with the other dataset
+ left_join(patient_data_join, join_by("patient_id")) # Join with the other dataset
  
 
 # Investigate data types
@@ -60,4 +60,6 @@ mutate(lymph_count = wbc * (lymph_percent/100))
 Tidy_patient_data %>%
 mutate(sodium_fraction = round(sodium / (sodium + potassium + chloride), digits = 2))
 
-
+# Set the order of columns
+Tidy_patient_data %>%
+  relocate(c(age_days, blood_urea_nitrogen), .after = patient_id)
