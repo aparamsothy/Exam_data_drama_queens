@@ -6,6 +6,7 @@ This project contains the answers to the exam in RMED901A from the group _Data D
 * `data`
     + `data_for_analysis`
       + `20250905-tidy-exam-data.txt`: tidied version of exam dataset ("medicaldata"")
+      + `20250908-tidy-joined-exam-data.txt`: tidied and joint version of exam dataset
     + `original_data`   
       + `exam_data.txt`: received exam data
       + `exam_data_join.txt`: received exam data no. 2
@@ -13,4 +14,5 @@ This project contains the answers to the exam in RMED901A from the group _Data D
       
 * `script`
     + `20250905-Reading-data.R`: script for reading and tidying data. Exam task 1. Outputs `20250905-tidy-exam-data.txt`.
-    + `20250908-tidy-adjust-explore-data.R`: script for tidying, adjusting and exploring data. Exam task 2.
+    + `20250908-tidy-adjust-explore-data.R`: script for tidying, adjusting and exploring data. Exam task 2. Outputs `20250908-tidy-joined-exam-data.txt`
+
