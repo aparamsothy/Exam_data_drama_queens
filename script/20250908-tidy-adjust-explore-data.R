@@ -65,11 +65,11 @@ Tidy_patient_data <- Tidy_patient_data %>%
 Tidy_patient_data %>%
   count(hgb_quartiles)
 
-# Verify that the categorical column for blood urea nitroden makes sense
+# Verify that the categorical column for blood urea nitrogen makes sense
 Tidy_patient_data %>%
   count(blood_urea_nitrogen_over_30)
 
-# Glipse the new dataset
+# Glimpse the new dataset
 glimpse(Tidy_patient_data)
 
 # Set the order of columns
