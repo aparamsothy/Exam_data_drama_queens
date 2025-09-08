@@ -24,16 +24,40 @@ patient_data_join <- read_delim(
   delim = "\t"
 )
 
+
 # Tidy, adjust and explore ----
 Tidy_patient_data <- patient_data %>%
  select(-hct, -rdw) %>% # Remove unnessary columns
  left_join(patient_data_join, join_by("patient_id")) %>% # Join with the other dataset
- mutate(sodium_fraction = round(sodium / (sodium + potassium + chloride), digits = 2))
-  # Create a column showing sodium as a fraction of summed sodium, potassium, and chloride
+ 
 
 # Investigate data types
 glimpse(Tidy_patient_data)
 # All data types are numeric. We do not see the need to change them.
 
+# Create new columns ----
+# Cut the hemoglobin level into quartiles 
+Tidy_patient_data <- Tidy_patient_data %>% 
+  mutate(hgb_quartiles = cut(hgb, breaks=4, labels = c("Q1", "Q2", "Q3", "Q4")))
+
+# Verify that the new column is logical
+Tidy_patient_data %>%
+  count(hgb_quartiles)
+
+# Add a column checking if Blood Urea Nitrogen is above 30
+Tidy_patient_data <- Tidy_patient_data %>%
+  mutate(blood_urea_nitrogen_over_30 = blood_urea_nitrogen > 30)
+
+# Verify that the new column is logical
+Tidy_patient_data %>%
+  count(blood_urea_nitrogen_over_30)
+
+# New column with lymphocyte cell count
+Tidy_patient_data %>%
+mutate(lymph_count = wbc * (lymph_percent/100)) 
+
+# New column showing sodium as a fraction of summed sodium, potassium, and chloride
+Tidy_patient_data %>%
+mutate(sodium_fraction = round(sodium / (sodium + potassium + chloride), digits = 2))
 
 
