@@ -50,7 +50,7 @@ patient_data <- patient_data %>%
  left_join(patient_data_join, join_by("patient_id")) # Join with the other dataset
  
 # Investigate data types
-glimpse(Tidy_patient_data)
+glimpse(patient_data)
 # All data types are numeric. We do not see the need to change them.
 
 # Create new columns ----
@@ -82,7 +82,25 @@ naniar::gg_miss_var(patient_data)
 # and the column based on this (blood_urea_nitrogen_over_30).
 # There is also missing values for 15 other columns.
 
+# Stratification by hgb_quartiles ----
+# Stratification by hgb_quartiles and report min, max, mean and sd of rbc (red blood cell counts)
+patient_data %>% group_by(hgb_quartiles) %>%
+  summarise(
+    min_rbc = min(rbc, na.rm = TRUE),
+    max_rbc = max(rbc, na.rm = TRUE),
+    mean_rbc = mean(rbc, na.rm = TRUE),
+    sd_rbc = sd(rbc, na.rm = TRUE)
+  )
 
-
+# Stratification by hgb_quartiles and report min, max, mean and sd of rbc (red blood cell counts)
+# among patients with remission of inflammation
+patient_data %>% filter(remission == 1) %>%
+  group_by(hgb_quartiles) %>%
+  summarise(
+    min_rbc = min(rbc, na.rm = TRUE),
+    max_rbc = max(rbc, na.rm = TRUE),
+    mean_rbc = mean(rbc, na.rm = TRUE),
+    sd_rbc = sd(rbc, na.rm = TRUE)
+  )
 
 
