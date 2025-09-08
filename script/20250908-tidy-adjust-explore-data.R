@@ -146,3 +146,11 @@ patient_data %>%
 # Create a table of the two categorical columns
 table(patient_data$remission, patient_data$active)
 
+
+# Save the joined data ----
+fileName <- paste0(here("data", "data_for_analysis", "20250908-tidy-joined-exam-data.txt"))
+write_delim(
+  patient_data, 
+  file = fileName,
+  delim = "\t"
+)
