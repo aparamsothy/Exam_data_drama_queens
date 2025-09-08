@@ -2,7 +2,7 @@
 # Date: 08.09.2025         
 # Author: Data_drama_queens     
 # Filename: tidy-adjust-explore-data   
-# Description: Script for tidying data
+# Description: Script for joining and tidying data
 #               
 #               
 # Project: RMED901A_Exam_Assignment
@@ -57,6 +57,7 @@ patient_data <- patient_data %>%
   mutate(active = if_else(active == 0, factor("No"), factor("Yes"))) %>%
   mutate(remission = if_else(remission == 0, factor("No"), factor("Yes")))
 
+glimpse(patient_data) #active and remission are now factors
 
 # Create new columns ----
 patient_data <- patient_data %>% 
