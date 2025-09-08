@@ -80,5 +80,7 @@ patient_data %>%
 # Glimpse the new dataset
 glimpse(patient_data)
 
-
+# Explore the data
+skimr::skim(patient_data)
+naniar::gg_miss_var(patient_data)
 
