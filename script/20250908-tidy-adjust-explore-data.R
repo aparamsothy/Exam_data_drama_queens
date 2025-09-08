@@ -33,4 +33,21 @@ Tidy_patient_data <- patient_data %>%
 glimpse(Tidy_patient_data)
 # All data types are numeric. We do not see the need to change them.
 
+# Create new columns ----
+# Cut the hemoglobin level into quartiles 
+Tidy_patient_data <- Tidy_patient_data %>% 
+  mutate(hgb_quartiles = cut(hgb, breaks=4, labels = c("Q1", "Q2", "Q3", "Q4")))
+
+# Verify that the new column is logical
+Tidy_patient_data %>%
+  count(hgb_quartiles)
+
+# Add a column checking if Blood Urea Nitrogen is above 30
+Tidy_patient_data <- Tidy_patient_data %>%
+  mutate(blood_urea_nitrogen_over_30 = blood_urea_nitrogen > 30)
+
+# Verify that the new column is logical
+Tidy_patient_data %>%
+  count(blood_urea_nitrogen_over_30)
+
 
