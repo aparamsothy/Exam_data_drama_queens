@@ -18,14 +18,19 @@ patient_data <- read_delim(
   delim = "\t"
 )
 
-#Read the additional dataset
+# Read the additional dataset
 patient_data_join <- read_delim(
   here("data", "original_data", "exam_data_join.txt"),
   delim = "\t"
 )
 
+<<<<<<< HEAD
 # Remove unnecessary columns from your dataframe: `hct, rdw`
+=======
+# Tidy, adjust and explore ----
+>>>>>>> 656bc2394eabfb60a352914df6520d8580a13fd4
 Tidy_patient_data <- patient_data %>%
- select(-hct, -rdw)
-
+ select(-hct, -rdw) %>% # Remove unnessary columns
+  left_join(patient_data_join, join_by("patient_id")) %>% # Join with the other dataset
+  glimpse() # Overview of variable type
 
