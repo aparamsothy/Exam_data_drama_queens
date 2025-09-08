@@ -67,11 +67,6 @@ patient_data <- patient_data %>%
   select(patient_id, age_days, blood_urea_nitrogen, everything()) %>% # Set the order of columns
   arrange(patient_id) # arrange by patient ID
 
-# Change numerical to factor variables
-patient_data <- patient_data %>%
-  mutate(active = if_else(active == 0, factor("No"), factor("Yes"))) %>%
-  mutate(remission = if_else(remission == 0, factor("No"), factor("Yes")))
-
 # New variable for age in years
 patient_data <- patient_data %>%
   mutate(age_years = round(age_days / 365.25))
