@@ -8,7 +8,6 @@
 # Project: RMED901A_Exam_Assignment
 #-------------------------------------------###
 
-
 # Read the data ----
 library(tidyverse)
 library(here)
@@ -51,7 +50,13 @@ patient_data <- patient_data %>%
  
 # Investigate data types
 glimpse(patient_data)
-# All data types are numeric. We do not see the need to change them.
+# All data types are numeric.
+
+# Change numerical to factor variables as specified in the codebook
+patient_data <- patient_data %>%
+  mutate(active = if_else(active == 0, factor("No"), factor("Yes"))) %>%
+  mutate(remission = if_else(remission == 0, factor("No"), factor("Yes")))
+
 
 # Create new columns ----
 patient_data <- patient_data %>% 
@@ -60,12 +65,16 @@ patient_data <- patient_data %>%
   mutate(lymph_count = wbc * (lymph_percent/100)) %>% #add a column for Lymphocytes cell count
   mutate(sodium_fraction = (sodium / (sodium + potassium + chloride))) %>% #sodium as a fraction of summed sodium, potassium, and chloride
   select(patient_id, age_days, blood_urea_nitrogen, everything()) %>% # Set the order of columns
-  arrange(patient_id) #arrange by patient ID
+  arrange(patient_id) # arrange by patient ID
 
 # Change numerical to factor variables
 patient_data <- patient_data %>%
   mutate(active = if_else(active == 0, factor("No"), factor("Yes"))) %>%
   mutate(remission = if_else(remission == 0, factor("No"), factor("Yes")))
+
+# New variable for age in years
+patient_data <- patient_data %>%
+  mutate(age_years = round(age_days / 365.25))
 
 # Verify that the new column for hemoglobin quartiles makes sense
 patient_data %>%
@@ -89,8 +98,48 @@ naniar::gg_miss_var(patient_data)
 # There is also missing values for 15 other columns.
 
 
+## Stratification by hgb_quartiles ----
+# Stratification by hgb_quartiles and report min, max, mean and sd of rbc (red blood cell counts)
+patient_data %>% group_by(hgb_quartiles) %>%
+  summarise(
+    min_rbc = min(rbc, na.rm = TRUE),
+    max_rbc = max(rbc, na.rm = TRUE),
+    mean_rbc = mean(rbc, na.rm = TRUE),
+    sd_rbc = sd(rbc, na.rm = TRUE)
+  )
 
-# Only for persons with more than 10% of monocytes in WBC
+# among patients with hgb less than 10
+patient_data %>%
+  filter(hgb <= 10) %>%  
+  group_by(hgb_quartiles) %>%          
+  summarise(
+    hgb10_min_value = min(rbc, na.rm = TRUE),
+    hgb10_max_value = max(rbc, na.rm = TRUE),
+    hgb10_mean_value = mean(rbc, na.rm = TRUE),
+    hgb10_sd_value = sd(rbc, na.rm = TRUE)
+  )
+
+# among patients with remission of inflammation
+patient_data %>% filter(remission == "Yes") %>%
+  group_by(hgb_quartiles) %>%
+  summarise(
+    min_rbc = min(rbc, na.rm = TRUE),
+    max_rbc = max(rbc, na.rm = TRUE),
+    mean_rbc = mean(rbc, na.rm = TRUE),
+    sd_rbc = sd(rbc, na.rm = TRUE)
+  )
+
+# among patients older than around 40 years of age
+patient_data %>%
+  filter(!is.na(hgb_quartiles)) %>%
+  group_by(hgb_quartiles) %>%
+  filter(age_years > 40) %>% # Already created a variable for age in years earlier
+  summarize(mean_rbc_age = mean(rbc, na.rm = TRUE),
+            min_rbc_age = min(rbc, na.rm = TRUE),
+            max_rbc_age = max(rbc, na.rm = TRUE),
+            sd_rbc_age = sd(rbc, na.rm = TRUE))
+
+# among patients with more than 10% of monocytes in WBC
 patient_data %>%
   filter(!is.na(hgb_quartiles)) %>%
   group_by(hgb_quartiles) %>%
@@ -99,4 +148,8 @@ patient_data %>%
             min_rbc_mono = min(rbc, na.rm = TRUE),
             max_rbc_mono = max(rbc, na.rm = TRUE),
             sd_rbc_mono = sd(rbc, na.rm = TRUE))
+
+
+# Create a table of the two categorical columns
+table(patient_data$remission, patient_data$active)
 
