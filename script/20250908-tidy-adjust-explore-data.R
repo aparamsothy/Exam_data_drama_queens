@@ -28,7 +28,8 @@ patient_data_join <- read_delim(
 # Tidy, adjust and explore ----
 Tidy_patient_data <- patient_data %>%
  select(-hct, -rdw) %>% # Remove unnessary columns
- left_join(patient_data_join, join_by("patient_id")) # Join with the other dataset
+ left_join(patient_data_join, join_by("patient_id")) %>% # Join with the other dataset
+ mutate(lymph_count = wbc * (lymph_percent/100)) # New column with lymphocyte cell count
 
 # Investigate data types
 glimpse(Tidy_patient_data)
