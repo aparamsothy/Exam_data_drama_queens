@@ -17,3 +17,9 @@ patient_data <- read_delim(
   here("data", "data_for_analysis", "20250905-tidy-exam-data.txt"),
   delim = "\t"
 )
+
+#Read the additional dataset
+patient_data_join <- read_delim(
+  here("data", "original_data", "exam_data_join.txt"),
+  delim = "\t"
+)
