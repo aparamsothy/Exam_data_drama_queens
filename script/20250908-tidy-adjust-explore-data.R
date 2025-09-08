@@ -97,6 +97,7 @@ naniar::gg_miss_var(patient_data)
 # and the column based on this (blood_urea_nitrogen_over_30).
 # There is also missing values for 15 other columns.
 
+
 ## Stratification by hgb_quartiles ----
 # Stratification by hgb_quartiles and report min, max, mean and sd of rbc (red blood cell counts)
 patient_data %>% group_by(hgb_quartiles) %>%
@@ -118,16 +119,6 @@ patient_data %>%
     hgb10_sd_value = sd(rbc, na.rm = TRUE)
   )
 
-# Only for persons older than around 40 years of age
-patient_data %>%
-  filter(!is.na(hgb_quartiles)) %>%
-  group_by(hgb_quartiles) %>%
-  filter(age_years > 40) %>% # Already created a variable for age in years earlier
-  summarize(mean_rbc_age = mean(rbc, na.rm = TRUE),
-            min_rbc_age = min(rbc, na.rm = TRUE),
-            max_rbc_age = max(rbc, na.rm = TRUE),
-            sd_rbc_age = sd(rbc, na.rm = TRUE))
-
 # among patients with remission of inflammation
 patient_data %>% filter(remission == "Yes") %>%
   group_by(hgb_quartiles) %>%
@@ -137,6 +128,27 @@ patient_data %>% filter(remission == "Yes") %>%
     mean_rbc = mean(rbc, na.rm = TRUE),
     sd_rbc = sd(rbc, na.rm = TRUE)
   )
+
+# among patients older than around 40 years of age
+patient_data %>%
+  filter(!is.na(hgb_quartiles)) %>%
+  group_by(hgb_quartiles) %>%
+  filter(age_years > 40) %>% # Already created a variable for age in years earlier
+  summarize(mean_rbc_age = mean(rbc, na.rm = TRUE),
+            min_rbc_age = min(rbc, na.rm = TRUE),
+            max_rbc_age = max(rbc, na.rm = TRUE),
+            sd_rbc_age = sd(rbc, na.rm = TRUE))
+
+# among patients with more than 10% of monocytes in WBC
+patient_data %>%
+  filter(!is.na(hgb_quartiles)) %>%
+  group_by(hgb_quartiles) %>%
+  filter(mono_percent > 10) %>%
+  summarize(mean_rbc_mono = mean(rbc, na.rm = TRUE),
+            min_rbc_mono = min(rbc, na.rm = TRUE),
+            max_rbc_mono = max(rbc, na.rm = TRUE),
+            sd_rbc_mono = sd(rbc, na.rm = TRUE))
+
 
 # Create a table of the two categorical columns
 table(patient_data$remission, patient_data$active)
