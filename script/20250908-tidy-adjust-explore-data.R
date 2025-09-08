@@ -51,7 +51,15 @@ patient_data <- patient_data %>%
  
 # Investigate data types
 glimpse(patient_data)
-# All data types are numeric. We do not see the need to change them.
+# All data types are numeric.
+
+# Change numerical to factor variables as specified in the codebook
+patient_data <- patient_data %>%
+  mutate(active = if_else(active == 0, factor("No"), factor("Yes"))) %>%
+  mutate(remission = if_else(remission == 0, factor("No"), factor("Yes")))
+
+
+
 
 # Create new columns ----
 patient_data <- patient_data %>% 
@@ -61,11 +69,6 @@ patient_data <- patient_data %>%
   mutate(sodium_fraction = (sodium / (sodium + potassium + chloride))) %>% #sodium as a fraction of summed sodium, potassium, and chloride
   select(patient_id, age_days, blood_urea_nitrogen, everything()) %>% # Set the order of columns
   arrange(patient_id) #arrange by patient ID
-
-# Change numerical to factor variables
-patient_data <- patient_data %>%
-  mutate(active = if_else(active == 0, factor("No"), factor("Yes"))) %>%
-  mutate(remission = if_else(remission == 0, factor("No"), factor("Yes")))
 
 # Verify that the new column for hemoglobin quartiles makes sense
 patient_data %>%
