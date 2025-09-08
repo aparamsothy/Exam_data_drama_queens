@@ -98,7 +98,7 @@ naniar::gg_miss_var(patient_data)
 # There is also missing values for 15 other columns.
 
 
-## Stratification by hgb_quartiles ----
+# Stratification by hgb_quartiles ----
 # Stratification by hgb_quartiles and report min, max, mean and sd of rbc (red blood cell counts)
 patient_data %>% group_by(hgb_quartiles) %>%
   summarise(
@@ -131,7 +131,6 @@ patient_data %>% filter(remission == "Yes") %>%
 
 # among patients older than around 40 years of age
 patient_data %>%
-  filter(!is.na(hgb_quartiles)) %>%
   group_by(hgb_quartiles) %>%
   filter(age_years > 40) %>% # Already created a variable for age in years earlier
   summarize(mean_rbc_age = mean(rbc, na.rm = TRUE),
@@ -141,7 +140,6 @@ patient_data %>%
 
 # among patients with more than 10% of monocytes in WBC
 patient_data %>%
-  filter(!is.na(hgb_quartiles)) %>%
   group_by(hgb_quartiles) %>%
   filter(mono_percent > 10) %>%
   summarize(mean_rbc_mono = mean(rbc, na.rm = TRUE),
