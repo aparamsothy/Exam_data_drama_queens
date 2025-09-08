@@ -27,10 +27,13 @@ patient_data_join <- read_delim(
 # Tidy, adjust and explore ----
 Tidy_patient_data <- patient_data %>%
  select(-hct, -rdw) %>% # Remove unnessary columns
- left_join(patient_data_join, join_by("patient_id")) # Join with the other dataset
+ left_join(patient_data_join, join_by("patient_id")) %>% # Join with the other dataset
+ mutate(sodium_fraction = round(sodium / (sodium + potassium + chloride), digits = 2))
+  # Create a column showing sodium as a fraction of summed sodium, potassium, and chloride
 
 # Investigate data types
 glimpse(Tidy_patient_data)
 # All data types are numeric. We do not see the need to change them.
+
 
 
