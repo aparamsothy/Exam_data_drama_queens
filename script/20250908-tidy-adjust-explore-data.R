@@ -24,6 +24,24 @@ patient_data_join <- read_delim(
   delim = "\t"
 )
 
+# Explore the joining dataset ----
+glimpse(patient_data_join) #all columns are numeric
+head(patient_data_join)
+
+skimr::skim(patient_data_join)
+
+naniar::gg_miss_var(patient_data_join)
+
+# Number of rows
+patient_data_join %>%
+  count()
+
+# Number of unique patient IDs
+patient_data_join %>%
+  distinct(patient_id) %>%
+  count() #No duplicates of patient IDs
+
+# The new dataset which will be joined to our original dataset looks ok.
 
 # Tidy, adjust and explore ----
 Tidy_patient_data <- patient_data %>%
@@ -57,9 +75,10 @@ Tidy_patient_data %>%
 mutate(lymph_count = wbc * (lymph_percent/100)) 
 
 # New column showing sodium as a fraction of summed sodium, potassium, and chloride
-Tidy_patient_data %>%
+Tidy_patient_data <- Tidy_patient_data %>%
 mutate(sodium_fraction = round(sodium / (sodium + potassium + chloride), digits = 2))
 
 # Set the order of columns
-Tidy_patient_data %>%
+Tidy_patient_data <- Tidy_patient_data %>%
   relocate(c(age_days, blood_urea_nitrogen), .after = patient_id)
+
