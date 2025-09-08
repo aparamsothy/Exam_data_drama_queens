@@ -96,6 +96,10 @@ patient_data %>%
   )
 
 
+# Create a table of the two categorical columns
+table(patient_data$remission, patient_data$active)
+
+
 
 
 
