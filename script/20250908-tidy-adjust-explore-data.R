@@ -8,7 +8,6 @@
 # Project: RMED901A_Exam_Assignment
 #-------------------------------------------###
 
-
 # Read the data ----
 library(tidyverse)
 library(here)
@@ -50,13 +49,19 @@ patient_data <- patient_data %>%
  left_join(patient_data_join, join_by("patient_id")) # Join with the other dataset
  
 # Investigate data types
-glimpse(Tidy_patient_data)
-# All data types are numeric. We do not see the need to change them.
+glimpse(patient_data)
+# All data types are numeric.
+
+# Change numerical to factor variables as specified in the codebook
+patient_data <- patient_data %>%
+  mutate(active = if_else(active == 0, factor("No"), factor("Yes"))) %>%
+  mutate(remission = if_else(remission == 0, factor("No"), factor("Yes")))
+
 
 # Create new columns ----
 patient_data <- patient_data %>% 
   mutate(hgb_quartiles = cut(hgb, breaks=4, labels = c("Q1", "Q2", "Q3", "Q4"))) %>% #Cut the hemoglobin level into quartiles 
-  mutate(blood_urea_nitrogen_over_30 = if_else(blood_urea_nitrogen > 30, 1, 0)) %>% #create a column indicating if the blood urea nitrogen is above 30
+  mutate(blood_urea_nitrogen_over_30 = if_else(blood_urea_nitrogen > 30, factor("Yes"), factor("No"))) %>% #create a column indicating if the blood urea nitrogen is above 30
   mutate(lymph_count = wbc * (lymph_percent/100)) %>% #add a column for Lymphocytes cell count
   mutate(sodium_fraction = (sodium / (sodium + potassium + chloride))) %>% #sodium as a fraction of summed sodium, potassium, and chloride
   select(patient_id, age_days, blood_urea_nitrogen, everything()) %>% # Set the order of columns
@@ -66,16 +71,11 @@ patient_data <- patient_data %>%
 patient_data %>%
   count(hgb_quartiles)
 
-# Verify that the categorical column for blood urea nitroden makes sense
-patient_data %>%
-  count(blood_urea_nitrogen_over_30)
-
-# Glipse the new dataset
-glimpse(patient_data)
-
 # Verify that the categorical column for blood urea nitrogen makes sense
 patient_data %>%
   count(blood_urea_nitrogen_over_30)
+
+# Explore the new dataset with new columns ----
 
 # Glimpse the new dataset
 glimpse(patient_data)
@@ -83,6 +83,7 @@ glimpse(patient_data)
 # Explore the data
 skimr::skim(patient_data)
 naniar::gg_miss_var(patient_data)
+
 
 # Stratify data by a categorical column for a defined set of observations 
 patient_data %>%
@@ -101,6 +102,32 @@ table(patient_data$remission, patient_data$active)
 
 
 
+
+
+# There is most missing data for blood_urea_nitrogen 
+# and the column based on this (blood_urea_nitrogen_over_30).
+# There is also missing values for 15 other columns.
+
+# Stratification by hgb_quartiles ----
+# Stratification by hgb_quartiles and report min, max, mean and sd of rbc (red blood cell counts)
+patient_data %>% group_by(hgb_quartiles) %>%
+  summarise(
+    min_rbc = min(rbc, na.rm = TRUE),
+    max_rbc = max(rbc, na.rm = TRUE),
+    mean_rbc = mean(rbc, na.rm = TRUE),
+    sd_rbc = sd(rbc, na.rm = TRUE)
+  )
+
+# Stratification by hgb_quartiles and report min, max, mean and sd of rbc (red blood cell counts)
+# among patients with remission of inflammation
+patient_data %>% filter(remission == "Yes") %>%
+  group_by(hgb_quartiles) %>%
+  summarise(
+    min_rbc = min(rbc, na.rm = TRUE),
+    max_rbc = max(rbc, na.rm = TRUE),
+    mean_rbc = mean(rbc, na.rm = TRUE),
+    sd_rbc = sd(rbc, na.rm = TRUE)
+  )
 
 
 
