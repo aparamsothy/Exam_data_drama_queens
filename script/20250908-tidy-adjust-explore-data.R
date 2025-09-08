@@ -58,7 +58,7 @@ patient_data <- patient_data %>%
   mutate(hgb_quartiles = cut(hgb, breaks=4, labels = c("Q1", "Q2", "Q3", "Q4"))) %>% #Cut the hemoglobin level into quartiles 
   mutate(blood_urea_nitrogen_over_30 = if_else(blood_urea_nitrogen > 30, 1, 0)) %>% #create a column indicating if the blood urea nitrogen is above 30
   mutate(lymph_count = wbc * (lymph_percent/100)) %>% #add a column for Lymphocytes cell count
-  mutate(sodium_fraction = round(sodium / (sodium + potassium + chloride))) %>% #sodium as a fraction of summed sodium, potassium, and chloride
+  mutate(sodium_fraction = (sodium / (sodium + potassium + chloride))) %>% #sodium as a fraction of summed sodium, potassium, and chloride
   select(patient_id, age_days, blood_urea_nitrogen, everything()) %>% # Set the order of columns
   arrange(patient_id) #arrange by patient ID
 
@@ -74,11 +74,11 @@ patient_data %>%
 glimpse(patient_data)
 
 # Verify that the categorical column for blood urea nitrogen makes sense
-Tidy_patient_data %>%
+patient_data %>%
   count(blood_urea_nitrogen_over_30)
 
 # Glimpse the new dataset
-glimpse(Tidy_patient_data)
+glimpse(patient_data)
 
 
 
