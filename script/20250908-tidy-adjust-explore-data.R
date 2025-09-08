@@ -60,13 +60,18 @@ patient_data <- patient_data %>%
   mutate(lymph_count = wbc * (lymph_percent/100)) %>% #add a column for Lymphocytes cell count
   mutate(sodium_fraction = (sodium / (sodium + potassium + chloride))) %>% #sodium as a fraction of summed sodium, potassium, and chloride
   select(patient_id, age_days, blood_urea_nitrogen, everything()) %>% # Set the order of columns
-  arrange(patient_id) #arrange by patient ID
+  arrange(patient_id) # arrange by patient ID
 
 # Change numerical to factor variables
 patient_data <- patient_data %>%
   mutate(active = if_else(active == 0, factor("No"), factor("Yes"))) %>%
   mutate(remission = if_else(remission == 0, factor("No"), factor("Yes")))
 
+# New variable for age in years
+patient_data <- patient_data %>%
+  mutate(age_years = round(age_days / 365.25))
+
+glimpse(tidy_patient_data)
 # Verify that the new column for hemoglobin quartiles makes sense
 patient_data %>%
   count(hgb_quartiles)
@@ -89,5 +94,13 @@ naniar::gg_miss_var(patient_data)
 # There is also missing values for 15 other columns.
 
 
-
+# Only for persons older than around 40 years of age
+patient_data %>%
+  filter(!is.na(hgb_quartiles)) %>%
+  group_by(hgb_quartiles) %>%
+  filter(age_years > 40) %>% # Already created a variable for age in years earlier
+  summarize(mean_rbc_age = mean(rbc, na.rm = TRUE),
+            min_rbc_age = min(rbc, na.rm = TRUE),
+            max_rbc_age = max(rbc, na.rm = TRUE),
+            sd_rbc_age = sd(rbc, na.rm = TRUE))
 
