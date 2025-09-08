@@ -40,7 +40,7 @@ glimpse(Tidy_patient_data)
 Tidy_patient_data <- Tidy_patient_data %>% 
   mutate(hgb_quartiles = cut(hgb, breaks=4, labels = c("Q1", "Q2", "Q3", "Q4")))
 
-# Verify that the new column is logical
+# Verify that the new column is making sense
 Tidy_patient_data %>%
   count(hgb_quartiles)
 
@@ -48,7 +48,7 @@ Tidy_patient_data %>%
 Tidy_patient_data <- Tidy_patient_data %>%
   mutate(blood_urea_nitrogen_over_30 = blood_urea_nitrogen > 30)
 
-# Verify that the new column is logical
+# Verify that the new column is making sense
 Tidy_patient_data %>%
   count(blood_urea_nitrogen_over_30)
 
