@@ -23,3 +23,8 @@ patient_data_join <- read_delim(
   here("data", "original_data", "exam_data_join.txt"),
   delim = "\t"
 )
+
+Tidy_patient_data <- patient_data %>%
+ select(-hct, -rdw)
+
+
