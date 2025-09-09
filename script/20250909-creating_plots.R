@@ -1,12 +1,17 @@
-#----Script Header-------------------------####
+#----Script Header-------------------------------------------------------------####
 # Date: 09.09.2025         
 # Author: Data_drama_queens     
 # Filename: creating-plots
-# Description: Script for creating plots
-#               
+# Description: Script for creating plots.
+#              We were given 5 questions, and asked to select one question each.
+#              We have answered the following questions:
+#                 - Are there any correlated measurements?
+#                 - Does the white blood cell count distribution depend on pot?
+#                 - Does remission of inflammation after Thiopurines for > 12 
+#                   weeks change with percent of monocytes in WBC count?
 #               
 # Project: RMED901A_Exam_Assignment
-#-------------------------------------------###
+#-------------------------------------------------------------------------------###
 
 
 # Read the data ----
@@ -18,6 +23,9 @@ patient_data <- read_delim(
   here("data", "data_for_analysis", "20250908-tidy-joined-exam-data.txt"),
   delim = "\t"
 )
+
+
+
 
 # Remission and percent of monocytes ----
 # Here, we investigates if remission of inflammation after Thiopurines for > 12 weeks 
