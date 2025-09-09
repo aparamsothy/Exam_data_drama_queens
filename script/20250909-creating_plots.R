@@ -33,10 +33,40 @@ correlation_plot <- ggcorr(num_data, angle = 90, size = 3, clip = "off", label =
 
 print(correlation_plot)
 
-
 # To display the plot
 print(correlation_plot)
 ggsave("correlation_plot.png", plot = correlation_plot, width = 12, height = 12, dpi = 300)
 
+
+# Alternative 
+library(GGally)
+library(ggplot2)
+library(RColorBrewer)
+
+# Select only numeric columns
+num_data <- patient_data[sapply(patient_data, is.numeric)]
+
+
+# Create correlation plot with RdBu palette
+correlation_plot <- ggcorr(num_data,
+                           palette = "RdBu",
+                           low = "#2166ac",
+                           mid = "white",
+                           high = "#b2182b",
+                           midpoint = 0,
+                           label = FALSE,
+                           size = 3,
+                           angle = -50
+) + 
+  theme(
+    plot.margin = margin(t = 20, r = 40, b = 40, l = 40),
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
+    clip = "off"  # Add clip here
+  )
+
+print(correlation_plot)
+
+# Save plot as PNG with larger size for clarity
+ggsave("correlation_plot.png", plot = correlation_plot, width = 12, height = 12, dpi = 300)
 
 
