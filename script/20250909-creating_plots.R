@@ -26,13 +26,11 @@ patient_data <- read_delim(
 
 
 # Correlated measurements?
-library(GGally)
-library(ggplot2)
 
 # Select only numeric columns for correlation
 num_data <- patient_data[sapply(patient_data, is.numeric)]
 # Correlation matrix plot
-correlation_plot <- ggcorr(num_data, angle = 90, size = 3, clip = "off", label = FALSE) +
+correlation_plot <- ggcorr(num_data, angle = 90, size = 3, label = FALSE) +
   theme(
     plot.margin = margin(t = 20, r = 40, b = 40, l = 40)  # top, right, bottom, left margins
   )
@@ -40,8 +38,9 @@ correlation_plot <- ggcorr(num_data, angle = 90, size = 3, clip = "off", label =
 print(correlation_plot)
 
 # To display the plot
-print(correlation_plot)
-ggsave("correlation_plot.png", plot = correlation_plot, width = 12, height = 12, dpi = 300)
+correlation_plot
+filename_correlation_plot <- here("figures", "correlation_plot.tiff")
+ggsave(filename_correlation_plot, plot = correlation_plot, width = 7, height = 7, dpi = 300)
 
 
 # Alternative 
@@ -73,8 +72,8 @@ correlation_plot <- ggcorr(num_data,
 print(correlation_plot)
 
 # Save plot as PNG with larger size for clarity
-ggsave("correlation_plot.png", plot = correlation_plot, width = 12, height = 12, dpi = 300)
-
+filename_correlation_plot <- here("figures", "correlation_plot_alternative2.tiff")
+ggsave(filename_correlation_plot, plot = correlation_plot, width = 7, height = 7, dpi = 300)
 
 
 # Scatterplot investigating white blood cell count by potassium level ----
@@ -91,6 +90,11 @@ wbc_pot_plot <- ggplot(patient_data, aes(x = wbc, y = potassium)) + # Assign dat
        y = "Potassium level (mmol/L)") #y-axis title
 
 wbc_pot_plot
+
+#Save the plot
+filename_wbc_pot_plot <- here("figures", "wbc_potassium_plot.tiff")
+ggsave(filename_wbc_pot_plot, plot = wbc_pot_plot, width = 7, height = 7, dpi = 300)
+
 
 # From the plot, the white blood cell count does not seem to change
 # with potassium level
@@ -122,6 +126,10 @@ remission_mono_plot <- ggplot(data=patient_data,
   
 
 remission_mono_plot
+
+#Save the plot
+filename_remission_mono_plot <- here("figures", "remission_mono_plot.tiff")
+ggsave(filename_remission_mono_plot, plot = remission_mono_plot, width = 7, height = 7, dpi = 300)
 
 # A visual inspection of the plot suggests that there is no difference in
 # percent of monocytes in WBC count for groups with or without remission of inflammation
