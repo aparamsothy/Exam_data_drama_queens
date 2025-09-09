@@ -21,8 +21,8 @@ patient_data <- read_delim(
 
 # Scatterplot investigating white blood cell count by potassium level ----
 ggplot(patient_data, aes(x = wbc, y = potassium)) + # Assign data, x and y values
-  geom_point(aes(colour = "red"), na.rm = TRUE) + # Scatterplot
-  geom_smooth(method = "lm", se = FALSE, aes(colour = "blue")) + #Regression line
+  geom_point(colour = "darkblue", alpha = 0.5, na.rm = TRUE) + # Scatterplot
+  geom_smooth(method = "lm", se = FALSE, colour = "orange") + #Regression line
   theme_minimal() + #Background theme
   theme(legend.position = "none", #Remove legend
         plot.title = element_text(face = "bold", size = 12, margin = margin(10, 0, 10, 0)), #Bold title, resized title and increased margin between title and plot
@@ -31,6 +31,8 @@ ggplot(patient_data, aes(x = wbc, y = potassium)) + # Assign data, x and y value
   labs(title = "White Blood Cell Count by Potassium Level", #Title
        x = "White blood cell count (10,000 cells per microliter)", #x-axis title
        y = "Potassium level (mmol/L)") #y-axis title
+
+
 
 # From the plot, the white blood cell count does not seem to change
   # with potassium level
