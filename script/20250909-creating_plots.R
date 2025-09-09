@@ -18,6 +18,7 @@
 library(ggplot2)
 library(tidyverse)
 library(here)
+library(GGally)
 
 patient_data <- read_delim(
   here("data", "data_for_analysis", "20250908-tidy-joined-exam-data.txt"),
