@@ -18,3 +18,16 @@ patient_data <- read_delim(
   here("data", "data_for_analysis", "20250908-tidy-joined-exam-data.txt"),
   delim = "\t"
 )
+
+# Correlated measurements?
+library(GGally)
+library(ggplot2)
+
+# Select only numeric columns for correlation
+num_data <- patient_data[sapply(patient_data, is.numeric)]
+# Correlation matrix plot
+ggcorr(num_data, label = FALSE)
+
+
+
+
