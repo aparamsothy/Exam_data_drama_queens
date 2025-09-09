@@ -88,10 +88,10 @@ glimpse(patient_data) # All variables are double
 
 
 # Save the tidy data ----
-fileName <- paste0(here("data", "data_for_analysis", "20250905-tidy-exam-data.txt"))
+filename <- paste0(here("data", "data_for_analysis", "20250905-tidy-exam-data.txt"))
 write_delim(
   patient_data, 
-  file = fileName,
+  file = filename,
   delim = "\t"
 )
 
