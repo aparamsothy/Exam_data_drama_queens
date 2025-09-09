@@ -25,54 +25,20 @@ patient_data <- read_delim(
 )
 
 
-# Correlated measurements?
-
-# Select only numeric columns for correlation
-num_data <- patient_data[sapply(patient_data, is.numeric)]
-# Correlation matrix plot
-correlation_plot <- ggcorr(num_data, angle = 90, size = 3, label = FALSE) +
-  theme(
-    plot.margin = margin(t = 20, r = 40, b = 40, l = 40)  # top, right, bottom, left margins
-  )
-
-print(correlation_plot)
-
-# To display the plot
-correlation_plot
-filename_correlation_plot <- here("figures", "correlation_plot.tiff")
-ggsave(filename_correlation_plot, plot = correlation_plot, width = 7, height = 7, dpi = 300)
-
-
-# Alternative 
-library(GGally)
-library(ggplot2)
-library(RColorBrewer)
-
-# Select only numeric columns
-num_data <- patient_data[sapply(patient_data, is.numeric)]
-
-
+## Correlated measurements ----
 # Create correlation plot with RdBu palette
 correlation_plot <- ggcorr(num_data,
-                           palette = "RdBu",
                            low = "#2166ac",
                            mid = "white",
                            high = "#b2182b",
                            midpoint = 0,
                            label = FALSE,
-                           size = 3,
-                           angle = -50
-) + 
-  theme(
-    plot.margin = margin(t = 20, r = 40, b = 40, l = 40),
-    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
-    clip = "off"  # Add clip here
-  )
+                           size = 3)
 
-print(correlation_plot)
+correlation_plot
 
 # Save plot as PNG with larger size for clarity
-filename_correlation_plot <- here("figures", "correlation_plot_alternative2.tiff")
+filename_correlation_plot <- here("figures", "correlation_plot.tiff")
 ggsave(filename_correlation_plot, plot = correlation_plot, width = 7, height = 7, dpi = 300)
 
 
