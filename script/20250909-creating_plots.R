@@ -44,6 +44,8 @@ remission_mono_plot <- ggplot(data=patient_data,
   ) 
   
   
-  
 remission_mono_plot
 
+# A visual inspection of the plot suggests that there is no difference in
+# percent of monocytes in WBC count for groups with or without remission of inflammation
+# after Thiopurines for > 12 weeks.
