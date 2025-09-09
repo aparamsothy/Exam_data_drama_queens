@@ -26,8 +26,9 @@ library(ggplot2)
 # Select only numeric columns for correlation
 num_data <- patient_data[sapply(patient_data, is.numeric)]
 # Correlation matrix plot
-ggcorr(num_data, label = FALSE)
+correlation_plot <- ggcorr(num_data, label = FALSE)
 
-
+# To display the plot
+print(correlation_plot)
 
 
