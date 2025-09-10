@@ -54,6 +54,7 @@ cal_tbil_lm <- patient_data %>%
   lm(cal ~ tbil, data = .) %>%
   broom::tidy()
 
+#View the regression results
 cal_tbil_lm
 
 # The linear regression indicates that there is an association between calcium and total bilirubin.
