@@ -205,8 +205,8 @@ table(patient_data$remission, patient_data$active)
 ```
 
 
-
-```{r, include=FALSE}
+### Saving the joined dataset
+```{r}
 # Save the joined data ----
 filename <- paste0(here("data", "data_for_analysis", "20250908-tidy-joined-exam-data.txt"))
 write_delim(
