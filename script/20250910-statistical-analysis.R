@@ -43,6 +43,18 @@ hgb_alt_plot <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_
 hgb_alt_plot
 
 
+hgb_alt_plot_without_outliers <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_quartiles)) +
+  geom_boxplot() +                        # Creates box plots
+  scale_fill_manual(values = c("#E31A1C", "#FF7F00", "#1F78B4", "#33A02C"), # Custom colors for each quartile
+                    name = "Hemoglobin\nQuartiles") +     # Legend title 
+  labs(title = "Alanine Transaminase by Hemoglobin Quartiles",     # Main title
+       x = "Hemoglobin Quartiles",                       # X-axis label
+       y = "Alanine Transaminase") +                                # Y-axis label
+  theme_minimal() +
+  scale_y_continuous(limits = c(0, 100))
+
+hgb_alt_plot_without_outliers
+
 # Statistical test to investigate if the remission is depended on chloride
 
 ## Count the number of patients in each category of remission
