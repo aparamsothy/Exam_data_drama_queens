@@ -24,7 +24,7 @@ We have created plots to answer the following questions:<br />
 The analysis was conducted in the script [20250909-creating_plots.R]()
 
 ### Correlated measurements
-The code and resulting plot for the evaluation of correlated measurements are shown below.
+The code and resulting plot for the evaluation of correlated measurements are shown below. The plot indicates that some variables are strongly correlated. As an example, we see that `age_days` and `age_years` are strongly correlated. This is reassuring as `age_years` was created as a function of `age_days`. We can also see that mean corpuscular (RBC) hemoglobin (`mch`) and mean corpuscular (RBC) volume (`mcv`), as well as Alanine Transaminase (`alt`) and Aspartate Transaminase (`ast`) are strongly correlated. In addition, we see that the percent of Lymphocytes in WBC count (`lymph_percent`) is strongly negatively correlated with percent of Neutrophils in WBC count (`neut_percent`).
 
 ```{r load_libraries_and_file, include=FALSE}
 library(ggplot2)
@@ -37,7 +37,7 @@ patient_data <- read_delim(
 )
 ```
 
-```{r corr_plot}
+```{r corr_plot, warning=FALSE}
 # Create correlation plot
 GGally::ggcorr(patient_data,
                            low = "#2166ac",
@@ -49,6 +49,7 @@ GGally::ggcorr(patient_data,
 
 ```
 
+### White Blood Cell Count and Potassium
 
 
 ## Statistical Tests
