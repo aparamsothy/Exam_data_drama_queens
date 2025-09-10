@@ -31,23 +31,9 @@ patient_data %>%
 
 
 # Creates table for active inflammation vs remission
-table(patient_data$active, patient_data$remission)
+table(patient_data$hgb_quartiles, patient_data$remission)
 
-# Plot 1 - Hemoglobin quartiles vs RBC counts
-hgb_RBC_plot <- ggplot(patient_data, aes(x = hgb_quartiles, y = rbc, fill = hgb_quartiles)) +
-  geom_boxplot() +                        # Creates box plots
-  scale_fill_manual(values = c("#E31A1C", "#FF7F00", "#1F78B4", "#33A02C"), # Custom colors for each quartile
-                    name = "Hemoglobin\nQuartiles") +     # Legend title 
-  labs(title = "RBC Counts by Hemoglobin Quartiles",     # Main title
-       x = "Hemoglobin Quartiles",                       # X-axis label
-       y = "RBC Count") +                                # Y-axis label
-  theme_minimal()                         
-
-hgb_RBC_plot
-
-
-
-# Plot 2 - hgb_quartiles vs remission
+# Plot 1 - hgb_quartiles vs remission
 hgb_remission_plot <- ggplot(patient_data, aes(x = hgb_quartiles, fill = remission)) +
   geom_bar(position = "dodge",            # Side-by-side bars 
            alpha = 0.8,                   # Semi-transparent bars 
