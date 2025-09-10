@@ -1,5 +1,5 @@
 ---
-title: "Data_drama_queens_exam_report"
+title: "RMED901A Exam Report"
 author: "Data Drama Queens"
 date: "`r Sys.Date()`"
 output: html_document
