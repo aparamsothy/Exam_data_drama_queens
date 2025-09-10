@@ -9,11 +9,105 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Read and Tidy
+# Read and Tidy
 
+## Introduction
 
-## Tidy, Adjust and Explore
+This script shows the process of reading raw patient data, exploring its structure, cleaning duplicates, and tidying data by removing or adding columns and saving the cleaned dataset
 
-## Plot Creation
+```{r setup, , include=FALSE}
+library(tidyverse)
+library(here)
+library(skimr)
+library(naniar)
+```
 
-## Statistical Tests
+## Data Reading
+
+To read a text file using `read_delim` and the `here` package for handling file paths, we can use the following script:
+
+```{r Read dataset, echo=TRUE, results='hide'}
+patient_data <- read_delim(
+here("data", "original_data", "exam_data.txt"),
+delim = "\t"
+)
+```
+
+## Exploring the Data
+
+### Overview of the data
+
+To get a general view of the data structure, we can use the following script:
+
+```{r Data overview, include=TRUE}
+glimpse(patient_data) # Check structure and types
+head(patient_data) # Show first rows
+skimr::skim(patient_data) # Summary statistics
+naniar::gg_miss_var(patient_data) # Missing data visualization
+
+ncol(patient_data) # Number of columns
+nrow(patient_data) # Number of rows
+```
+
+## Renaming Columns
+
+## Removing Duplicate Columns
+
+Identify and remove duplicated columns to avoid redundancy by using the following script:
+
+```{r remove duplicates}
+patient_data <- patient_data %>%
+select(-wbc_copy) # Remove duplicated white blood cell column
+```
+
+## Checking Unique Observations
+
+To Count total rows, unique patient IDs, and identify duplicated rows we can use the following script:
+
+```{r Row identification, include=TRUE}
+patient_data %>% count() # Total observations
+patient_data %>%
+distinct(patient_id) %>%
+count() # Unique patients
+sum(duplicated(patient_data)) # Number of duplicated rows
+```
+
+There are 5167 unique patient observations out of 15524 rows, indicating repeated measurements for some patients. Also 23 duplicated rows exist and will be removed.
+
+## Creating New Columns by Pivoting
+
+To tidy the data format, we can create new characteristic columns using `pivot_wider()` and reshape the data so each patient has one row characteristic column.
+
+Here duplicates are removed by keeping distinct rows.
+
+```{r pivoting, include=TRUE}
+patient_data <- patient_data %>%
+distinct() %>% # Remove duplicated rows
+pivot_wider(
+names_from = "mean_RBC_characteristic",
+values_from = "mean_value"
+)
+```
+
+## Verify Final Data Structure
+
+Check the dimensions and data types after tidying.
+
+```{r Data verification, include=TRUE}
+dim(patient_data) # Expected: 5167 rows, 24 columns
+glimpse(patient_data) # Ensure variables are double and data is tidy
+
+```
+
+## Saving Tidied Data
+
+Save the cleaned and tidied dataset as a text file using `write_delim()`.
+
+```{r Data saving, include=TRUE}
+filename <- here("data", "data_for_analysis", "20250905-tidy-exam-data.txt")
+write_delim(
+patient_data,
+file = filename,
+delim = "\t"
+)
+```
