@@ -25,7 +25,7 @@ patient_data <- read_delim(
 # According to the data, was there a difference of alanine transaminase between quartiles of the hemoglobin level?
 # Hemoglobin quartiles - statistical analysis
 # ANOVA test
-hgb_rem_aov <-patient_data %>% 
+hgb_alt_aov <-patient_data %>% 
   aov(alt ~ hgb_quartiles, data = .) %>%  # Performs one-way ANOVA
   broom::tidy()                           # Converts results to clean data frame
 
