@@ -20,3 +20,41 @@ patient_data <- read_delim(
   here("data", "data_for_analysis", "20250908-tidy-joined-exam-data.txt"),
   delim = "\t"
 )
+
+
+# Association between calcium and total bilirubin----
+#Plot the data first
+patient_data  %>%
+  ggplot(aes(x = tbil, y = cal)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  xlab("Total Bilirubin") + #change x axis label
+  ylab("Calcium") + #y axis labels
+  labs(title = "Association between calcium and total bilirubin") +
+  theme_minimal() + #use the minimal theme
+  theme(
+    panel.grid.major = element_blank(), #remove major grid
+    panel.grid.minor = element_blank(), #remove minor grid
+    axis.line = element_line(colour="grey", linewidth = 0.5), #include x and y axis
+    axis.ticks = element_line(colour = "grey", linewidth = 0.5), #include tick marks
+    plot.title = element_text(size = 16, face = "bold"), #change title font
+    axis.title = element_text(size = 14), #change axis title size
+    axis.text.x = element_text( size = 12), #change x-axis text size
+    axis.text.y = element_text(size=12) #change y-axis text size
+  ) 
+
+# From the plot we see that the data is not well captured by a linear relationships.
+# Most points are located at low levels of total bilirubin, while a few points are located to the right.
+# If the analyse was to be used in a "real" analysis, we should consider measures to improve the 
+# association evaluation.
+
+# However, a linear regression analysis for the association between calcium and total bilirubin is 
+# considered to be sufficient in this project.
+cal_tbil_lm <- patient_data %>% 
+  lm(cal ~ tbil, data = .) %>%
+  broom::tidy()
+
+cal_tbil_lm
+
+# The linear regression indicates that there is an association between calcium and total bilirubin.
+# The estimated coefficient is -0.09, with a p-value of 1.8e-104.
