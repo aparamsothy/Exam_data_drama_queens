@@ -8,16 +8,14 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
----
-title:  "Read and Tidy"
-output: html_document
----
+
+# Read and Tidy
 
 ## Introduction
+
 This script shows the process of reading raw patient data, exploring its structure, cleaning duplicates, and tidying data by removing or adding columns and saving the cleaned dataset
 
-
-```{setup}
+```{r setup, , include=FALSE}
 library(tidyverse)
 library(here)
 library(skimr)
@@ -25,9 +23,10 @@ library(naniar)
 ```
 
 ## Data Reading
+
 To read a text file using `read_delim` and the `here` package for handling file paths, we can use the following script:
 
-```{r Read dataset, include=TRUE}
+```{r Read dataset, echo=TRUE, results='hide'}
 patient_data <- read_delim(
 here("data", "original_data", "exam_data.txt"),
 delim = "\t"
@@ -37,7 +36,8 @@ delim = "\t"
 ## Exploring the Data
 
 ### Overview of the data
-To get a general view of the data structure, we can use the following script: 
+
+To get a general view of the data structure, we can use the following script:
 
 ```{r Data overview, include=TRUE}
 glimpse(patient_data) # Check structure and types
@@ -49,39 +49,23 @@ ncol(patient_data) # Number of columns
 nrow(patient_data) # Number of rows
 ```
 
+## Renaming Columns
 
-## Renaming Columns 
 
-Rename columns to consistent names reflecting their biological or clinical meaning.
 
-```{r Column renaming, include=TRUE}
-patient_data <- patient_data %>%
-rename(
-neut_percent = %neut, # Percentage of neutrophils
-lymph_percent = lymph%, # Percentage of lymphocytes
-age_days = days of life, # Age in days
-
-# Basic Metabolic Panel (BMP) variables
-sodium = sod,                     
-potassium = pot,                  
-chloride = chlor,                 
-bicarbonate = co2,                
-blood_urea_nitrogen = un          
-)
-```
 
 ## Removing Duplicate Columns
 
 Identify and remove duplicated columns to avoid redundancy by using the following script:
 
-```{r Remove duplicates, include=TRUE}
+```{r remove duplicates}
 patient_data <- patient_data %>%
 select(-wbc_copy) # Remove duplicated white blood cell column
 ```
 
 ## Checking Unique Observations
 
-To Count total rows, unique patient IDs, and identify duplicated rows we can use the following script: 
+To Count total rows, unique patient IDs, and identify duplicated rows we can use the following script:
 
 ```{r Row identification, include=TRUE}
 patient_data %>% count() # Total observations
@@ -92,7 +76,6 @@ sum(duplicated(patient_data)) # Number of duplicated rows
 ```
 
 There are 5167 unique patient observations out of 15524 rows, indicating repeated measurements for some patients. Also 23 duplicated rows exist and will be removed.
-
 
 ## Creating New Columns by Pivoting
 
@@ -114,7 +97,7 @@ values_from = "mean_value"
 Check the dimensions and data types after tidying.
 
 ```{r Data verification, include=TRUE}
-dim(patiet_data) # Expected: 5167 rows, 24 columns
+dim(patient_data) # Expected: 5167 rows, 24 columns
 glimpse(patient_data) # Ensure variables are double and data is tidy
 
 ```
@@ -131,7 +114,3 @@ file = filename,
 delim = "\t"
 )
 ```
-
-
-
-
