@@ -15,8 +15,9 @@ This project contains the answers to the exam in RMED901A from the group _Data D
 * `documentation`
     + `exam_descri.md`: received exam description
     + `original_codebook.html`: originally received codebook
-    + `data_drama_queens_exam_report.Rmd`: Rmarkdown for exam report
-    
+    + `data_drama_queens_exam_report.Rmd`: Rmarkdown for exam report. 
+       Outputs   `data_drama_queens_exam_report.html`
+    + `data_drama_queens_exam_report.html`: Exam report. 
       
 * `script`
     + `20250905-Reading-data.R`: script for reading and tidying data. Exam task 1. Outputs `20250905-tidy-exam-data.txt`.
