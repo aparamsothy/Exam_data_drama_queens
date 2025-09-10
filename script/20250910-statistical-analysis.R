@@ -41,9 +41,9 @@ ggplot(patient_data, aes(remission, chloride, color = remission)) +
   theme(
     axis.title.x = element_text(face = "bold", size = 9),
     axis.title.y = element_text(face = "bold", size = 9),
-    title = element_text(face = "bold", hjust = 0.5)
+    plot.title = element_text(face = "bold", hjust = 0.5, size = 12)
   ) +
-  scale_color_manual(values = c("No" = "blue", "Yes" = "orange"))
+  scale_color_manual(values = c("No" = "#fe6d01", "Yes" = "#40b0bf"))
 
 # T-test to test difference in mean chloride levels by remission status
 t_test_results <- patient_data %>% 
