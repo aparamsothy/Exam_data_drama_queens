@@ -51,9 +51,6 @@ nrow(patient_data) # Number of rows
 
 ## Renaming Columns
 
-
-
-
 ## Removing Duplicate Columns
 
 Identify and remove duplicated columns to avoid redundancy by using the following script:
