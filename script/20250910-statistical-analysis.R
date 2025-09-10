@@ -43,6 +43,45 @@ hgb_alt_plot <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_
 hgb_alt_plot
 
 
+# Statistical test to investigate if the remission is depended on chloride
+
+## Count the number of patients in each category of remission
+patient_data %>%
+  group_by(remission) %>%
+  count()
+
+## Boxplot to visualize chloride levels by remission status.
+ggplot(patient_data, aes(remission, chloride, color = remission)) +
+  geom_boxplot() +
+  theme_minimal() +
+  theme(
+    legend.position = "none"
+  ) +
+  labs(title = "Chloride level by Remission Status",
+       x = "Chloride level",
+       y = "Remission status") +
+  theme(
+    axis.title.x = element_text(face = "bold", size = 9),
+    axis.title.y = element_text(face = "bold", size = 9),
+    plot.title = element_text(face = "bold", hjust = 0.5, size = 12)
+  ) +
+  scale_color_manual(values = c("No" = "#fe6d01", "Yes" = "#40b0bf"))
+
+# T-test to test difference in mean chloride levels by remission status
+t_test_results <- patient_data %>% 
+  t.test(chloride ~ remission, data = .) %>%
+  broom::tidy()
+
+t_test_results
+# We have used an unpaired t-test for statistical analysis because we are
+# interested in comparing the mean of chloride level between those with and 
+# without remission. 
+
+# The 2808 patients with remission compared to the 2359 patients
+# without remission showed significantly lower chloride levels (t = -0.377, p = 0.000113)
+
+
+
 # Association between calcium and total bilirubin----
 #Plot the data first
 patient_data  %>%
@@ -80,4 +119,5 @@ cal_tbil_lm
 
 # The linear regression indicates that there is an association between calcium and total bilirubin.
 # The estimated coefficient is -0.09, with a p-value of 1.8e-104.
+
 
