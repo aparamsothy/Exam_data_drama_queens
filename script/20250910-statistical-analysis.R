@@ -47,8 +47,8 @@ hgb_RBC_plot
 
 
 
-# Plot 2 - Active inflammation vs remission
-inflammation_remission_plot <- ggplot(patient_data, aes(x = active, fill = remission)) +
+# Plot 2 - hgb_quartiles vs remission
+inflammation_remission_plot <- ggplot(patient_data, aes(x = hgb_quartiles, fill = remission)) +
   geom_bar(position = "dodge",            # Side-by-side bars 
            alpha = 0.8,                   # Semi-transparent bars 
            color = "white",               # White borders around bars
