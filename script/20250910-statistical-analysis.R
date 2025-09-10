@@ -23,7 +23,7 @@ patient_data <- read_delim(
 
 
 # Does the remission depend on the hemoglobin level categorized into quartiles?
-# Hemoglobin quartiles vs RBC counts - statistical analysis
+# Hemoglobin quartiles - statistical analysis
 # ANOVA test
 patient_data %>% 
   aov(rbc ~ hgb_quartiles, data = .) %>%  # Performs one-way ANOVA
