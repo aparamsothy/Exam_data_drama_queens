@@ -61,7 +61,6 @@ select(-wbc_copy) # Remove duplicated white blood cell column
 ```
 
 ## Checking Unique Observations
-
 To Count total rows, unique patient IDs, and identify duplicated rows we can use the following script:
 
 ```{r Row identification, include=TRUE}
@@ -111,3 +110,90 @@ file = filename,
 delim = "\t"
 )
 ```
+
+
+We have created plots to answer the following questions:<br />
+1. Are there any correlated measurements?<br />
+2. Does the white blood cell count distribution depend on pot?<br />
+3. Does remission of inflammation after Thiopurines for > 12 weeks change with percent of monocytes in WBC count?<br />
+
+The analysis was conducted in the script [20250909-creating_plots.R]()
+
+### Correlated measurements
+First, we evaluated the presence of correlated measurements in our dataset. The code and resulting plot are shown below. The plot indicates that some variables are strongly correlated. As an example, we see that `age_days` and `age_years` are strongly correlated. This is reassuring as `age_years` was created as a function of `age_days`. We can also see that mean corpuscular (RBC) hemoglobin (`mch`) and mean corpuscular (RBC) volume (`mcv`), as well as Alanine Transaminase (`alt`) and Aspartate Transaminase (`ast`) are strongly correlated. In addition, we see that the percent of Lymphocytes in WBC count (`lymph_percent`) is strongly negatively correlated with percent of Neutrophils in WBC count (`neut_percent`).
+
+```{r load_libraries_and_file, include=FALSE}
+library(ggplot2)
+library(tidyverse)
+library(here)
+
+patient_data <- read_delim(
+  here("data", "data_for_analysis", "20250908-tidy-joined-exam-data.txt"),
+  delim = "\t"
+)
+```
+
+```{r corr_plot, warning=FALSE}
+# Create correlation plot
+GGally::ggcorr(patient_data,
+                           low = "#2166ac",
+                           mid = "white",
+                           high = "#b2182b",
+                           midpoint = 0,
+                           label = FALSE,
+                           size = 3)
+
+```
+
+### White Blood Cell Count and Potassium
+Next, we evaluated if the white blood cell count distribution depends on `potassium`. The code and resulting plot are provided below. From the plot, the white blood cell count does not seem to change with potassium level.
+
+```{r wbc_pot, warning=FALSE, message=FALSE}
+# Scatterplot investigating white blood cell count by potassium level ----
+ggplot(patient_data, aes(x = wbc, y = potassium)) + # Assign data, x and y values
+  geom_point(colour = "darkblue", alpha = 0.5, na.rm = TRUE) + # Scatterplot
+  geom_smooth(method = "lm", se = FALSE, colour = "orange") + #Regression line
+  theme_minimal() + #Background theme
+  theme(legend.position = "none", #Remove legend
+        plot.title = element_text(face = "bold", size = 12, margin = margin(10, 0, 10, 0)), #Bold title, resized title and increased margin between title and plot
+        axis.title.x = element_text(face = "bold", size = 10), #Bold x-axis text
+        axis.title.y = element_text(face = "bold", size = 10)) + #Bold y-axis text
+  labs(title = "White Blood Cell Count by Potassium Level", #Title
+       x = "White blood cell count (10,000 cells per microliter)", #x-axis title
+       y = "Potassium level (mmol/L)") #y-axis title
+
+```
+
+### Remission and Monocytes
+Lastly, we evaluated if remission of inflammation after Thiopurines for > 12 weeks change with percent of monocytes in WBC count. The code and resulting plot are shown below. From a visual inspection of the boxplot, there seems to be no difference in percent of monocytes in WBC count for groups with or without remission of inflammation after Thiopurines for > 12 weeks. 
+
+```{r}
+# Remission and percent of monocytes ----
+# Create a boxplot
+ggplot(data=patient_data, 
+                              mapping=aes(x=remission, y=mono_percent)) + #select variables
+  geom_boxplot(fill=c("#7876B199", "#20854E99")) + #create a box plot and set specific colours
+  xlab("Remission") + #change x axis label
+  ylab("Monocytes in WBC count (%)") + #y axis labels
+  labs(title = "Percent of monocytes in WBC count",
+       subtitle = "Grouped by remission status") +
+  theme_minimal() + #use the minimal theme
+  theme(
+    panel.grid.major = element_blank(), #remove major grid
+    panel.grid.minor = element_blank(), #remove minor grid
+    axis.line = element_line(colour="grey", linewidth = 0.5), #include x and y axis
+    axis.ticks = element_line(colour = "grey", linewidth = 0.5), #include tick marks
+    legend.position = "None", #remove legend
+    plot.title = element_text(size = 16, face = "bold"), #change title font
+    axis.title = element_text(size = 14), #change axis title size
+    axis.text.x = element_text( size = 12), #change x-axis text size
+    axis.text.y = element_text(size=12) #change y-axis text size
+  ) 
+  
+ 
+
+```
+
+
+
+## Statistical Tests
