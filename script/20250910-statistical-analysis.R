@@ -5,7 +5,7 @@
 # Description: Script for creating plots.
 #              We were given 5 questions, and asked to select one question each.
 #              We have answered the following questions:
-#                 - Does the remission depend on the hemoglobin level categorized into quartiles?
+#                 - According to the data, was there a difference of alanine transaminase between quartiles of the hemoglobin level?
 #                 - Does the remission depend on chloride?
 #                 - Is there an association between calcium and total bilirubin?
 # Project: RMED901A_Exam_Assignment
@@ -22,7 +22,7 @@ patient_data <- read_delim(
 )
 
 
-# According to the data, was there a difference of alanine transaminase between quartiles of the hemoglobin level?
+# According to the data, was there a difference of alanine transaminase between quartiles of the hemoglobin level? ----
 # Hemoglobin quartiles - statistical analysis
 # ANOVA test
 hgb_alt_aov <-patient_data %>% 
@@ -55,7 +55,7 @@ hgb_alt_plot_without_outliers <- ggplot(patient_data, aes(x = hgb_quartiles, y =
 
 hgb_alt_plot_without_outliers
 
-# Statistical test to investigate if the remission is depended on chloride
+# Statistical test to investigate if the remission is depended on chloride ----
 
 ## Count the number of patients in each category of remission
 patient_data %>%
@@ -90,7 +90,7 @@ t_test_results
 # without remission. 
 
 # The 2808 patients with remission compared to the 2359 patients
-# without remission showed significantly lower chloride levels (t = -0.377, p = 0.000113)
+# without remission showed significant difference in chloride levels (t = -0.377, p = 0.000113)
 
 
 
