@@ -42,6 +42,10 @@ hgb_alt_plot <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_
 
 hgb_alt_plot
 
+# Save plot as PNG
+filename_correlation_plot <- here("figures", "hgb_alt_plot.tiff")
+ggsave(filename_correlation_plot, plot = hgb_alt_plot, width = 7, height = 7, dpi = 300)
+
 
 hgb_alt_plot_without_outliers <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_quartiles)) +
   geom_boxplot() +                        # Creates box plots
@@ -51,9 +55,14 @@ hgb_alt_plot_without_outliers <- ggplot(patient_data, aes(x = hgb_quartiles, y =
        x = "Hemoglobin Quartiles",                       # X-axis label
        y = "Alanine Transaminase") +                                # Y-axis label
   theme_minimal() +
-  scale_y_continuous(limits = c(0, 100))
+  scale_y_continuous(limits = c(0, 200))
 
 hgb_alt_plot_without_outliers
+
+# Save plot as PNG
+filename_correlation_plot <- here("figures", "hgb_alt_plot_without_outliers.tiff")
+ggsave(filename_correlation_plot, plot = hgb_alt_plot_without_outliers, width = 7, height = 7, dpi = 300)
+
 
 # Statistical test to investigate if the remission is depended on chloride ----
 
@@ -63,7 +72,7 @@ patient_data %>%
   count()
 
 ## Boxplot to visualize chloride levels by remission status.
-ggplot(patient_data, aes(remission, chloride, color = remission)) +
+remission_chloride_plot <- ggplot(patient_data, aes(remission, chloride, color = remission)) +
   geom_boxplot() +
   theme_minimal() +
   theme(
@@ -75,9 +84,16 @@ ggplot(patient_data, aes(remission, chloride, color = remission)) +
   theme(
     axis.title.x = element_text(face = "bold", size = 9),
     axis.title.y = element_text(face = "bold", size = 9),
-    plot.title = element_text(face = "bold", hjust = 0.5, size = 12)
+    plot.title = element_text(hjust = 0.5, size = 12)
   ) +
   scale_color_manual(values = c("No" = "#fe6d01", "Yes" = "#40b0bf"))
+
+remission_chloride_plot
+
+# Save plot as PNG
+filename_correlation_plot <- here("figures", "remission_chloride.tiff")
+ggsave(filename_correlation_plot, plot = remission_chloride_plot, width = 7, height = 7, dpi = 300)
+
 
 # T-test to test difference in mean chloride levels by remission status
 t_test_results <- patient_data %>% 
@@ -96,7 +112,7 @@ t_test_results
 
 # Association between calcium and total bilirubin----
 #Plot the data first
-patient_data  %>%
+cal_tbil_plot <- patient_data  %>%
   ggplot(aes(x = tbil, y = cal)) +
   geom_point() +
   geom_smooth(method = "lm") +
@@ -114,6 +130,13 @@ patient_data  %>%
     axis.text.x = element_text( size = 12), #change x-axis text size
     axis.text.y = element_text(size=12) #change y-axis text size
   ) 
+
+cal_tbil_plot
+
+# Save plot as PNG
+filename_correlation_plot <- here("figures", "cal_tbil.tiff")
+ggsave(filename_correlation_plot, plot = cal_tbil_plot, width = 7, height = 7, dpi = 300)
+
 
 # From the plot we see that the data is not well captured by a linear relationships.
 # Most points are located at low levels of total bilirubin, while a few points are located to the right.
