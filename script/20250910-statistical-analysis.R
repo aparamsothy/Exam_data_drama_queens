@@ -5,11 +5,18 @@
 # Description: Script for creating plots.
 #              We were given 5 questions, and asked to select one question each.
 #              We have answered the following questions:
-#                 - Are there any correlated measurements?
-#                 - Does the white blood cell count distribution depend on pot?
-#                 - Does remission of inflammation after Thiopurines for > 12 
-#                   weeks change with percent of monocytes in WBC count?
-#               
+#                 - Does the remission depend on the hemoglobin level categorized into quartiles?
+#                 - Does the remission depend on chloride?
+#                 - Is there an association between calcium and total bilirubin?
 # Project: RMED901A_Exam_Assignment
 #-------------------------------------------------------------------------------###
 
+# Read the data ----
+library(here)
+library(ggplot2)
+library(tidyverse)
+
+patient_data <- read_delim(
+  here("data", "data_for_analysis", "20250908-tidy-joined-exam-data.txt"),
+  delim = "\t"
+)
