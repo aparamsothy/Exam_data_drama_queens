@@ -16,4 +16,39 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Plot Creation
 
+We have created plots to answer the following questions:<br />
+1. Are there any correlated measurements?<br />
+2. Does the white blood cell count distribution depend on pot?<br />
+3. Does remission of inflammation after Thiopurines for > 12 weeks change with percent of monocytes in WBC count?<br />
+
+The analysis was conducted in the script [20250909-creating_plots.R]()
+
+### Correlated measurements
+The code and resulting plot for the evaluation of correlated measurements are shown below.
+
+```{r load_libraries_and_file, include=FALSE}
+library(ggplot2)
+library(tidyverse)
+library(here)
+
+patient_data <- read_delim(
+  here("data", "data_for_analysis", "20250908-tidy-joined-exam-data.txt"),
+  delim = "\t"
+)
+```
+
+```{r corr_plot}
+# Create correlation plot
+GGally::ggcorr(patient_data,
+                           low = "#2166ac",
+                           mid = "white",
+                           high = "#b2182b",
+                           midpoint = 0,
+                           label = FALSE,
+                           size = 3)
+
+```
+
+
+
 ## Statistical Tests
