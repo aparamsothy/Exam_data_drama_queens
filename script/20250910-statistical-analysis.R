@@ -48,7 +48,7 @@ hgb_RBC_plot
 
 
 # Plot 2 - hgb_quartiles vs remission
-inflammation_remission_plot <- ggplot(patient_data, aes(x = hgb_quartiles, fill = remission)) +
+hgb_remission_plot <- ggplot(patient_data, aes(x = hgb_quartiles, fill = remission)) +
   geom_bar(position = "dodge",            # Side-by-side bars 
            alpha = 0.8,                   # Semi-transparent bars 
            color = "white",               # White borders around bars
@@ -56,13 +56,13 @@ inflammation_remission_plot <- ggplot(patient_data, aes(x = hgb_quartiles, fill 
   scale_fill_manual(values = c("#2E86AB", "#A23B72"),    
                     name = "Remission Status",           # Legend title
                     labels = c("Not in Remission", "In Remission")) + # Custom legend labels
-  labs(title = "Active Inflammation vs Remission Status", # Main title
-       x = "Active Inflammation",                         # X-axis label
+  labs(title = "hgb quartiles vs Remission Status", # Main title
+       x = "hgb",                         # X-axis label
        y = "Number of Patients",                          # Y-axis label
        caption = "Data: Patient cohort analysis") +      # Bottom caption
   theme_minimal()                         
 
-inflammation_remission_plot
+hgb_remission_plot
 
 
 # Association between calcium and total bilirubin----
