@@ -26,7 +26,7 @@ patient_data <- read_delim(
 # Hemoglobin quartiles - statistical analysis
 # ANOVA test
 patient_data %>% 
-  aov(rbc ~ hgb_quartiles, data = .) %>%  # Performs one-way ANOVA
+  aov(remission ~ hgb_quartiles, data = .) %>%  # Performs one-way ANOVA
   broom::tidy()                           # Converts results to clean data frame
 
 
