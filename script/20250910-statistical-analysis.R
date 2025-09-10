@@ -22,6 +22,35 @@ patient_data <- read_delim(
 )
 
 
+# Does the remission depend on the hemoglobin level categorized into quartiles?
+# Hemoglobin quartiles - statistical analysis
+# ANOVA test
+patient_data %>% 
+  aov(rbc ~ hgb_quartiles, data = .) %>%  # Performs one-way ANOVA
+  broom::tidy()                           # Converts results to clean data frame
+
+
+# Creates table for hgb_quartiles vs remission
+table(patient_data$hgb_quartiles, patient_data$remission)
+
+# Plot 1 - hgb_quartiles vs remission
+hgb_remission_plot <- ggplot(patient_data, aes(x = hgb_quartiles, fill = remission)) +
+  geom_bar(position = "dodge",            # Side-by-side bars 
+           alpha = 0.8,                   # Semi-transparent bars 
+           color = "white",               # White borders around bars
+           size = 0.5) +                  # Border thickness
+  scale_fill_manual(values = c("#2E86AB", "#A23B72"),    
+                    name = "Remission Status",           # Legend title
+                    labels = c("Not in Remission", "In Remission")) + # Custom legend labels
+  labs(title = "hgb quartiles vs Remission Status", # Main title
+       x = "hgb",                         # X-axis label
+       y = "Number of Patients",                          # Y-axis label
+       caption = "Data: Patient cohort analysis") +      # Bottom caption
+  theme_minimal()                         
+
+hgb_remission_plot
+
+
 # Association between calcium and total bilirubin----
 #Plot the data first
 patient_data  %>%
@@ -59,3 +88,4 @@ cal_tbil_lm
 
 # The linear regression indicates that there is an association between calcium and total bilirubin.
 # The estimated coefficient is -0.09, with a p-value of 1.8e-104.
+
