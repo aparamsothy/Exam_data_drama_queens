@@ -28,7 +28,7 @@ patient_data <- read_delim(
 
 # Correlated measurements ----
 # Create correlation plot with RdBu palette
-correlation_plot <- ggcorr(num_data,
+correlation_plot <- ggcorr(patient_data,
                            low = "#2166ac",
                            mid = "white",
                            high = "#b2182b",
