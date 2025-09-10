@@ -30,7 +30,7 @@ patient_data %>%
   broom::tidy()                           # Converts results to clean data frame
 
 
-# Creates table for active inflammation vs remission
+# Creates table for hgb_quartiles vs remission
 table(patient_data$hgb_quartiles, patient_data$remission)
 
 # Plot 1 - hgb_quartiles vs remission
