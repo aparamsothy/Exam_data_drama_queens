@@ -33,7 +33,6 @@ delim = "\t"
 )
 ```
 
-## Exploring the Data
 
 ### Overview of the data
 
@@ -49,9 +48,9 @@ ncol(patient_data) # Number of columns
 nrow(patient_data) # Number of rows
 ```
 
-## Renaming Columns
+### Renaming Columns
 
-## Removing Duplicate Columns
+### Removing Duplicate Columns
 
 Identify and remove duplicated columns to avoid redundancy by using the following script:
 
@@ -60,7 +59,7 @@ patient_data <- patient_data %>%
 select(-wbc_copy) # Remove duplicated white blood cell column
 ```
 
-## Checking Unique Observations
+### Checking Unique Observations
 To Count total rows, unique patient IDs, and identify duplicated rows we can use the following script:
 
 ```{r Row identification, include=TRUE}
@@ -73,7 +72,7 @@ sum(duplicated(patient_data)) # Number of duplicated rows
 
 There are 5167 unique patient observations out of 15524 rows, indicating repeated measurements for some patients. Also 23 duplicated rows exist and will be removed.
 
-## Creating New Columns by Pivoting
+### Creating New Columns by Pivoting
 
 To tidy the data format, we can create new characteristic columns using `pivot_wider()` and reshape the data so each patient has one row characteristic column.
 
@@ -88,7 +87,7 @@ values_from = "mean_value"
 )
 ```
 
-## Verify Final Data Structure
+### Verify Final Data Structure
 
 Check the dimensions and data types after tidying.
 
@@ -98,7 +97,7 @@ glimpse(patient_data) # Ensure variables are double and data is tidy
 
 ```
 
-## Saving Tidied Data
+### Saving Tidied Data
 
 Save the cleaned and tidied dataset as a text file using `write_delim()`.
 
@@ -111,6 +110,7 @@ delim = "\t"
 )
 ```
 
+## Creating Plots
 
 We have created plots to answer the following questions:<br />
 1. Are there any correlated measurements?<br />
