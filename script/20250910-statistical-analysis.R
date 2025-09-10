@@ -22,7 +22,7 @@ patient_data <- read_delim(
 )
 
 
-# Does the remission depend on the hemoglobin level categorized into quartiles?
+# According to the data, was there a difference of alanine transaminase between quartiles of the hemoglobin level?
 # Hemoglobin quartiles - statistical analysis
 # ANOVA test
 hgb_rem_aov <-patient_data %>% 
