@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ------------------------------------------------------------------------
 
 
-## Introduction
+### Introduction
 
 This script form [20250905-Reading-data.R]() shows the process of reading raw patient data, exploring its structure, cleaning duplicates, and tidying data by removing or adding columns and saving the cleaned dataset.
 
@@ -28,7 +28,7 @@ library(ggplot2)
 
 ```
 
-## Data Reading
+### Data Reading
 
 To read a text file using `read_delim` and the `here` package for handling file paths, we can use the following script:
 
@@ -137,22 +137,18 @@ delim = "\t"
 ```
 
 ## Tidy, Adjust and Explore
+------------------------------------------------------------------------
 
 Following are the codes from the script [20250908-tidy-adjust-explore.data.R](). In this script we have futher tidied the data by removing unnecessary columns, joined with additional dataset, created new set of variables and ordered/arranged the variables.
 
-In this session we have also explored the dataset by stratifying for variables and reporting statistical characteristics of these variables.
+We have also explored the dataset by stratifying for variables and reporting statistical characteristics of these variables.
 
 
-### Read the datasets
+### Read the additional dataset
 
-We are reading in two dataset (main dataset called `patient_data`, joining dataset: `patient_data_join`) that we will merge at a later point in the script.
+We have already previously read and saved the tidied dataset (`patiend_data`) to be used for exploration. Here we read the additional dataset that we call `patient_data_join` that we will use to merge with the tidied dataset.
 
-```{r read_data, warning=FALSE, message=FALSE}
-patient_data <- read_delim(
-  here("data", "data_for_analysis", "20250905-tidy-exam-data.txt"),
-  delim = "\t"
-)
-
+```{r read_data}
 patient_data_join <- read_delim(
   here("data", "original_data", "exam_data_join.txt"),
   delim = "\t"
