@@ -30,7 +30,7 @@ Changed_data <- tribble(
   "mch", "Mean Corpuscular (RBC) Hemoglobin", "Pivotted from mean_RBC_characteristic and mean_value",
   "mchc", "Mean Corpuscular (RBC) Hemoglobin per Cell", "Pivotted from mean_RBC_characteristic and mean_value",
   "hgb_quartiles", "Hemoglobin quartiles", "Cut the Hemoglobin level into quartiles",
-  "blood_ure_nitrogen_over_30", "blood urea nitrogen above 30", "Create a column indicating if the blood urea nitrogen is above 30",
+  "blood_urea_nitrogen_over_30", "Blood urea nitrogen above 30", "Create a column indicating if the blood urea nitrogen is above 30",
   "lymph_count", "Lymphocytes cell count", "Create a column for Lymphocytes cell count",
   "sodium_fraction", "Sodium as a fraction of summed sodium, potassium, and chloride", "Create a column for sodium fraction ",
   "age_years", "Age in years", "New variable created from age_days variable"
@@ -50,7 +50,8 @@ deleted_data <- tribble(
   "wbc_copy", "An identcal copy of wbc column", "Removed duplicated column",
   "hct", "Hematocrit", "Removed unnecessary columns",
   "rdw", "Red cell Distribution Width", "Removed unnecessary columns",
-  "mean_RBC_characteristic", "one of: mcv = Mean Corpuscular (RBC) Volume; mch = Mean Corpuscular (RBC) Hemoglobin; mchc = Mean Corpuscular (RBC) Hemoglobin per Cell", "Removed after pivoting", "mean_value", "	value for each of mean_RBD_characteristic", "Removed after pivoting"
+  "mean_RBC_characteristic", "One of: mcv = Mean Corpuscular (RBC) Volume; mch = Mean Corpuscular (RBC) Hemoglobin; mchc = Mean Corpuscular (RBC) Hemoglobin per Cell", "Removed after pivoting", 
+  "mean_value", "Value for each of mean_RBD_characteristic", "Removed after pivoting"
 )
 
 knitr::kable(deleted_data)
