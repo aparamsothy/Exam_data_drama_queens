@@ -441,6 +441,12 @@ ggsave(filename_correlation_plot, plot = hgb_alt_plot_without_outliers, width = 
 ```
 
 
+### Remission and chloride
+
+Here we investigate if remission is depended in chloride levels, and decided to use a t-test because we have one continuous variable and one dichotomous categorical variable. We have additionally created a boxplot to show the distribution of chloride levels for each category of remission.
+
+The T-test compares the mean of chloride level between those with and without remission. We see from the output that the 2808 patients with remission compared to the 2359 patients without remission showed significant difference in chloride levels (t = -0.377, p = 0.000113).
+
 ```{r}
 
 
@@ -482,12 +488,7 @@ t_test_results <- patient_data %>%
   broom::tidy()
 
 t_test_results
-# We have used an unpaired t-test for statistical analysis because we are
-# interested in comparing the mean of chloride level between those with and 
-# without remission. 
 
-# The 2808 patients with remission compared to the 2359 patients
-# without remission showed significant difference in chloride levels (t = -0.377, p = 0.000113)
 
 
 
