@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction
 
-This script shows the process of reading raw patient data, exploring its structure, cleaning duplicates, and tidying data by removing or adding columns and saving the cleaned dataset
+This script form `20250905-Reading-data.R` shows the process of reading raw patient data, exploring its structure, cleaning duplicates, and tidying data by removing or adding columns and saving the cleaned dataset.
 
 ```{r setup, , include=FALSE}
 library(tidyverse)
