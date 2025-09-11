@@ -20,18 +20,16 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This script form `20250905-Reading-data.R` shows the process of reading raw patient data, exploring its structure, cleaning duplicates, and tidying data by removing or adding columns and saving the cleaned dataset.
 
-```{r setup, , include=FALSE}
+```{r setup, include=FALSE}
 library(tidyverse)
 library(here)
-library(skimr)
-library(naniar)
 ```
 
 ## Data Reading
 
 To read a text file using `read_delim` and the `here` package for handling file paths, we can use the following script:
 
-```{r Read dataset, echo=TRUE, results='hide'}
+```{r Read_dataset, echo=TRUE, results='hide'}
 patient_data <- read_delim(
 here("data", "original_data", "exam_data.txt"),
 delim = "\t"
@@ -42,7 +40,7 @@ delim = "\t"
 
 To get a general view of the data structure, we can use the following script:
 
-```{r Data overview, include=TRUE}
+```{r Data_overview, include=TRUE}
 glimpse(patient_data) # Check structure and types
 head(patient_data) # Show first rows
 skimr::skim(patient_data) # Summary statistics
@@ -56,19 +54,22 @@ nrow(patient_data) # Number of rows
 
 To rename columns to consistent names, use `rename()` function.
 
-```{r column rename, echo=FALSE}
-patient_data <- patient_data %>%
-rename(
-neut_percent = %neut, # Percentage of neutrophils
-lymph_percent = lymph%, # Percentage of lymphocytes
-age_days = days of life, # Age in days
-# Basic Metabolic Panel (BMP) variables
-sodium = sod,                     
-potassium = pot,                  
-chloride = chlor,                 
-bicarbonate = co2,                
-blood_urea_nitrogen = un          
-)
+```{r column_rename, echo=FALSE}
+## Changing to specific column names:----
+patient_data <- patient_data %>% 
+  rename( 
+  # Datafriendly names
+    neut_percent = `%neut`,           
+    lymph_percent = `lymph%`,         
+    age_days = `days of life`,
+    
+    # Basic Metabolic Panel (BMP)
+    sodium = sod,                        
+    potassium = pot,                     
+    chloride = chlor,                    
+    bicarbonate = co2,                   
+    blood_urea_nitrogen = un,                       
+  )
 ```
 
 ### Removing Duplicate Columns
@@ -84,7 +85,7 @@ select(-wbc_copy) # Remove duplicated white blood cell column
 
 To Count total rows, unique patient IDs, and identify duplicated rows we can use the following script:
 
-```{r Row identification, include=TRUE}
+```{r Row_identification, include=TRUE}
 patient_data %>% count() # Total observations
 patient_data %>%
 distinct(patient_id) %>%
@@ -113,7 +114,7 @@ values_from = "mean_value"
 
 Check the dimensions and data types after tidying.
 
-```{r Data verification, include=TRUE}
+```{r Data_verification, include=TRUE}
 dim(patient_data) # Expected: 5167 rows, 24 columns
 glimpse(patient_data) # Ensure variables are double and data is tidy
 
@@ -123,7 +124,7 @@ glimpse(patient_data) # Ensure variables are double and data is tidy
 
 Save the cleaned and tidied dataset as a text file using `write_delim()`.
 
-```{r Data saving, include=TRUE}
+```{r Data_saving, include=TRUE}
 filename <- here("data", "data_for_analysis", "20250905-tidy-exam-data.txt")
 write_delim(
 patient_data,
