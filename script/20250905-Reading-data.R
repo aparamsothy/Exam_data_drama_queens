@@ -14,7 +14,7 @@ library(tidyverse)
 library(here)
 
 patient_data <- read_delim(
-  here("data", "original_data", "exam_data.txt"),
+  here("data", "original-data", "exam_data.txt"),
   delim = "\t"
 )
 
@@ -87,7 +87,7 @@ glimpse(patient_data) # All variables are double
 
 
 # Save the tidy data ----
-filename <- paste0(here("data", "data_for_analysis", "20250905-tidy-exam-data.txt"))
+filename <- paste0(here("data", "data-for-analysis", "20250905-tidy-exam-data.txt"))
 write_delim(
   patient_data,
   file = filename,
