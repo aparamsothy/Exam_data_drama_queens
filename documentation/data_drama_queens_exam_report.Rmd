@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction
 
-This script form `20250905-Reading-data.R` shows the process of reading raw patient data, exploring its structure, cleaning duplicates, and tidying data by removing or adding columns and saving the cleaned dataset.
+This script form [20250905-Reading-data.R]() shows the process of reading raw patient data, exploring its structure, cleaning duplicates, and tidying data by removing or adding columns and saving the cleaned dataset.
 
 ```{r libraries, include=FALSE}
 library(tidyverse)
@@ -138,14 +138,14 @@ delim = "\t"
 
 ## Tidy, Adjust and Explore
 
-Following are the codes from the script "20250908-tidy-adjust-explore.data.R". In this script we have futher tidied the data by removing unnecessary columns, joined with additional dataset, created new set of variables and ordered/arranged the variables.
+Following are the codes from the script [20250908-tidy-adjust-explore.data.R](). In this script we have futher tidied the data by removing unnecessary columns, joined with additional dataset, created new set of variables and ordered/arranged the variables.
 
 In this session we have also explored the dataset by stratifying for variables and reporting statistical characteristics of these variables.
 
 
 ### Read the datasets
 
-We are reading in two dataset (main dataset: `patient_data`, joining dataset: `patient_data_join`) that we will merge at a later point in the script.
+We are reading in two dataset (main dataset called `patient_data`, joining dataset: `patient_data_join`) that we will merge at a later point in the script.
 
 ```{r read_data, warning=FALSE, message=FALSE}
 patient_data <- read_delim(
