@@ -1,8 +1,8 @@
 #----Script Header-------------------------------------------------------------####
 # Date: 10.09.2025
 # Author: Data_drama_queens
-# Filename: creating-plots
-# Description: Script for creating plots.
+# Filename: statistical-analysis
+# Description: Script for statistical analysis.
 #              We were given 5 questions, and asked to select one question each.
 #              We have answered the following questions:
 #                 - According to the data, was there a difference of alanine transaminase between quartiles of the hemoglobin level?
