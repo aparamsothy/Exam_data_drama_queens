@@ -13,9 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Read and Tidy
 
-### Introduction
-
-This script form [20250905-Reading-data.R](https://github.com/aparamsothy/Exam_data_drama_queens/blob/main/script/20250905-Reading-data.R) shows the process of reading raw patient data, exploring its structure, cleaning duplicates, and tidying data by removing or adding columns and saving the cleaned dataset.
+The following section is based on the script [20250905-Reading-data.R](https://github.com/aparamsothy/Exam_data_drama_queens/blob/main/script/20250905-Reading-data.R). It shows the process of reading raw patient data, exploring its structure, cleaning duplicates, and tidying data by removing or adding columns and saving the cleaned dataset.
 
 ```{r libraries, include=FALSE}
 library(tidyverse)
@@ -27,7 +25,7 @@ library(ggplot2)
 
 ### Data Reading
 
-To read a text file using `read_delim` and the `here` package for handling file paths, we can use the following script:
+The data is read into R as `patient_data`.
 
 ```{r Read_dataset, echo=TRUE, results='hide'}
 patient_data <- read_delim(
@@ -36,9 +34,9 @@ delim = "\t"
 )
 ```
 
-### Overview of the data
+### Overview of the Data
 
-To get a general view of the data structure, we can use the following script:
+Next, we want to get a general overview of the data structure. 
 
 ```{r Data_overview, include=TRUE}
 glimpse(patient_data) # Check structure and types
@@ -46,19 +44,21 @@ head(patient_data) # Show first rows
 skimr::skim(patient_data) # Summary statistics
 naniar::gg_miss_var(patient_data) # Missing data visualization
 
-ncol(patient_data) # Number of columns
-nrow(patient_data) # Number of rows
+n_cols_original_data <- ncol(patient_data) # Number of columns
+n_rows_original_data <- nrow(patient_data) # Number of rows
 ```
 
+There are `r n_cols_original_data` columns and `r n_rows_original_data` rows in the original dataset. All columns are numeric, expect `mean_RBC_characteristic` (character). We notice that 12 columns have missing data.
+
+
 ### Renaming Columns
+The overview of the data indicates that some columns have strange names or can benefit from more intuitive naming. These are renamed.
 
-To rename columns to consistent names, use `rename()` function.
-
-```{r column_rename, echo=FALSE}
-## Changing to specific column names:----
+```{r column_rename}
+# Changing column names:
 patient_data <- patient_data %>% 
   rename( 
-  # Datafriendly names
+  # Data friendly names
     neut_percent = `%neut`,           
     lymph_percent = `lymph%`,         
     age_days = `days of life`,
@@ -73,33 +73,29 @@ patient_data <- patient_data %>%
 ```
 
 ### Removing Duplicate Columns
+The overview of the data further indicates that one column is duplicated (`wbc` and `wbc_copy`). This column is removed.
 
-Identify and remove duplicated columns to avoid redundancy by using the following script:
-
-```{r remove duplicates}
+```{r remove_duplicates}
 patient_data <- patient_data %>%
 select(-wbc_copy) # Remove duplicated white blood cell column
 ```
 
 ### Checking Unique Observations
-
-To Count total rows, unique patient IDs, and identify duplicated rows we can use the following script:
+Next, we explore the data to see if there are any duplicated rows.
 
 ```{r Row_identification, include=TRUE}
-patient_data %>% count() # Total observations
-patient_data %>%
+total_obs <- patient_data %>% count() %>% pull() # Total observations
+unique_obs <- patient_data %>%
 distinct(patient_id) %>%
-count() # Unique patients
-sum(duplicated(patient_data)) # Number of duplicated rows
+count() %>% pull() # Unique patients
+dup_rows <- sum(duplicated(patient_data)) # Number of duplicated rows
 ```
 
-There are 5167 unique patient observations out of 15524 rows, indicating repeated measurements for some patients. Also 23 duplicated rows exist and will be removed.
+There are `r unique_obs` unique patient observations out of `r total_obs` rows, indicating duplicated patient IDs in several rows. In addition, `r dup_rows` entire rows are duplicated.
 
 ### Creating New Columns by Pivoting
 
-To tidy the data format, we can create new characteristic columns using `pivot_wider()` and reshape the data so each patient has one row characteristic column.
-
-Here duplicates are removed by keeping distinct rows.
+To tidy the data, we create three new characteristic from the `mean_RBC_characteristic` and `mean_value` columns using `pivot_wider()`. Furthermore, duplicates are removed by keeping only distinct rows.
 
 ```{r pivoting, include=TRUE}
 patient_data <- patient_data %>%
@@ -112,17 +108,19 @@ values_from = "mean_value"
 
 ### Verify Final Data Structure
 
-Check the dimensions and data types after tidying.
+The dimensions and data types are checked to ensure correct tidying. Now, the data has the expected number of rows and columns. Moreover, all variables are numeric.
 
 ```{r Data_verification, include=TRUE}
 dim(patient_data) # Expected: 5167 rows, 24 columns
-glimpse(patient_data) # Ensure variables are double and data is tidy
+glimpse(patient_data) # Ensure variables are numeric and data is tidy
 
 ```
 
+
+
 ### Saving Tidied Data
 
-Save the cleaned and tidied dataset as a text file using `write_delim()`.
+The clean and tidy dataset is saved as a text file.
 
 ```{r Data_saving, include=TRUE}
 filename <- here("data", "data-for-analysis", "20250905-tidy-exam-data.txt")
@@ -136,14 +134,15 @@ delim = "\t"
 
 ## Tidy, Adjust and Explore
 
-Following are the codes from the script [20250908-tidy-adjust-explore.data.R](https://github.com/aparamsothy/Exam_data_drama_queens/blob/main/script/20250908-tidy-adjust-explore-data.R). In this script we have further tidied the data by removing unnecessary columns, joined with additional dataset, created new set of variables and ordered/arranged the variables.
+The following section is based on the script  [20250908-tidy-adjust-explore.data.R](https://github.com/aparamsothy/Exam_data_drama_queens/blob/main/script/20250908-tidy-adjust-explore-data.R). 
+In this script we further tidy the data by removing unnecessary columns, join the data with an additional dataset, create new set of variables and order/arrange the variables.
 
-We have also explored the dataset by stratifying for variables and reporting statistical characteristics of these variables.
+We also explore the dataset by stratifying for variables and reporting statistical characteristics.
 
 
-### Read the additional dataset
+### Read the Additional Dataset
 
-We have already previously read and saved the tidied dataset (`patient_data`) to be used for exploration. Here we read the additional dataset that we call `patient_data_join` that we will use to merge with the tidied dataset.
+We have already read and saved the tidied dataset (`patient_data`) to be used for exploration. Here, we read the additional dataset that we call `patient_data_join`. This will be merged with the tidied dataset.
 
 ```{r read_data}
 patient_data_join <- read_delim(
@@ -152,9 +151,9 @@ patient_data_join <- read_delim(
 )
 ```
 
-### Explore the joining dataset
+### Explore the Joining Dataset
 
-Here we explore the new joined dataset.
+Here we explore the new dataset.
 
 ```{r}
 glimpse(patient_data_join)
@@ -174,12 +173,12 @@ patient_data_join %>%
   count() # Number of unique patient IDs
 ```
 
-The joining data appears to have been read in correctly. We see that all the columns/variables in the joining dataset are numeric. There are a total of `r row_count` rows/observations and `r column_count` columns. There are two variables (`cal`, `alt`) with missing values. There is the same numbers of rows as unique patient IDs which confirms that there are no duplicate IDs. The joining dataset which will be joined to our main dataset looks ok.
+The joining data appears to have been read correctly. We see that all the columns/variables in the joining dataset are numeric. There are a total of `r row_count` rows/observations and `r column_count` columns. There are two variables (`cal`, `alt`) with missing values. There is the same numbers of rows as unique patient IDs which suggests that there are no duplicate IDs. The joining dataset which will be joined to our main dataset looks ok.
 
 
-### Remove unnessary variables and join the datasets
+### Remove Unnessary Variables and Join the Datasets
 
-We remove unnessary columns `hct`and `rdw` and join the two datasets together. By looking at the new combined dataset we see that all the variables are still numeric. We have changed numerical to factor variables as specified in the codebook. After looking at the overview of the dataset again, we see that the variables `active` and `remission` are now factors.
+We remove unnessary columns `hct`and `rdw` and join the two datasets together. By looking at the new combined dataset we see that all the variables are still numeric. We have changed `active` and `remission` from numerical to factor variables as specified in the received codebook. After looking at the overview of the dataset again, we see that these variables are now factors.
 
 ```{r}
 patient_data <- patient_data %>%
@@ -193,9 +192,9 @@ patient_data <- patient_data %>%
   mutate(remission = if_else(remission == 0, factor("No"), factor("Yes"))) # Factor variable remission
 ```
 
-### Create new columns
+### Create New Columns
 
-We have created five new columns for later use: `hgb_quartiles`, `blood_ure_nitrogen_over_30`, `lymph_count`, `sodium_fraction` and `age_years`. The dataset have been arranged so that `age_days` and `blood_urea_nitrogen` comes after `patient_id`.
+We create five new columns for later use: `hgb_quartiles`, `blood_ure_nitrogen_over_30`, `lymph_count`, `sodium_fraction` and `age_years`. The dataset is arranged so that `age_days` and `blood_urea_nitrogen` comes after `patient_id`.
 
 ```{r}
 patient_data <- patient_data %>% 
@@ -210,11 +209,11 @@ patient_data <- patient_data %>%
   mutate(age_years = round(age_days / 365.25)) # New variable for age in years
 ```
 
-### Explore the new dataset after joining with new columns
+### Explore the New Dataset After Joining with New Columns
 
-We have counted the categorical variables to confirm that they were created correctly. We see from glimpsing the dataset that the new numerical variables seem to be created correctly. There are now 4 factor and 32 numerical variables.
+We count the categorical variables to confirm that they were created correctly. We see from glimpsing the dataset that the new numerical variables seem to be created correctly. There are now 4 factor and 32 numerical variables.
 
-There is most missing data for blood_urea_nitrogen and the column based on this (blood_urea_nitrogen_over_30). There is also missing values for 15 other columns.
+There is most missing data for blood_urea_nitrogen and the column created from this (blood_urea_nitrogen_over_30). There is also missing values in 15 other columns.
 
 ```{r}
 patient_data %>%
@@ -230,16 +229,18 @@ naniar::gg_miss_var(patient_data)
 ```
 
 
-### Stratification and report min, max, mean and sd of variables
+### Stratification and Report Min, Max, Mean and SD of Variables
 
-Here we answer the following:  
+Here we answer the provided tasks (copy-pasted from handout):  
 
 1. Stratify the data by `hgb_quartiles` and report min, max, mean and sd of a `rbc`. 
 2. Stratify the by a `hgb_quatiles` and report min, max, mean and sd of a `rbc` for a defined set of observations: 
-+ Only for persons with hgb \<= 10 
-+ Only for persons with remission of inflammation 
-+ Only for persons older than around 40 years of age 
-+ Only for persons with more than 10% of monocytes in WBC 
+
+  + Only for persons with hgb \<= 10 
+  + Only for persons with remission of inflammation 
+  + Only for persons older than around 40 years of age 
+  + Only for persons with more than 10% of monocytes in WBC 
+
 3. Use two categorical columns `active` and `remission` in the dataset to create a table
 
 ```{r}
@@ -297,7 +298,8 @@ patient_data %>%
 table(patient_data$remission, patient_data$active)
 ```
 
-### Saving the manipulated dataset
+### Saving the Manipulated Dataset
+The newly joined data is saved in a separate file.
 
 ```{r}
 # Save the joined data ----
@@ -311,30 +313,40 @@ write_delim(
 
 ## Creating Plots
 
-We have created plots to answer the following questions:<br /> 1. Are there any correlated measurements?<br /> 2. Does the white blood cell count distribution depend on pot?<br /> 3. Does remission of inflammation after Thiopurines for \> 12 weeks change with percent of monocytes in WBC count?<br />
+The following section is based on the script [20250909-creating-plots.R](https://github.com/aparamsothy/Exam_data_drama_queens/blob/main/script/20250909-creating-plots.R). In this script, we create plots to answer the following provided questions (copy-pasted from handout):
 
-The analysis was conducted in the script [20250909-creating-plots.R](https://github.com/aparamsothy/Exam_data_drama_queens/blob/main/script/20250909-creating-plots.R)
+1. Are there any correlated measurements?
+2. Does the white blood cell count distribution depend on `pot` (`potassium`)?
+3. Does remission of inflammation after Thiopurines for > 12 weeks change with percent of monocytes in WBC count?
 
-### Correlated measurements
+The plots are also saved in the original script, but this is not included in this report.
 
-First, we evaluated the presence of correlated measurements in our dataset. The code and resulting plot are shown below. The plot indicates that some variables are strongly correlated. As an example, we see that `age_days` and `age_years` are strongly correlated. This is reassuring as `age_years` was created as a function of `age_days`. We can also see that mean corpuscular (RBC) hemoglobin (`mch`) and mean corpuscular (RBC) volume (`mcv`), as well as Alanine Transaminase (`alt`) and Aspartate Transaminase (`ast`) are strongly correlated. In addition, we see that the percent of Lymphocytes in WBC count (`lymph_percent`) is strongly negatively correlated with percent of Neutrophils in WBC count (`neut_percent`).
+### Correlated Measurements
+
+First, we evaluate the presence of correlated measurements in our dataset. The code and resulting plot are shown below. The plot indicates that some variables are strongly positively correlated:
+
+ * `age_days` and `age_years` (this is reassuring as `age_years` was created as a function of `age_days`.)
+ * mean corpuscular (RBC) hemoglobin (`mch`) and mean corpuscular (RBC) volume (`mcv`)
+ * Alanine Transaminase (`alt`) and Aspartate Transaminase (`ast`)
+
+We have also some strong negative correlations in the dataset, such as the correlation between Percent of Lymphocytes in WBC count (`lymph_percent`) and Neutrophils in WBC count (`neut_percent`).
 
 
 ```{r corr_plot, warning=FALSE}
 # Create correlation plot
 GGally::ggcorr(patient_data,
-                           low = "#2166ac",
-                           mid = "white",
-                           high = "#b2182b",
-                           midpoint = 0,
-                           label = FALSE,
-                           size = 3)
+                           low = "#2166ac", #colour for negative correlation
+                           mid = "white", #colour for no correlation
+                           high = "#b2182b", #colour for positive correlation
+                           midpoint = 0, #midpoint value
+                           label = FALSE, #do not add number to the plot
+                           size = 3) #font size
 
 ```
 
 ### White Blood Cell Count and Potassium
 
-Next, we evaluated if the white blood cell count distribution depends on `potassium`. The code and resulting plot are provided below. From the plot, the white blood cell count does not seem to change with potassium level.
+Next, we evaluate if the white blood cell count distribution depends on `potassium`. The code and resulting plot are provided below. From the plot, the white blood cell count does not seem to change with potassium level.
 
 ```{r wbc_pot, warning=FALSE, message=FALSE}
 # Scatterplot investigating white blood cell count by potassium level ----
@@ -354,7 +366,7 @@ ggplot(patient_data, aes(x = wbc, y = potassium)) + # Assign data, x and y value
 
 ### Remission and Monocytes
 
-Lastly, we evaluated if remission of inflammation after Thiopurines for \> 12 weeks change with percent of monocytes in WBC count. The code and resulting plot are shown below. From a visual inspection of the boxplot, there seems to be no difference in percent of monocytes in WBC count for groups with or without remission of inflammation after Thiopurines for \> 12 weeks.
+Lastly, we evaluate if remission of inflammation after Thiopurines for > 12 weeks change with percent of monocytes in WBC count. The code and resulting plot are shown below. From a visual inspection of the boxplot, there seems to be no difference in percent of monocytes in WBC count for groups with or without remission of inflammation after Thiopurines for > 12 weeks.
 
 ```{r}
 # Remission and percent of monocytes ----
@@ -385,75 +397,27 @@ ggplot(data=patient_data,
 
 ## Statistical Tests
 
-Here are the codes from the script [20250910-statistical-analysis.R] (https://github.com/aparamsothy/Exam_data_drama_queens/blob/main/script/20250910-statistical-analysis.R).
+The following section is based on the script [20250910-statistical-analysis.R](https://github.com/aparamsothy/Exam_data_drama_queens/blob/main/script/20250910-statistical-analysis.R).
 
-We have performed statistical analyses to answer the following questions:
+We perform statistical analyses to answer the following provided questions (copy-pasted from the handout):
 
 1. Does the remission depend on chloride?
 2. Is there an association between calcium and total bilirubin?
 3. According to the data, was there a difference of alanine transaminase between quartiles of the hemoglobin level?
 
+### Remission and Chloride
 
-### Alanine transaminase and hemoglobin levels
-
-We decided to perform an ANOVA test to investigate if there is a difference of alanine transaminase level between quartiles of hemoglobin level because we have one continuous variable and one categorical variable with several categories. Additionally created a boxplot to show the distribution of alanine transaminase levels for each quartile of hemoglobin level (with and without outliers to better visualize the relationships). There results from the ANOVA does not indicate that there is a significant difference.
-
-```{r}
-# ANOVA test
-hgb_alt_aov <-patient_data %>% 
-  aov(alt ~ hgb_quartiles, data = .) %>%# Performs one-way ANOVA
-  broom::tidy() # Converts results to clean data frame
-
-# View the ANOVA results
-hgb_alt_aov
-
-# Plot 1 - Hemoglobin quartiles vs Alanine Transaminase
-hgb_alt_plot <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_quartiles)) +
-  geom_boxplot() + # Creates box plots
-  scale_fill_manual(values = c("#E31A1C", "#FF7F00", "#1F78B4", "#33A02C"), # Custom colors for each quartile
-                    name = "Hemoglobin\nQuartiles") + # Legend title 
-  labs(title = "Alanine Transaminase by Hemoglobin Quartiles", # Main title
-       x = "Hemoglobin Quartiles", # X-axis label
-       y = "Alanine Transaminase") + # Y-axis label
-  theme_minimal()                         
-
-hgb_alt_plot
-
-# Save plot as PNG
-filename_correlation_plot <- here("figures", "hgb-alt-plot.tiff")
-ggsave(filename_correlation_plot, plot = hgb_alt_plot, width = 7, height = 7, dpi = 300)
-
-
-hgb_alt_plot_without_outliers <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_quartiles)) +
-  geom_boxplot() + # Creates box plots
-  scale_fill_manual(values = c("#E31A1C", "#FF7F00", "#1F78B4", "#33A02C"), # Custom colors for each quartile
-                    name = "Hemoglobin\nQuartiles") + # Legend title 
-  labs(title = "Alanine Transaminase by Hemoglobin Quartiles", # Main title
-       x = "Hemoglobin Quartiles", # X-axis label
-       y = "Alanine Transaminase") + # Y-axis label
-  theme_minimal() +
-  scale_y_continuous(limits = c(0, 200))
-
-hgb_alt_plot_without_outliers
-
-# Save plot as PNG
-filename_correlation_plot <- here("figures", "hgb-alt-plot-without-outliers.tiff")
-ggsave(filename_correlation_plot, plot = hgb_alt_plot_without_outliers, width = 7, height = 7, dpi = 300)
-```
-
-
-### Remission and chloride
-
-Here we investigate if remission is depended in chloride levels, and decided to use a t-test because we have one continuous variable and one dichotomous categorical variable. We have additionally created a boxplot to show the distribution of chloride levels for each category of remission.
-
-The T-test compares the mean of chloride level between those with and without remission. We see from the output that the 2808 patients with remission compared to the 2359 patients without remission showed significant difference in chloride levels (t = -0.377, p = 0.000113).
+Here we investigate if remission is depended in chloride levels. We use a t-test to examine this relationship because we have one continuous variable and one dichotomous categorical variable. We have additionally created a boxplot to show the distribution of chloride levels for each category of remission.
 
 
 ```{r}
 ## Count the number of patients in each category of remission
-patient_data %>%
+n_grouped_remission <- patient_data %>%
   group_by(remission) %>%
   count()
+
+n_remission <- n_grouped_remission$n[2]
+n_non_remission <- n_grouped_remission$n[1]
 
 ## Boxplot to visualize chloride levels by remission status
 remission_chloride_plot <- ggplot(patient_data, aes(remission, chloride, color = remission)) + # Assign data, x- and y-variable
@@ -475,11 +439,6 @@ remission_chloride_plot <- ggplot(patient_data, aes(remission, chloride, color =
 # View the plot
 remission_chloride_plot
 
-# Save plot as PNG
-filename_correlation_plot <- here("figures", "remission-chloride.tiff")
-ggsave(filename_correlation_plot, plot = remission_chloride_plot, width = 7, height = 7, dpi = 300)
-
-
 # T-test to test difference in mean chloride levels by remission status
 t_test_results <- patient_data %>% 
   t.test(chloride ~ remission, data = .) %>%
@@ -489,17 +448,13 @@ t_test_results <- patient_data %>%
 t_test_results
 ```
 
+The t-test compares the mean of chloride level between those with and without remission. We see from the output that the `r n_remission` patients with remission compared to the `r n_non_remission` patients without remission showed significant difference in chloride levels (t = `r format(t_test_results$estimate, digits=3)`, p = `r format(t_test_results$p.value, scientific = FALSE, digits=1)`).
 
-### Calcium and total bilirubin
+### Calcium and Total Bilirubin
 
-To investigate if there is an association between calcium and total bilirubin levels, we have used a linear regression model because both variables are continuous. Furthermore, we have created a scatterplot in order the visualize the relationship between both variables with a linear regression line. 
+To investigate if there is an association between calcium and total bilirubin levels, we use a linear regression model because both variables are continuous. Furthermore, we create a scatterplot to visualize the relationship with a linear regression line. 
 
-From the plot we see that the data is not well captured by a linear relationships. Most points are located at low levels of total bilirubin, while a few points are located to the right. If the analyse was to be used in a "real" analysis, we should consider measures to improve the association evaluation.
-
-However, a linear regression analysis for the association between calcium and total bilirubin isconsidered to be sufficient in this project.
-
-The linear regression indicates that there is an association between calcium and total bilirubin. The estimated coefficient is -0.09, with a p-value of 1.8e-104.
-
+From the plot we see that the data is not well captured by a linear relationships. Most points are located at low levels of total bilirubin, while only a few points are registered for high levels. If the analysis was to be used in a "real" case, we should consider measures to improve the association evaluation. However, this is believed to be outside the scope of this course.
 
 ```{r}
 #Plot the data first
@@ -524,11 +479,7 @@ cal_tbil_plot <- patient_data  %>%
 
 cal_tbil_plot
 
-# Save plot as PNG
-filename_correlation_plot <- here("figures", "cal-tbil.tiff")
-ggsave(filename_correlation_plot, plot = cal_tbil_plot, width = 7, height = 7, dpi = 300)
-
-
+#Do linear regression
 cal_tbil_lm <- patient_data %>% 
   lm(cal ~ tbil, data = .) %>%
   broom::tidy()
@@ -538,3 +489,46 @@ cal_tbil_lm
 
 ```
 
+The linear regression indicates that there is an association between calcium and total bilirubin. The estimated coefficient is `r format(cal_tbil_lm$estimate[2], digits=3)`, with a p-value of `r format(cal_tbil_lm$p.value[2], digits=1)`.
+
+### Alanine Transaminase and Hemoglobin Levels
+
+We perform an ANOVA test to investigate if there is a difference in alanine transaminase level between quartiles of hemoglobin level because we have one continuous variable and one categorical variable with several categories. Additionally, we create a boxplot to show the distribution of alanine transaminase levels for each quartile of hemoglobin level (with and without extreme outliers to better visualize the relationships).
+
+```{r}
+# Plot of Hemoglobin quartiles vs Alanine Transaminase
+hgb_alt_plot <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_quartiles)) +
+  geom_boxplot() + # Creates box plots
+  scale_fill_manual(values = c("#E31A1C", "#FF7F00", "#1F78B4", "#33A02C"), # Custom colors for each quartile
+                    name = "Hemoglobin\nQuartiles") + # Legend title 
+  labs(title = "Alanine Transaminase by Hemoglobin Quartiles", # Main title
+       x = "Hemoglobin Quartiles", # X-axis label
+       y = "Alanine Transaminase") + # Y-axis label
+  theme_minimal()                         
+
+hgb_alt_plot
+
+#Plot without extreme outliers
+hgb_alt_plot_without_outliers <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_quartiles)) +
+  geom_boxplot() + # Creates box plots
+  scale_fill_manual(values = c("#E31A1C", "#FF7F00", "#1F78B4", "#33A02C"), # Custom colors for each quartile
+                    name = "Hemoglobin\nQuartiles") + # Legend title 
+  labs(title = "Alanine Transaminase by Hemoglobin Quartiles", # Main title
+       x = "Hemoglobin Quartiles", # X-axis label
+       y = "Alanine Transaminase") + # Y-axis label
+  theme_minimal() +
+  scale_y_continuous(limits = c(0, 200))
+
+hgb_alt_plot_without_outliers
+
+
+# ANOVA test
+hgb_alt_aov <-patient_data %>% 
+  aov(alt ~ hgb_quartiles, data = .) %>%# Performs one-way ANOVA
+  broom::tidy() # Converts results to clean data frame
+
+# View the ANOVA results
+hgb_alt_aov
+```
+
+The results from the ANOVA does not indicate that there is a significant difference in alanine transaminase level between quartiles of hemoglobin level (p-value = `r format(hgb_alt_aov$p.value[1], digits=1)`).
