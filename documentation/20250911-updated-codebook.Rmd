@@ -35,7 +35,8 @@ Changed_data <- tribble(
   "hgb_quartiles", "Hemoglobin quartiles", "Cut the Hemoglobin level into quartiles",
   "blood_ure_nitrogen_over_30", "blood urea nitrogen above 30", "Create a column indicating if the blood urea nitrogen is above 30",
   "lymph_count", "Lymphocytes cell count", "Create a column for Lymphocytes cell count",
-  "sodium_fraction", "sodium as a fraction of summed sodium, potassium, and chloride", "Create a column for sodium fraction ",
+  "sodium_fraction", "Sodium as a fraction of summed sodium, potassium, and chloride", "Create a column for sodium fraction ",
+  "age_years", "Age in years", "Age in years created from age_days variable"
 )
 
 knitr::kable(Changed_data)
