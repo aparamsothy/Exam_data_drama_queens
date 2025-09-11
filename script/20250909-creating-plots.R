@@ -21,7 +21,7 @@ library(here)
 library(GGally)
 
 patient_data <- read_delim(
-  here("data", "data_for_analysis", "20250908-tidy-joined-exam-data.txt"),
+  here("data", "data-for-analysis", "20250908-tidy-joined-exam-data.txt"),
   delim = "\t"
 )
 
@@ -64,7 +64,7 @@ wbc_pot_plot <- ggplot(patient_data, aes(x = wbc, y = potassium)) + # Assign dat
 wbc_pot_plot
 
 # Save the plot
-filename_wbc_pot_plot <- here("figures", "wbc-potassium_plot.tiff")
+filename_wbc_pot_plot <- here("figures", "wbc-potassium-plot.tiff")
 ggsave(filename_wbc_pot_plot, plot = wbc_pot_plot, width = 7, height = 7, dpi = 300)
 
 
