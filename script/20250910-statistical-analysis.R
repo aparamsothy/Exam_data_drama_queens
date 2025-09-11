@@ -17,7 +17,7 @@ library(ggplot2)
 library(tidyverse)
 
 patient_data <- read_delim(
-  here("data", "data_for_analysis", "20250908-tidy-joined-exam-data.txt"),
+  here("data", "data-for-analysis", "20250908-tidy-joined-exam-data.txt"),
   delim = "\t"
 )
 
@@ -47,7 +47,7 @@ hgb_alt_plot <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_
 hgb_alt_plot
 
 # Save plot as PNG
-filename_correlation_plot <- here("figures", "hgb_alt_plot.tiff")
+filename_correlation_plot <- here("figures", "hgb-alt-plot.tiff")
 ggsave(filename_correlation_plot, plot = hgb_alt_plot, width = 7, height = 7, dpi = 300)
 
 
@@ -68,7 +68,7 @@ hgb_alt_plot_without_outliers <- ggplot(patient_data, aes(x = hgb_quartiles, y =
 hgb_alt_plot_without_outliers
 
 # Save plot as PNG
-filename_correlation_plot <- here("figures", "hgb_alt_plot_without_outliers.tiff")
+filename_correlation_plot <- here("figures", "hgb-alt-plot-without-outliers.tiff")
 ggsave(filename_correlation_plot, plot = hgb_alt_plot_without_outliers, width = 7, height = 7, dpi = 300)
 
 
@@ -101,7 +101,7 @@ remission_chloride_plot <- ggplot(patient_data, aes(remission, chloride, color =
 remission_chloride_plot
 
 # Save plot as PNG
-filename_correlation_plot <- here("figures", "remission_chloride.tiff")
+filename_correlation_plot <- here("figures", "remission-chloride.tiff")
 ggsave(filename_correlation_plot, plot = remission_chloride_plot, width = 7, height = 7, dpi = 300)
 
 
@@ -144,7 +144,7 @@ cal_tbil_plot <- patient_data %>%
 cal_tbil_plot
 
 # Save plot as PNG
-filename_correlation_plot <- here("figures", "cal_tbil.tiff")
+filename_correlation_plot <- here("figures", "cal-tbil.tiff")
 ggsave(filename_correlation_plot, plot = cal_tbil_plot, width = 7, height = 7, dpi = 300)
 
 
