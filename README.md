@@ -22,16 +22,16 @@ The exam report can be found as an Rmarkdown file and a html file ([20250911-dat
 * `script`
     + `20250905-Reading-data.R`: script for reading and tidying data. Exam task 1. Outputs `20250905-tidy-exam-data.txt`.
     + `20250908-tidy-adjust-explore-data.R`: script for tidying, adjusting and exploring data. Exam task 2 and 3. Outputs `20250908-tidy-joined-exam-data.txt`
-    + `20250909-creating-plots.R`: script for creating and saving plots. Exam task
-    4. Outputs:
+    + `20250909-creating-plots.R`: script for creating and saving plots. Exam task 4. Outputs:
       `correlation_plot.tiff`,
       `remission_mono_plot.tiff`, 
       `wbc_potassium_plot.tiff`
-      + `20250910-statistical-analysis.R`:  script for prforming statistical analysis. Exam task 5. Outputs:
-      `hgb_alt_plot.tiff`,
-      `hgb_alt_plot_without_outliers.tiff`,
-      `cal_tbil.tiff`,
-      `remission_chloride.tiff`
+    + `20250910-statistical-analysis.R`:  script for conducting statistical analysis. Exam task 5. Outputs:
+    `hgb_alt_plot.tiff`,
+    `hgb_alt_plot_without_outliers.tiff`,
+    `cal_tbil.tiff`,
+    `remission_chloride.tiff`
+    + `20250911-style-scripts.R`: script for styling scripts and Rmarkdown documents.
 
 * `figures`
     + `correlation_plot.tiff` : correlation plot of numerical variables
