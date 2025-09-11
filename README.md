@@ -31,7 +31,7 @@ The exam report can be found as an Rmarkdown file and a html file ([20250911-dat
     [hgb-alt-plot-without-outliers.tiff](figures/hgb-alt-plot-without-outliers.tiff),
     [cal-tbil.tiff](figures/cal-tbil.tiff),
     [remission-chloride.tiff](figures/remission-chloride.tiff)
-    + [20250911-style-scripts.R](scripts/20250911-style-scripts.R): script for styling scripts and Rmarkdown documents.
+    + [20250911-style-scripts.R](script/20250911-style-scripts.R): script for styling scripts and Rmarkdown documents.
 
 * [figures](figures)
     + [correlation-plot.tiff](figures/correlation-plot.tiff) : correlation plot of numerical variables
