@@ -52,6 +52,24 @@ nrow(patient_data) # Number of rows
 
 ### Renaming Columns
 
+To rename columns to consistent names, use **rename()** function.
+
+```{r column rename, echo=FALSE}
+patient_data <- patient_data %>%
+rename(
+neut_percent = %neut, # Percentage of neutrophils
+lymph_percent = lymph%, # Percentage of lymphocytes
+age_days = days of life, # Age in days
+# Basic Metabolic Panel (BMP) variables
+sodium = sod,                     
+potassium = pot,                  
+chloride = chlor,                 
+bicarbonate = co2,                
+blood_urea_nitrogen = un          
+)
+```
+
+
 ### Removing Duplicate Columns
 
 Identify and remove duplicated columns to avoid redundancy by using the following script:
