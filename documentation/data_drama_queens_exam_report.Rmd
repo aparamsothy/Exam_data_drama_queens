@@ -11,36 +11,36 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Read and Tidy
+## Read and Tidy
+
+------------------------------------------------------------------------
+
 
 ## Introduction
 
-This script shows the process of reading raw patient data, exploring its structure, cleaning duplicates, and tidying data by removing or adding columns and saving the cleaned dataset
+This script form `20250905-Reading-data.R` shows the process of reading raw patient data, exploring its structure, cleaning duplicates, and tidying data by removing or adding columns and saving the cleaned dataset.
 
-```{r setup, , include=FALSE}
+```{r setup, include=FALSE}
 library(tidyverse)
 library(here)
-library(skimr)
-library(naniar)
 ```
 
 ## Data Reading
 
 To read a text file using `read_delim` and the `here` package for handling file paths, we can use the following script:
 
-```{r Read dataset, echo=TRUE, results='hide'}
+```{r Read_dataset, echo=TRUE, results='hide'}
 patient_data <- read_delim(
 here("data", "original_data", "exam_data.txt"),
 delim = "\t"
 )
 ```
 
-
 ### Overview of the data
 
 To get a general view of the data structure, we can use the following script:
 
-```{r Data overview, include=TRUE}
+```{r Data_overview, include=TRUE}
 glimpse(patient_data) # Check structure and types
 head(patient_data) # Show first rows
 skimr::skim(patient_data) # Summary statistics
@@ -52,6 +52,26 @@ nrow(patient_data) # Number of rows
 
 ### Renaming Columns
 
+To rename columns to consistent names, use `rename()` function.
+
+```{r column_rename, echo=FALSE}
+## Changing to specific column names:----
+patient_data <- patient_data %>% 
+  rename( 
+  # Datafriendly names
+    neut_percent = `%neut`,           
+    lymph_percent = `lymph%`,         
+    age_days = `days of life`,
+    
+    # Basic Metabolic Panel (BMP)
+    sodium = sod,                        
+    potassium = pot,                     
+    chloride = chlor,                    
+    bicarbonate = co2,                   
+    blood_urea_nitrogen = un,                       
+  )
+```
+
 ### Removing Duplicate Columns
 
 Identify and remove duplicated columns to avoid redundancy by using the following script:
@@ -62,9 +82,10 @@ select(-wbc_copy) # Remove duplicated white blood cell column
 ```
 
 ### Checking Unique Observations
+
 To Count total rows, unique patient IDs, and identify duplicated rows we can use the following script:
 
-```{r Row identification, include=TRUE}
+```{r Row_identification, include=TRUE}
 patient_data %>% count() # Total observations
 patient_data %>%
 distinct(patient_id) %>%
@@ -93,7 +114,7 @@ values_from = "mean_value"
 
 Check the dimensions and data types after tidying.
 
-```{r Data verification, include=TRUE}
+```{r Data_verification, include=TRUE}
 dim(patient_data) # Expected: 5167 rows, 24 columns
 glimpse(patient_data) # Ensure variables are double and data is tidy
 
@@ -103,7 +124,7 @@ glimpse(patient_data) # Ensure variables are double and data is tidy
 
 Save the cleaned and tidied dataset as a text file using `write_delim()`.
 
-```{r Data saving, include=TRUE}
+```{r Data_saving, include=TRUE}
 filename <- here("data", "data_for_analysis", "20250905-tidy-exam-data.txt")
 write_delim(
 patient_data,
@@ -113,17 +134,17 @@ delim = "\t"
 ```
 
 ## Tidy, Adjust and Explore
-Following are the codes from the script "20250908-tidy-adjust-explore.data.R". In this script we have futher tidied the data by removing unnecessary columns, joined with additional dataset, created new set of variables and ordered/arranged the variables. 
+
+Following are the codes from the script "20250908-tidy-adjust-explore.data.R". In this script we have futher tidied the data by removing unnecessary columns, joined with additional dataset, created new set of variables and ordered/arranged the variables.
 
 In this session we have also explored the dataset by stratifying for variables and reporting statistical characteristics of these variables.
 
-
 ### Load the necessary libraries
+
 ```{r libraries, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(here)
 ```
-
 
 ### Read the datasets
 
@@ -141,12 +162,11 @@ patient_data_join <- read_delim(
 )
 ```
 
-
 ### Explore the joining dataset
 
-The joining data appears to have been read in correctly. We see that all the columns/variables in the joining dataset are numeric. 
+The joining data appears to have been read in correctly. We see that all the columns/variables in the joining dataset are numeric.
 
-There are a total of 5167 rows/observations and 10 columns. There are two variables (cal, alt) with missing values. 
+There are a total of 5167 rows/observations and 10 columns. There are two variables (cal, alt) with missing values.
 
 There is the same numbers of rows as unique patient IDs which confirms that there are no duplicate IDs.
 
@@ -166,15 +186,13 @@ patient_data_join %>%
   count() # Number of unique patient IDs
 ```
 
-
-
 ### Remove unnessary variables abd join the datasets
 
-We remove unnessary columns `hct`and `rdw` and join the two datasets together. 
+We remove unnessary columns `hct`and `rdw` and join the two datasets together.
 
 By looking at the new combined dataset we see that all the variables are still numeric.
 
-We have changed numerical to factor variables as specified in the codebook. 
+We have changed numerical to factor variables as specified in the codebook.
 
 After looking at the overview of the dataset again, we see that the variables `active` and `remission` are now factors.
 
@@ -191,7 +209,6 @@ patient_data <- patient_data %>%
 
 glimpse(patient_data)
 ```
-
 
 ### Create new columns
 
@@ -210,12 +227,11 @@ patient_data <- patient_data %>%
   mutate(age_years = round(age_days / 365.25)) # New variable for age in years
 ```
 
-
 ### Explore the new dataset after joining with new columns
 
-We have counted the categorical variables to confirm that they were created correctly. 
+We have counted the categorical variables to confirm that they were created correctly.
 
-We see from glimpsing the dataset that the new numerical variables seem to be created correctly. 
+We see from glimpsing the dataset that the new numerical variables seem to be created correctly.
 
 There are now 4 factor and 32 numerical variables.
 
@@ -234,17 +250,9 @@ skimr::skim(patient_data)
 naniar::gg_miss_var(patient_data)
 ```
 
-
 ### Stratification and report min, max, mean and sd of variables
 
-Here we answer the following:
-1.Stratify the data by `hgb_quartiles` and report min, max, mean and sd of a `rbc`.
-2.Stratify the by a `hgb_quatiles` and report min, max, mean and sd of a numeric column for a defined set of observations:
-+Only for persons with hgb <= 10
-+Only for persons with remission of inflamation
-+Only for persons older than around 40 years of age
-+Only for persons with more than 10% of monocytes in WBC
-3.Use two categorical columns `active` and `remission` in the dataset to create a table
+Here we answer the following: 1.Stratify the data by `hgb_quartiles` and report min, max, mean and sd of a `rbc`. 2.Stratify the by a `hgb_quatiles` and report min, max, mean and sd of a numeric column for a defined set of observations: +Only for persons with hgb \<= 10 +Only for persons with remission of inflamation +Only for persons older than around 40 years of age +Only for persons with more than 10% of monocytes in WBC 3.Use two categorical columns `active` and `remission` in the dataset to create a table
 
 ```{r}
 # Stratification by hgb_quartiles and report min, max, mean and sd of rbc (red blood cell counts)
@@ -301,8 +309,8 @@ patient_data %>%
 table(patient_data$remission, patient_data$active)
 ```
 
-
 ### Saving the joined dataset
+
 ```{r}
 # Save the joined data ----
 filename <- paste0(here("data", "data_for_analysis", "20250908-tidy-joined-exam-data.txt"))
@@ -313,17 +321,14 @@ write_delim(
 )
 ```
 
-
 ## Creating Plots
 
-We have created plots to answer the following questions:<br />
-1. Are there any correlated measurements?<br />
-2. Does the white blood cell count distribution depend on pot?<br />
-3. Does remission of inflammation after Thiopurines for > 12 weeks change with percent of monocytes in WBC count?<br />
+We have created plots to answer the following questions:<br /> 1. Are there any correlated measurements?<br /> 2. Does the white blood cell count distribution depend on pot?<br /> 3. Does remission of inflammation after Thiopurines for \> 12 weeks change with percent of monocytes in WBC count?<br />
 
 The analysis was conducted in the script [20250909-creating_plots.R]()
 
 ### Correlated measurements
+
 First, we evaluated the presence of correlated measurements in our dataset. The code and resulting plot are shown below. The plot indicates that some variables are strongly correlated. As an example, we see that `age_days` and `age_years` are strongly correlated. This is reassuring as `age_years` was created as a function of `age_days`. We can also see that mean corpuscular (RBC) hemoglobin (`mch`) and mean corpuscular (RBC) volume (`mcv`), as well as Alanine Transaminase (`alt`) and Aspartate Transaminase (`ast`) are strongly correlated. In addition, we see that the percent of Lymphocytes in WBC count (`lymph_percent`) is strongly negatively correlated with percent of Neutrophils in WBC count (`neut_percent`).
 
 ```{r load_libraries_and_file, include=FALSE}
@@ -350,6 +355,7 @@ GGally::ggcorr(patient_data,
 ```
 
 ### White Blood Cell Count and Potassium
+
 Next, we evaluated if the white blood cell count distribution depends on `potassium`. The code and resulting plot are provided below. From the plot, the white blood cell count does not seem to change with potassium level.
 
 ```{r wbc_pot, warning=FALSE, message=FALSE}
@@ -369,7 +375,8 @@ ggplot(patient_data, aes(x = wbc, y = potassium)) + # Assign data, x and y value
 ```
 
 ### Remission and Monocytes
-Lastly, we evaluated if remission of inflammation after Thiopurines for > 12 weeks change with percent of monocytes in WBC count. The code and resulting plot are shown below. From a visual inspection of the boxplot, there seems to be no difference in percent of monocytes in WBC count for groups with or without remission of inflammation after Thiopurines for > 12 weeks. 
+
+Lastly, we evaluated if remission of inflammation after Thiopurines for \> 12 weeks change with percent of monocytes in WBC count. The code and resulting plot are shown below. From a visual inspection of the boxplot, there seems to be no difference in percent of monocytes in WBC count for groups with or without remission of inflammation after Thiopurines for \> 12 weeks.
 
 ```{r}
 # Remission and percent of monocytes ----
@@ -397,9 +404,5 @@ ggplot(data=patient_data,
  
 
 ```
-
-
-
-
 
 ## Statistical Tests
