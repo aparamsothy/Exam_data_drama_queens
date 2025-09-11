@@ -18,13 +18,12 @@ In this document we have included updates to variable names, transformations, an
 ### Changed and added columns: 
 
 ```{r, echo=FALSE}
-
 Changed_data <- tribble(
   ~Var., ~Description, ~Changes,
-  "neut_percent", "Percent of Neutrophils in WBC count", "Renamed from %neut", 
+  "neut_percent", "Percent of Neutrophils in WBC count", "Renamed from %neut",
   "lymph_percent", "Percent of Lymphocytes in WBC count", "Renamed from lymph%",
-  "age_days", "days of life", "Renamed from days of life" , 
-  "sodium", "Sodium", "Renamed from sod", 
+  "age_days", "days of life", "Renamed from days of life",
+  "sodium", "Sodium", "Renamed from sod",
   "potassium", "potassium", "Renamed from pot",
   "chloride", "chloride", "Renamed from chlor",
   "bicarbonate", "bicarbonate", "Renamed from co2",
