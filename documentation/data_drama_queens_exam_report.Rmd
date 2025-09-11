@@ -15,9 +15,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ------------------------------------------------------------------------
 
-
-## Introduction
-
 This script form `20250905-Reading-data.R` shows the process of reading raw patient data, exploring its structure, cleaning duplicates, and tidying data by removing or adding columns and saving the cleaned dataset.
 
 ```{r libraries, include=FALSE}
@@ -57,7 +54,7 @@ nrow(patient_data) # Number of rows
 
 To rename columns to consistent names, use `rename()` function.
 
-```{r column_rename, echo=FALSE}
+```{r column_rename}
 ## Changing to specific column names:----
 patient_data <- patient_data %>% 
   rename( 
@@ -89,14 +86,14 @@ select(-wbc_copy) # Remove duplicated white blood cell column
 To Count total rows, unique patient IDs, and identify duplicated rows we can use the following script:
 
 ```{r Row_identification, include=TRUE}
-patient_data %>% count() # Total observations
-patient_data %>%
+tot_obs <- patient_data %>% count() %>% pull() # Total observations
+unique_obs <- patient_data %>%
 distinct(patient_id) %>%
-count() # Unique patients
-sum(duplicated(patient_data)) # Number of duplicated rows
+count() %>% pull() # Unique patients
+dup_rows <- sum(duplicated(patient_data)) # Number of duplicated rows
 ```
 
-There are 5167 unique patient observations out of 15524 rows, indicating repeated measurements for some patients. Also 23 duplicated rows exist and will be removed.
+There are `r unique_obs` unique patient observations out of `r tot_obs` rows, indicating repeated measurements for some patients. Also `r dup_rows` duplicated rows exist and will be removed.
 
 ### Creating New Columns by Pivoting
 

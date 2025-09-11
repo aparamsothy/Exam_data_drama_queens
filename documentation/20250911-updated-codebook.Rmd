@@ -1,0 +1,60 @@
+---
+title: "Updated codebook"
+author: "Data Drama Queens"
+date: "2025-09-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Introduction
+
+
+## List of Changes introduced
+
+### Changed and added columns: 
+
+```{r, echo=FALSE}
+
+Changed_data <- tribble(
+  ~Var., ~Description, ~Changes,
+  "neut_percent", "Percent of Neutrophils in WBC count", "Renamed from %neut", 
+  "lymph_percent", "Percent of Lymphocytes in WBC count", "Renamed from lymph%",
+  "age_days", "days of life", "Renamed from days of life" , 
+  "sodium", "Sodium", "Renamed from sod", 
+  "potassium", "potassium", "Renamed from pot",
+  "chloride", "chloride", "Renamed from chlor",
+  "bicarbonate", "bicarbonate", "Renamed from co2",
+  "blood_urea_nitrogen", "Blood Urea Nitrogen", "Renamed from un",
+  "mcv", "Mean Corpuscular (RBC) Volume", "Pivotted from mean_RBC_characteristic",
+  "mch", "Mean Corpuscular (RBC) Hemoglobin", "Pivotted from mean_RBC_characteristic",
+  "mchc", "Mean Corpuscular (RBC) Hemoglobin per Cell", "Pivotted from mean_RBC_characteristic",
+  "hgb_quartiles", "Hemoglobin quartiles", "Cut the Hemoglobin level into quartiles",
+  "blood_ure_nitrogen_over_30", "blood urea nitrogen above 30", "Create a column indicating if the blood urea nitrogen is above 30",
+  "lymph_count", "Lymphocytes cell count", "Create a column for Lymphocytes cell count",
+  "sodium_fraction", "sodium as a fraction of summed sodium, potassium, and chloride", "Create a column for sodium fraction ",
+)
+
+knitr::kable(Changed_data)
+```
+------------------------------------------------------------------------
+
+## List of Deletions Introduced
+
+### Deleted columns and rows:
+
+```{r, echo=FALSE}
+deleted_data <- tribble(
+  ~Var., ~Description, ~Changes,
+  "wbc_copy", "An identcal copy of wbc column", "Removed duplicated column",
+  "hct", "Hematocrit", "Removed unnecessary columns",
+  "rdw", "Red cell Distribution Width", "Removed unnecessary columns",
+)
+
+knitr::kable(deleted_data)
+```
+
+
