@@ -421,17 +421,20 @@ display: none;
 <tr class="odd">
 <td align="left">mcv</td>
 <td align="left">Mean Corpuscular (RBC) Volume</td>
-<td align="left">Pivotted from mean_RBC_characteristic</td>
+<td align="left">Pivotted from mean_RBC_characteristic and
+mean_value</td>
 </tr>
 <tr class="even">
 <td align="left">mch</td>
 <td align="left">Mean Corpuscular (RBC) Hemoglobin</td>
-<td align="left">Pivotted from mean_RBC_characteristic</td>
+<td align="left">Pivotted from mean_RBC_characteristic and
+mean_value</td>
 </tr>
 <tr class="odd">
 <td align="left">mchc</td>
 <td align="left">Mean Corpuscular (RBC) Hemoglobin per Cell</td>
-<td align="left">Pivotted from mean_RBC_characteristic</td>
+<td align="left">Pivotted from mean_RBC_characteristic and
+mean_value</td>
 </tr>
 <tr class="even">
 <td align="left">hgb_quartiles</td>
@@ -465,6 +468,11 @@ chloride</td>
 <div id="deleted-columns-and-rows" class="section level3">
 <h3>Deleted columns and rows:</h3>
 <table>
+<colgroup>
+<col width="12%" />
+<col width="72%" />
+<col width="14%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">Var.</th>
@@ -487,6 +495,18 @@ chloride</td>
 <td align="left">rdw</td>
 <td align="left">Red cell Distribution Width</td>
 <td align="left">Removed unnecessary columns</td>
+</tr>
+<tr class="even">
+<td align="left">mean_RBC_characteristic</td>
+<td align="left">one of: mcv = Mean Corpuscular (RBC) Volume; mch = Mean
+Corpuscular (RBC) Hemoglobin; mchc = Mean Corpuscular (RBC) Hemoglobin
+per Cell</td>
+<td align="left">Removed after pivoting</td>
+</tr>
+<tr class="odd">
+<td align="left">mean_value</td>
+<td align="left">value for each of mean_RBD_characteristic</td>
+<td align="left">Removed after pivoting</td>
 </tr>
 </tbody>
 </table>
