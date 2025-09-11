@@ -10,10 +10,12 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
-## Introduction
+In this document we have included updates to variable names, transformations, and deletions in the datasets [20250905-tidy-exam-data.txt](data/data-for-analysis/20250905-tidy-exam-data.txt). Each variable entry includes its definition, and changes from the previous version.
+---
+***
+___
 
-
-## List of Changes introduced
+## List of changes introduced
 
 ### Changed and added columns: 
 
@@ -40,11 +42,12 @@ Changed_data <- tribble(
 
 knitr::kable(Changed_data)
 ```
-------------------------------------------------------------------------
+---
 
-## List of Deletions Introduced
 
-### Deleted columns and rows:
+## List of deletions introduced
+
+### Deleted columns and justifications:
 
 ```{r, echo=FALSE}
 deleted_data <- tribble(
