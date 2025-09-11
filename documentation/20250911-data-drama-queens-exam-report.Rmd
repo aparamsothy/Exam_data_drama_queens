@@ -19,8 +19,6 @@ The following section is based on the script [20250905-Reading-data.R](https://g
 library(tidyverse)
 library(here)
 library(ggplot2)
-
-
 ```
 
 ### Data Reading
@@ -29,8 +27,8 @@ The data is read into R as `patient_data`.
 
 ```{r Read_dataset, echo=TRUE, results='hide'}
 patient_data <- read_delim(
-here("data", "original-data", "exam_data.txt"),
-delim = "\t"
+  here("data", "original-data", "exam_data.txt"),
+  delim = "\t"
 )
 ```
 
@@ -56,19 +54,19 @@ The overview of the data indicates that some columns have strange names or can b
 
 ```{r column_rename}
 # Changing column names:
-patient_data <- patient_data %>% 
-  rename( 
-  # Data friendly names
-    neut_percent = `%neut`,           
-    lymph_percent = `lymph%`,         
+patient_data <- patient_data %>%
+  rename(
+    # Data friendly names
+    neut_percent = `%neut`,
+    lymph_percent = `lymph%`,
     age_days = `days of life`,
-    
+
     # Basic Metabolic Panel (BMP)
-    sodium = sod,                        
-    potassium = pot,                     
-    chloride = chlor,                    
-    bicarbonate = co2,                   
-    blood_urea_nitrogen = un,                       
+    sodium = sod,
+    potassium = pot,
+    chloride = chlor,
+    bicarbonate = co2,
+    blood_urea_nitrogen = un,
   )
 ```
 
@@ -77,17 +75,20 @@ The overview of the data further indicates that one column is duplicated (`wbc` 
 
 ```{r remove_duplicates}
 patient_data <- patient_data %>%
-select(-wbc_copy) # Remove duplicated white blood cell column
+  select(-wbc_copy) # Remove duplicated white blood cell column
 ```
 
 ### Checking Unique Observations
 Next, we explore the data to see if there are any duplicated rows.
 
 ```{r Row_identification, include=TRUE}
-total_obs <- patient_data %>% count() %>% pull() # Total observations
+total_obs <- patient_data %>%
+  count() %>%
+  pull() # Total observations
 unique_obs <- patient_data %>%
-distinct(patient_id) %>%
-count() %>% pull() # Unique patients
+  distinct(patient_id) %>%
+  count() %>%
+  pull() # Unique patients
 dup_rows <- sum(duplicated(patient_data)) # Number of duplicated rows
 ```
 
@@ -99,11 +100,11 @@ To tidy the data, we create three new characteristic from the `mean_RBC_characte
 
 ```{r pivoting, include=TRUE}
 patient_data <- patient_data %>%
-distinct() %>% # Remove duplicated rows
-pivot_wider(
-names_from = "mean_RBC_characteristic",
-values_from = "mean_value"
-)
+  distinct() %>% # Remove duplicated rows
+  pivot_wider(
+    names_from = "mean_RBC_characteristic",
+    values_from = "mean_value"
+  )
 ```
 
 ### Verify Final Data Structure
@@ -113,7 +114,6 @@ The dimensions and data types are checked to ensure correct tidying. Now, the da
 ```{r Data_verification, include=TRUE}
 dim(patient_data) # Expected: 5167 rows, 24 columns
 glimpse(patient_data) # Ensure variables are numeric and data is tidy
-
 ```
 
 
@@ -125,9 +125,9 @@ The clean and tidy dataset is saved as a text file.
 ```{r Data_saving, include=TRUE}
 filename <- here("data", "data-for-analysis", "20250905-tidy-exam-data.txt")
 write_delim(
-patient_data,
-file = filename,
-delim = "\t"
+  patient_data,
+  file = filename,
+  delim = "\t"
 )
 ```
 
@@ -182,8 +182,8 @@ We remove unnessary columns `hct`and `rdw` and join the two datasets together. B
 
 ```{r}
 patient_data <- patient_data %>%
- select(-hct, -rdw) %>%  # remove variables
- left_join(patient_data_join, join_by("patient_id")) # join the dataset
+  select(-hct, -rdw) %>% # remove variables
+  left_join(patient_data_join, join_by("patient_id")) # join the dataset
 
 glimpse(patient_data)
 
@@ -197,11 +197,11 @@ patient_data <- patient_data %>%
 We create five new columns for later use: `hgb_quartiles`, `blood_ure_nitrogen_over_30`, `lymph_count`, `sodium_fraction` and `age_years`. The dataset is arranged so that `age_days` and `blood_urea_nitrogen` comes after `patient_id`.
 
 ```{r}
-patient_data <- patient_data %>% 
-  mutate(hgb_quartiles = cut(hgb, breaks=4, labels = c("Q1", "Q2", "Q3", "Q4"))) %>% #Cut the hemoglobin level into quartiles 
-  mutate(blood_urea_nitrogen_over_30 = if_else(blood_urea_nitrogen > 30, factor("Yes"), factor("No"))) %>% #create a column indicating if the blood urea nitrogen is above 30
-  mutate(lymph_count = wbc * (lymph_percent/100)) %>% #add a column for lymphocytes cell count
-  mutate(sodium_fraction = (sodium / (sodium + potassium + chloride))) %>% #sodium as a fraction of summed sodium, potassium, and chloride
+patient_data <- patient_data %>%
+  mutate(hgb_quartiles = cut(hgb, breaks = 4, labels = c("Q1", "Q2", "Q3", "Q4"))) %>% # Cut the hemoglobin level into quartiles
+  mutate(blood_urea_nitrogen_over_30 = if_else(blood_urea_nitrogen > 30, factor("Yes"), factor("No"))) %>% # create a column indicating if the blood urea nitrogen is above 30
+  mutate(lymph_count = wbc * (lymph_percent / 100)) %>% # add a column for lymphocytes cell count
+  mutate(sodium_fraction = (sodium / (sodium + potassium + chloride))) %>% # sodium as a fraction of summed sodium, potassium, and chloride
   select(patient_id, age_days, blood_urea_nitrogen, everything()) %>% # Set the order of columns
   arrange(patient_id) # arrange by patient ID
 
@@ -245,7 +245,7 @@ Here we answer the provided tasks (copy-pasted from handout):
 
 ```{r}
 # Stratification by hgb_quartiles and report min, max, mean and sd of rbc (red blood cell counts)
-patient_data %>% 
+patient_data %>%
   group_by(hgb_quartiles) %>%
   summarise(
     min_rbc = min(rbc, na.rm = TRUE),
@@ -256,8 +256,8 @@ patient_data %>%
 
 # among patients with hgb less than 10
 patient_data %>%
-  filter(hgb <= 10) %>%  
-  group_by(hgb_quartiles) %>%          
+  filter(hgb <= 10) %>%
+  group_by(hgb_quartiles) %>%
   summarise(
     min_rbc_hgb10 = min(rbc, na.rm = TRUE),
     max_rbc_hgb10 = max(rbc, na.rm = TRUE),
@@ -266,7 +266,7 @@ patient_data %>%
   )
 
 # among patients with remission of inflammation
-patient_data %>% 
+patient_data %>%
   filter(remission == "Yes") %>%
   group_by(hgb_quartiles) %>%
   summarise(
@@ -280,19 +280,23 @@ patient_data %>%
 patient_data %>%
   group_by(hgb_quartiles) %>%
   filter(age_years > 40) %>% # Previously created age variable
-  summarize(mean_rbc_age = mean(rbc, na.rm = TRUE),
-            min_rbc_age = min(rbc, na.rm = TRUE),
-            max_rbc_age = max(rbc, na.rm = TRUE),
-            sd_rbc_age = sd(rbc, na.rm = TRUE))
+  summarize(
+    mean_rbc_age = mean(rbc, na.rm = TRUE),
+    min_rbc_age = min(rbc, na.rm = TRUE),
+    max_rbc_age = max(rbc, na.rm = TRUE),
+    sd_rbc_age = sd(rbc, na.rm = TRUE)
+  )
 
 # among patients with more than 10% of monocytes in WBC
 patient_data %>%
   group_by(hgb_quartiles) %>%
   filter(mono_percent > 10) %>%
-  summarize(mean_rbc_mono = mean(rbc, na.rm = TRUE),
-            min_rbc_mono = min(rbc, na.rm = TRUE),
-            max_rbc_mono = max(rbc, na.rm = TRUE),
-            sd_rbc_mono = sd(rbc, na.rm = TRUE))
+  summarize(
+    mean_rbc_mono = mean(rbc, na.rm = TRUE),
+    min_rbc_mono = min(rbc, na.rm = TRUE),
+    max_rbc_mono = max(rbc, na.rm = TRUE),
+    sd_rbc_mono = sd(rbc, na.rm = TRUE)
+  )
 
 # Create a table of remission vs active inflammation
 table(patient_data$remission, patient_data$active)
@@ -305,7 +309,7 @@ The newly joined data is saved in a separate file.
 # Save the joined data ----
 filename <- paste0(here("data", "data-for-analysis", "20250908-tidy-joined-exam-data.txt"))
 write_delim(
-  patient_data, 
+  patient_data,
   file = filename,
   delim = "\t"
 )
@@ -335,13 +339,13 @@ We have also some strong negative correlations in the dataset, such as the corre
 ```{r corr_plot, warning=FALSE}
 # Create correlation plot
 GGally::ggcorr(patient_data,
-                           low = "#2166ac", #colour for negative correlation
-                           mid = "white", #colour for no correlation
-                           high = "#b2182b", #colour for positive correlation
-                           midpoint = 0, #midpoint value
-                           label = FALSE, #do not add number to the plot
-                           size = 3) #font size
-
+  low = "#2166ac", # colour for negative correlation
+  mid = "white", # colour for no correlation
+  high = "#b2182b", # colour for positive correlation
+  midpoint = 0, # midpoint value
+  label = FALSE, # do not add number to the plot
+  size = 3
+) # font size
 ```
 
 ### White Blood Cell Count and Potassium
@@ -352,16 +356,19 @@ Next, we evaluate if the white blood cell count distribution depends on `potassi
 # Scatterplot investigating white blood cell count by potassium level ----
 ggplot(patient_data, aes(x = wbc, y = potassium)) + # Assign data, x and y values
   geom_point(colour = "darkblue", alpha = 0.5, na.rm = TRUE) + # Scatterplot
-  geom_smooth(method = "lm", se = FALSE, colour = "orange") + #Regression line
-  theme_minimal() + #Background theme
-  theme(legend.position = "none", #Remove legend
-        plot.title = element_text(face = "bold", size = 12, margin = margin(10, 0, 10, 0)), #Bold title, resized title and increased margin between title and plot
-        axis.title.x = element_text(face = "bold", size = 10), #Bold x-axis text
-        axis.title.y = element_text(face = "bold", size = 10)) + #Bold y-axis text
-  labs(title = "White Blood Cell Count by Potassium Level", #Title
-       x = "White blood cell count (10,000 cells per microliter)", #x-axis title
-       y = "Potassium level (mmol/L)") #y-axis title
-
+  geom_smooth(method = "lm", se = FALSE, colour = "orange") + # Regression line
+  theme_minimal() + # Background theme
+  theme(
+    legend.position = "none", # Remove legend
+    plot.title = element_text(face = "bold", size = 12, margin = margin(10, 0, 10, 0)), # Bold title, resized title and increased margin between title and plot
+    axis.title.x = element_text(face = "bold", size = 10), # Bold x-axis text
+    axis.title.y = element_text(face = "bold", size = 10)
+  ) + # Bold y-axis text
+  labs(
+    title = "White Blood Cell Count by Potassium Level", # Title
+    x = "White blood cell count (10,000 cells per microliter)", # x-axis title
+    y = "Potassium level (mmol/L)"
+  ) # y-axis title
 ```
 
 ### Remission and Monocytes
@@ -371,28 +378,29 @@ Lastly, we evaluate if remission of inflammation after Thiopurines for > 12 week
 ```{r}
 # Remission and percent of monocytes ----
 # Create a boxplot
-ggplot(data=patient_data, 
-                              mapping=aes(x=remission, y=mono_percent)) + #select variables
-  geom_boxplot(fill=c("#7876B199", "#20854E99")) + #create a box plot and set specific colours
-  xlab("Remission") + #change x axis label
-  ylab("Monocytes in WBC count (%)") + #y axis labels
-  labs(title = "Percent of monocytes in WBC count",
-       subtitle = "Grouped by remission status") +
-  theme_minimal() + #use the minimal theme
+ggplot(
+  data = patient_data,
+  mapping = aes(x = remission, y = mono_percent)
+) + # select variables
+  geom_boxplot(fill = c("#7876B199", "#20854E99")) + # create a box plot and set specific colours
+  xlab("Remission") + # change x axis label
+  ylab("Monocytes in WBC count (%)") + # y axis labels
+  labs(
+    title = "Percent of monocytes in WBC count",
+    subtitle = "Grouped by remission status"
+  ) +
+  theme_minimal() + # use the minimal theme
   theme(
-    panel.grid.major = element_blank(), #remove major grid
-    panel.grid.minor = element_blank(), #remove minor grid
-    axis.line = element_line(colour="grey", linewidth = 0.5), #include x and y axis
-    axis.ticks = element_line(colour = "grey", linewidth = 0.5), #include tick marks
-    legend.position = "None", #remove legend
-    plot.title = element_text(size = 16, face = "bold"), #change title font
-    axis.title = element_text(size = 14), #change axis title size
-    axis.text.x = element_text( size = 12), #change x-axis text size
-    axis.text.y = element_text(size=12) #change y-axis text size
-  ) 
-  
- 
-
+    panel.grid.major = element_blank(), # remove major grid
+    panel.grid.minor = element_blank(), # remove minor grid
+    axis.line = element_line(colour = "grey", linewidth = 0.5), # include x and y axis
+    axis.ticks = element_line(colour = "grey", linewidth = 0.5), # include tick marks
+    legend.position = "None", # remove legend
+    plot.title = element_text(size = 16, face = "bold"), # change title font
+    axis.title = element_text(size = 14), # change axis title size
+    axis.text.x = element_text(size = 12), # change x-axis text size
+    axis.text.y = element_text(size = 12) # change y-axis text size
+  )
 ```
 
 ## Statistical Tests
@@ -424,11 +432,13 @@ remission_chloride_plot <- ggplot(patient_data, aes(remission, chloride, color =
   geom_boxplot() + # boxplot
   theme_minimal() + # background theme
   theme(
-    legend.position = "none" 
+    legend.position = "none"
   ) + # remove legend
-  labs(title = "Chloride level by Remission Status",
-       x = "Chloride level",
-       y = "Remission status") + # Title to plot, x- and y-axis
+  labs(
+    title = "Chloride level by Remission Status",
+    x = "Chloride level",
+    y = "Remission status"
+  ) + # Title to plot, x- and y-axis
   theme(
     axis.title.x = element_text(face = "bold", size = 9),
     axis.title.y = element_text(face = "bold", size = 9),
@@ -440,7 +450,7 @@ remission_chloride_plot <- ggplot(patient_data, aes(remission, chloride, color =
 remission_chloride_plot
 
 # T-test to test difference in mean chloride levels by remission status
-t_test_results <- patient_data %>% 
+t_test_results <- patient_data %>%
   t.test(chloride ~ remission, data = .) %>%
   broom::tidy()
 
@@ -457,36 +467,35 @@ To investigate if there is an association between calcium and total bilirubin le
 From the plot we see that the data is not well captured by a linear relationships. Most points are located at low levels of total bilirubin, while only a few points are registered for high levels. If the analysis was to be used in a "real" case, we should consider measures to improve the association evaluation. However, this is believed to be outside the scope of this course.
 
 ```{r}
-#Plot the data first
-cal_tbil_plot <- patient_data  %>%
+# Plot the data first
+cal_tbil_plot <- patient_data %>%
   ggplot(aes(x = tbil, y = cal)) +
   geom_point() +
   geom_smooth(method = "lm") +
-  xlab("Total Bilirubin") + #change x axis label
-  ylab("Calcium") + #y axis labels
+  xlab("Total Bilirubin") + # change x axis label
+  ylab("Calcium") + # y axis labels
   labs(title = "Association between calcium and total bilirubin") +
-  theme_minimal() + #use the minimal theme
+  theme_minimal() + # use the minimal theme
   theme(
-    panel.grid.major = element_blank(), #remove major grid
-    panel.grid.minor = element_blank(), #remove minor grid
-    axis.line = element_line(colour="grey", linewidth = 0.5), #include x and y axis
-    axis.ticks = element_line(colour = "grey", linewidth = 0.5), #include tick marks
-    plot.title = element_text(size = 16, face = "bold"), #change title font
-    axis.title = element_text(size = 14), #change axis title size
-    axis.text.x = element_text( size = 12), #change x-axis text size
-    axis.text.y = element_text(size=12) #change y-axis text size
-  ) 
+    panel.grid.major = element_blank(), # remove major grid
+    panel.grid.minor = element_blank(), # remove minor grid
+    axis.line = element_line(colour = "grey", linewidth = 0.5), # include x and y axis
+    axis.ticks = element_line(colour = "grey", linewidth = 0.5), # include tick marks
+    plot.title = element_text(size = 16, face = "bold"), # change title font
+    axis.title = element_text(size = 14), # change axis title size
+    axis.text.x = element_text(size = 12), # change x-axis text size
+    axis.text.y = element_text(size = 12) # change y-axis text size
+  )
 
 cal_tbil_plot
 
-#Do linear regression
-cal_tbil_lm <- patient_data %>% 
+# Do linear regression
+cal_tbil_lm <- patient_data %>%
   lm(cal ~ tbil, data = .) %>%
   broom::tidy()
 
 # View the regression results
 cal_tbil_lm
-
 ```
 
 The linear regression indicates that there is an association between calcium and total bilirubin. The estimated coefficient is `r format(cal_tbil_lm$estimate[2], digits=3)`, with a p-value of `r format(cal_tbil_lm$p.value[2], digits=1)`.
@@ -499,23 +508,31 @@ We perform an ANOVA test to investigate if there is a difference in alanine tran
 # Plot of Hemoglobin quartiles vs Alanine Transaminase
 hgb_alt_plot <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_quartiles)) +
   geom_boxplot() + # Creates box plots
-  scale_fill_manual(values = c("#E31A1C", "#FF7F00", "#1F78B4", "#33A02C"), # Custom colors for each quartile
-                    name = "Hemoglobin\nQuartiles") + # Legend title 
-  labs(title = "Alanine Transaminase by Hemoglobin Quartiles", # Main title
-       x = "Hemoglobin Quartiles", # X-axis label
-       y = "Alanine Transaminase") + # Y-axis label
-  theme_minimal()                         
+  scale_fill_manual(
+    values = c("#E31A1C", "#FF7F00", "#1F78B4", "#33A02C"), # Custom colors for each quartile
+    name = "Hemoglobin\nQuartiles"
+  ) + # Legend title
+  labs(
+    title = "Alanine Transaminase by Hemoglobin Quartiles", # Main title
+    x = "Hemoglobin Quartiles", # X-axis label
+    y = "Alanine Transaminase"
+  ) + # Y-axis label
+  theme_minimal()
 
 hgb_alt_plot
 
-#Plot without extreme outliers
+# Plot without extreme outliers
 hgb_alt_plot_without_outliers <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_quartiles)) +
   geom_boxplot() + # Creates box plots
-  scale_fill_manual(values = c("#E31A1C", "#FF7F00", "#1F78B4", "#33A02C"), # Custom colors for each quartile
-                    name = "Hemoglobin\nQuartiles") + # Legend title 
-  labs(title = "Alanine Transaminase by Hemoglobin Quartiles", # Main title
-       x = "Hemoglobin Quartiles", # X-axis label
-       y = "Alanine Transaminase") + # Y-axis label
+  scale_fill_manual(
+    values = c("#E31A1C", "#FF7F00", "#1F78B4", "#33A02C"), # Custom colors for each quartile
+    name = "Hemoglobin\nQuartiles"
+  ) + # Legend title
+  labs(
+    title = "Alanine Transaminase by Hemoglobin Quartiles", # Main title
+    x = "Hemoglobin Quartiles", # X-axis label
+    y = "Alanine Transaminase"
+  ) + # Y-axis label
   theme_minimal() +
   scale_y_continuous(limits = c(0, 200))
 
@@ -523,8 +540,8 @@ hgb_alt_plot_without_outliers
 
 
 # ANOVA test
-hgb_alt_aov <-patient_data %>% 
-  aov(alt ~ hgb_quartiles, data = .) %>%# Performs one-way ANOVA
+hgb_alt_aov <- patient_data %>%
+  aov(alt ~ hgb_quartiles, data = .) %>% # Performs one-way ANOVA
   broom::tidy() # Converts results to clean data frame
 
 # View the ANOVA results
