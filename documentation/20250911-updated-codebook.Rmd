@@ -11,9 +11,7 @@ library(tidyverse)
 ```
 
 In this document we have included updates to variable names, transformations, and deletions in the dataset [20250905-tidy-exam-data.txt](data/data-for-analysis/20250905-tidy-exam-data.txt). Each variable entry includes its definition, and changes from the previous version.
----
-***
-___
+
 
 ## List of changes introduced
 
