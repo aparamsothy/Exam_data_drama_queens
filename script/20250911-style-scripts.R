@@ -11,5 +11,9 @@
 library(styler)
 library(here)
 
-#Style all scripts in the script folder
+# Style all scripts in the script folder
 style_dir(path = here("script"))
+
+# Style Rmarkdown documents created in this project (but not received documents)
+style_file(path=here("documentation", "20250911-data-drama-queens-exam-report.Rmd"))
+style_file(path=here("documentation", "20250911-updated-codebook.Rmd"))
