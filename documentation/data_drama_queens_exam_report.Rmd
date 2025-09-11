@@ -13,9 +13,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Read and Tidy
 
-------------------------------------------------------------------------
-
-
 ### Introduction
 
 This script form [20250905-Reading-data.R]() shows the process of reading raw patient data, exploring its structure, cleaning duplicates, and tidying data by removing or adding columns and saving the cleaned dataset.
@@ -457,22 +454,23 @@ patient_data %>%
   count()
 
 ## Boxplot to visualize chloride levels by remission status
-remission_chloride_plot <- ggplot(patient_data, aes(remission, chloride, color = remission)) +
-  geom_boxplot() +
-  theme_minimal() +
+remission_chloride_plot <- ggplot(patient_data, aes(remission, chloride, color = remission)) + # Assign data, x- and y-variable
+  geom_boxplot() + # boxplot
+  theme_minimal() + # background theme
   theme(
-    legend.position = "none"
-  ) +
+    legend.position = "none" 
+  ) + # remove legend
   labs(title = "Chloride level by Remission Status",
        x = "Chloride level",
-       y = "Remission status") +
+       y = "Remission status") + # Title to plot, x- and y-axis
   theme(
     axis.title.x = element_text(face = "bold", size = 9),
     axis.title.y = element_text(face = "bold", size = 9),
-    plot.title = element_text(hjust = 0.5, size = 12)
+    plot.title = element_text(hjust = 0.5, size = 12) # Text formatting
   ) +
-  scale_color_manual(values = c("No" = "#fe6d01", "Yes" = "#40b0bf"))
+  scale_color_manual(values = c("No" = "#fe6d01", "Yes" = "#40b0bf")) # Color scheme
 
+# View the plot
 remission_chloride_plot
 
 # Save plot as PNG
