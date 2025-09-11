@@ -33,4 +33,4 @@ where needed)_
 - [x] Create Rmd report
 - [x] Check .html output and adjust Rmd to look nice; repeat if needed
 
-- [ ] Check repository if all needed files are present, clean up
+- [x] Check repository if all needed files are present, clean up
