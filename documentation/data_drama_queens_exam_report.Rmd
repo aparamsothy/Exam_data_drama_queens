@@ -136,8 +136,8 @@ delim = "\t"
 )
 ```
 
+
 ## Tidy, Adjust and Explore
-------------------------------------------------------------------------
 
 Following are the codes from the script [20250908-tidy-adjust-explore.data.R](). In this script we have futher tidied the data by removing unnecessary columns, joined with additional dataset, created new set of variables and ordered/arranged the variables.
 
@@ -177,36 +177,23 @@ patient_data_join %>%
   count() # Number of unique patient IDs
 ```
 
-The joining data appears to have been read in correctly. We see that all the columns/variables in the joining dataset are numeric.
+The joining data appears to have been read in correctly. We see that all the columns/variables in the joining dataset are numeric. There are a total of `r row_count` rows/observations and `r column_count` columns. There are two variables (`cal`, `alt`) with missing values. There is the same numbers of rows as unique patient IDs which confirms that there are no duplicate IDs. The joining dataset which will be joined to our main dataset looks ok.
 
-There are a total of `r row_count` rows/observations and `r column_count` columns. There are two variables (`cal`, `alt`) with missing values.
-
-There is the same numbers of rows as unique patient IDs which confirms that there are no duplicate IDs.
-
-The joining dataset which will be joined to our main dataset looks ok.
 
 ### Remove unnessary variables abd join the datasets
 
-We remove unnessary columns `hct`and `rdw` and join the two datasets together.
-
-By looking at the new combined dataset we see that all the variables are still numeric.
-
-We have changed numerical to factor variables as specified in the codebook.
-
-After looking at the overview of the dataset again, we see that the variables `active` and `remission` are now factors.
+We remove unnessary columns `hct`and `rdw` and join the two datasets together. By looking at the new combined dataset we see that all the variables are still numeric. We have changed numerical to factor variables as specified in the codebook. After looking at the overview of the dataset again, we see that the variables `active` and `remission` are now factors.
 
 ```{r}
 patient_data <- patient_data %>%
- select(-hct, -rdw) %>% 
- left_join(patient_data_join, join_by("patient_id"))
+ select(-hct, -rdw) %>%  # remove variables
+ left_join(patient_data_join, join_by("patient_id")) # join the dataset
 
 glimpse(patient_data)
 
 patient_data <- patient_data %>%
-  mutate(active = if_else(active == 0, factor("No"), factor("Yes"))) %>%
-  mutate(remission = if_else(remission == 0, factor("No"), factor("Yes")))
-
-glimpse(patient_data)
+  mutate(active = if_else(active == 0, factor("No"), factor("Yes"))) %>% # Factor variable active
+  mutate(remission = if_else(remission == 0, factor("No"), factor("Yes"))) # Factor variable remission
 ```
 
 ### Create new columns
@@ -217,7 +204,7 @@ We have created five new columns for later use: `hgb_quartiles`, `blood_ure_nitr
 patient_data <- patient_data %>% 
   mutate(hgb_quartiles = cut(hgb, breaks=4, labels = c("Q1", "Q2", "Q3", "Q4"))) %>% #Cut the hemoglobin level into quartiles 
   mutate(blood_urea_nitrogen_over_30 = if_else(blood_urea_nitrogen > 30, factor("Yes"), factor("No"))) %>% #create a column indicating if the blood urea nitrogen is above 30
-  mutate(lymph_count = wbc * (lymph_percent/100)) %>% #add a column for Lymphocytes cell count
+  mutate(lymph_count = wbc * (lymph_percent/100)) %>% #add a column for lymphocytes cell count
   mutate(sodium_fraction = (sodium / (sodium + potassium + chloride))) %>% #sodium as a fraction of summed sodium, potassium, and chloride
   select(patient_id, age_days, blood_urea_nitrogen, everything()) %>% # Set the order of columns
   arrange(patient_id) # arrange by patient ID
@@ -227,14 +214,6 @@ patient_data <- patient_data %>%
 ```
 
 ### Explore the new dataset after joining with new columns
-
-We have counted the categorical variables to confirm that they were created correctly.
-
-We see from glimpsing the dataset that the new numerical variables seem to be created correctly.
-
-There are now 4 factor and 32 numerical variables.
-
-There is most missing data for blood_urea_nitrogen and the column based on this (blood_urea_nitrogen_over_30). There is also missing values for 15 other columns.
 
 ```{r}
 patient_data %>%
@@ -249,9 +228,22 @@ skimr::skim(patient_data)
 naniar::gg_miss_var(patient_data)
 ```
 
+We have counted the categorical variables to confirm that they were created correctly. We see from glimpsing the dataset that the new numerical variables seem to be created correctly. There are now 4 factor and 32 numerical variables.
+
+There is most missing data for blood_urea_nitrogen and the column based on this (blood_urea_nitrogen_over_30). There is also missing values for 15 other columns.
+
+
 ### Stratification and report min, max, mean and sd of variables
 
-Here we answer the following: 1.Stratify the data by `hgb_quartiles` and report min, max, mean and sd of a `rbc`. 2.Stratify the by a `hgb_quatiles` and report min, max, mean and sd of a numeric column for a defined set of observations: +Only for persons with hgb \<= 10 +Only for persons with remission of inflamation +Only for persons older than around 40 years of age +Only for persons with more than 10% of monocytes in WBC 3.Use two categorical columns `active` and `remission` in the dataset to create a table
+Here we answer the following:  
+
+1. Stratify the data by `hgb_quartiles` and report min, max, mean and sd of a `rbc`. 
+2. Stratify the by a `hgb_quatiles` and report min, max, mean and sd of a `rbc`` for a defined set of observations: 
++ Only for persons with hgb <= 10 
++ Only for persons with remission of inflammation 
++ Only for persons older than around 40 years of age 
++ Only for persons with more than 10% of monocytes in WBC 
+3. Use two categorical columns `active` and `remission` in the dataset to create a table
 
 ```{r}
 # Stratification by hgb_quartiles and report min, max, mean and sd of rbc (red blood cell counts)
@@ -289,7 +281,7 @@ patient_data %>%
 # among patients older than around 40 years of age
 patient_data %>%
   group_by(hgb_quartiles) %>%
-  filter(age_years > 40) %>% # Already created a variable for age in years earlier
+  filter(age_years > 40) %>% # Previously created age variable
   summarize(mean_rbc_age = mean(rbc, na.rm = TRUE),
             min_rbc_age = min(rbc, na.rm = TRUE),
             max_rbc_age = max(rbc, na.rm = TRUE),
@@ -308,7 +300,7 @@ patient_data %>%
 table(patient_data$remission, patient_data$active)
 ```
 
-### Saving the joined dataset
+### Saving the manipulated dataset
 
 ```{r}
 # Save the joined data ----
