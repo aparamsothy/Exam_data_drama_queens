@@ -17,7 +17,9 @@ The exam report can be found as an Rmarkdown file and a html file ([20250911-dat
     + [original-codebook.html](documentation/original-codebook.html): originally received codebook
     + [20250911-data-drama-queens-exam-report.Rmd](documentation/20250911-data-drama-queens-exam-report.Rmd): Rmarkdown for exam report. 
        Outputs   [20250911-data-drama-queens-exam-report.html](documentation/20250911-data-drama-queens-exam-report.html)
-    + [20250911-data-drama-queens-exam-report.html](documentation/20250911-data-drama-queens-exam-report.html): Exam report. 
+    + [20250911-data-drama-queens-exam-report.html](documentation/20250911-data-drama-queens-exam-report.html): Exam report.
+    + [20250911-updated-codebook.Rmd](documentation/20250911-updated-codebook.Rmd): Exam report.
+     + [20250911-updated-codebook.html](documentation/20250911-updated-codebook.html): Exam report.
       
 * [script](script)
     + [20250905-Reading-data.R](script/20250905-Reading-data.R): script for reading and tidying data. Exam task 1. Outputs [20250905-tidy-exam-data.txt](data/data-for-analysis/20250905-tidy-exam-data.txt).
