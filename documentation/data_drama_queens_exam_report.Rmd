@@ -397,7 +397,7 @@ We have performed statistical analyses to answer the following questions:
 
 ### Alanine transaminase and hemoglobin levels
 
-We decided to perform an ANOVA test to investigate if there is a difference of alanine transaminase level between quartiles of hemoglobin level because we have one continuous variable and one categorical variable with several categories. Additionally created a boxplot to show the distribution of alanine transaminase levels for each quartile of hemoglobin level (with and without outliers. 
+We decided to perform an ANOVA test to investigate if there is a difference of alanine transaminase level between quartiles of hemoglobin level because we have one continuous variable and one categorical variable with several categories. Additionally created a boxplot to show the distribution of alanine transaminase levels for each quartile of hemoglobin level (with and without outliers to better visualize the relationships). There results from the ANOVA does not indicate that there is a significant difference.
 
 ```{r}
 # ANOVA test
@@ -405,6 +405,8 @@ hgb_alt_aov <-patient_data %>%
   aov(alt ~ hgb_quartiles, data = .) %>%# Performs one-way ANOVA
   broom::tidy() # Converts results to clean data frame
 
+# View the ANOVA results
+hgb_alt_aov
 
 # Plot 1 - Hemoglobin quartiles vs Alanine Transaminase
 hgb_alt_plot <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_quartiles)) +
@@ -447,18 +449,14 @@ Here we investigate if remission is depended in chloride levels, and decided to 
 
 The T-test compares the mean of chloride level between those with and without remission. We see from the output that the 2808 patients with remission compared to the 2359 patients without remission showed significant difference in chloride levels (t = -0.377, p = 0.000113).
 
+
 ```{r}
-
-
-
-# Statistical test to investigate if the remission is depended on chloride ----
-
 ## Count the number of patients in each category of remission
 patient_data %>%
   group_by(remission) %>%
   count()
 
-## Boxplot to visualize chloride levels by remission status.
+## Boxplot to visualize chloride levels by remission status
 remission_chloride_plot <- ggplot(patient_data, aes(remission, chloride, color = remission)) +
   geom_boxplot() +
   theme_minimal() +
@@ -487,12 +485,23 @@ t_test_results <- patient_data %>%
   t.test(chloride ~ remission, data = .) %>%
   broom::tidy()
 
+# View the t-test results
 t_test_results
+```
 
 
+### Calcium and total bilirubin
+
+To investigate if there is an association between calcium and total bilirubin levels, we have used a linear regression model because both variables are continuous. Furthermore, we have created a scatterplot in order the visualize the relationship between both variables with a linear regression line. 
+
+From the plot we see that the data is not well captured by a linear relationships. Most points are located at low levels of total bilirubin, while a few points are located to the right. If the analyse was to be used in a "real" analysis, we should consider measures to improve the association evaluation.
+
+However, a linear regression analysis for the association between calcium and total bilirubin isconsidered to be sufficient in this project.
+
+The linear regression indicates that there is an association between calcium and total bilirubin. The estimated coefficient is -0.09, with a p-value of 1.8e-104.
 
 
-# Association between calcium and total bilirubin----
+```{r}
 #Plot the data first
 cal_tbil_plot <- patient_data  %>%
   ggplot(aes(x = tbil, y = cal)) +
@@ -520,24 +529,12 @@ filename_correlation_plot <- here("figures", "cal_tbil.tiff")
 ggsave(filename_correlation_plot, plot = cal_tbil_plot, width = 7, height = 7, dpi = 300)
 
 
-# From the plot we see that the data is not well captured by a linear relationships.
-# Most points are located at low levels of total bilirubin, while a few points are located to the right.
-# If the analyse was to be used in a "real" analysis, we should consider measures to improve the 
-# association evaluation.
-
-# However, a linear regression analysis for the association between calcium and total bilirubin is 
-# considered to be sufficient in this project.
 cal_tbil_lm <- patient_data %>% 
   lm(cal ~ tbil, data = .) %>%
   broom::tidy()
 
-#View the regression results
+# View the regression results
 cal_tbil_lm
-
-# The linear regression indicates that there is an association between calcium and total bilirubin.
-# The estimated coefficient is -0.09, with a p-value of 1.8e-104.
-
-
 
 ```
 
