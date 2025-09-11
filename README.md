@@ -26,11 +26,16 @@ This project contains the answers to the exam in RMED901A from the group _Data D
       `correlation_plot.tiff`,
       `remission_mono_plot.tiff`, 
       `wbc_potassium_plot.tiff`
+<<<<<<< HEAD
     + `20250910-statistical-analysis.R`:  script for prforming statistical analysis. Exam task 5. Outputs:
+=======
+      + `20250910-statistical-analysis.R`: script for preforming statistical analysis. Exam task 5. Outputs:
+>>>>>>> 6e550a1554083650365bc2a0ee5678228df26575
       `hgb_alt_plot.tiff`,
       `hgb_alt_plot_without_outliers.tiff`,
       `cal_tbil.tiff`,
       `remission_chloride.tiff`
+    +`20250911-style-scripts.R`: script for styling scripts and Rmarkdown documents.
 
 * `figures`
     + `correlation_plot.tiff` : correlation plot of numerical variables
