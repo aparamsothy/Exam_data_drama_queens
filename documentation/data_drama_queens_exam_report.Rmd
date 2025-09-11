@@ -157,7 +157,7 @@ patient_data_join <- read_delim(
 
 ### Explore the joining dataset
 
-Here we explore the new joined dataset
+Here we explore the new joined dataset.
 
 ```{r}
 glimpse(patient_data_join)
@@ -215,6 +215,10 @@ patient_data <- patient_data %>%
 
 ### Explore the new dataset after joining with new columns
 
+We have counted the categorical variables to confirm that they were created correctly. We see from glimpsing the dataset that the new numerical variables seem to be created correctly. There are now 4 factor and 32 numerical variables.
+
+There is most missing data for blood_urea_nitrogen and the column based on this (blood_urea_nitrogen_over_30). There is also missing values for 15 other columns.
+
 ```{r}
 patient_data %>%
   count(hgb_quartiles) # Verify that the new column for hemoglobin quartiles makes sense
@@ -228,10 +232,6 @@ skimr::skim(patient_data)
 naniar::gg_miss_var(patient_data)
 ```
 
-We have counted the categorical variables to confirm that they were created correctly. We see from glimpsing the dataset that the new numerical variables seem to be created correctly. There are now 4 factor and 32 numerical variables.
-
-There is most missing data for blood_urea_nitrogen and the column based on this (blood_urea_nitrogen_over_30). There is also missing values for 15 other columns.
-
 
 ### Stratification and report min, max, mean and sd of variables
 
@@ -239,7 +239,7 @@ Here we answer the following:
 
 1. Stratify the data by `hgb_quartiles` and report min, max, mean and sd of a `rbc`. 
 2. Stratify the by a `hgb_quatiles` and report min, max, mean and sd of a `rbc`` for a defined set of observations: 
-+ Only for persons with hgb <= 10 
++ Only for persons with hgb \<= 10 
 + Only for persons with remission of inflammation 
 + Only for persons older than around 40 years of age 
 + Only for persons with more than 10% of monocytes in WBC 
@@ -322,14 +322,6 @@ The analysis was conducted in the script [20250909-creating_plots.R]()
 
 First, we evaluated the presence of correlated measurements in our dataset. The code and resulting plot are shown below. The plot indicates that some variables are strongly correlated. As an example, we see that `age_days` and `age_years` are strongly correlated. This is reassuring as `age_years` was created as a function of `age_days`. We can also see that mean corpuscular (RBC) hemoglobin (`mch`) and mean corpuscular (RBC) volume (`mcv`), as well as Alanine Transaminase (`alt`) and Aspartate Transaminase (`ast`) are strongly correlated. In addition, we see that the percent of Lymphocytes in WBC count (`lymph_percent`) is strongly negatively correlated with percent of Neutrophils in WBC count (`neut_percent`).
 
-```{r load_file, include=FALSE}
-
-
-patient_data <- read_delim(
-  here("data", "data_for_analysis", "20250908-tidy-joined-exam-data.txt"),
-  delim = "\t"
-)
-```
 
 ```{r corr_plot, warning=FALSE}
 # Create correlation plot
@@ -395,3 +387,156 @@ ggplot(data=patient_data,
 ```
 
 ## Statistical Tests
+
+We have performed statistical analyses to answer the following questions:
+
+1. Does the remission depend on chloride?
+2. Is there an association between calcium and total bilirubin?
+3. According to the data, was there a difference of alanine transaminase between quartiles of the hemoglobin level?
+
+
+### Alanine transaminase and hemoglobin levels
+
+We decided to perform an ANOVA test to investigate if there is a difference of alanine transaminase level between quartiles of hemoglobin level because we have one continuous variable and one categorical variable with several categories. Additionally created a boxplot to show the distribution of alanine transaminase levels for each quartile of hemoglobin level (with and without outliers. 
+
+```{r}
+# ANOVA test
+hgb_alt_aov <-patient_data %>% 
+  aov(alt ~ hgb_quartiles, data = .) %>%# Performs one-way ANOVA
+  broom::tidy() # Converts results to clean data frame
+
+
+# Plot 1 - Hemoglobin quartiles vs Alanine Transaminase
+hgb_alt_plot <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_quartiles)) +
+  geom_boxplot() + # Creates box plots
+  scale_fill_manual(values = c("#E31A1C", "#FF7F00", "#1F78B4", "#33A02C"), # Custom colors for each quartile
+                    name = "Hemoglobin\nQuartiles") + # Legend title 
+  labs(title = "Alanine Transaminase by Hemoglobin Quartiles", # Main title
+       x = "Hemoglobin Quartiles", # X-axis label
+       y = "Alanine Transaminase") + # Y-axis label
+  theme_minimal()                         
+
+hgb_alt_plot
+
+# Save plot as PNG
+filename_correlation_plot <- here("figures", "hgb_alt_plot.tiff")
+ggsave(filename_correlation_plot, plot = hgb_alt_plot, width = 7, height = 7, dpi = 300)
+
+
+hgb_alt_plot_without_outliers <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_quartiles)) +
+  geom_boxplot() + # Creates box plots
+  scale_fill_manual(values = c("#E31A1C", "#FF7F00", "#1F78B4", "#33A02C"), # Custom colors for each quartile
+                    name = "Hemoglobin\nQuartiles") + # Legend title 
+  labs(title = "Alanine Transaminase by Hemoglobin Quartiles", # Main title
+       x = "Hemoglobin Quartiles", # X-axis label
+       y = "Alanine Transaminase") + # Y-axis label
+  theme_minimal() +
+  scale_y_continuous(limits = c(0, 200))
+
+hgb_alt_plot_without_outliers
+
+# Save plot as PNG
+filename_correlation_plot <- here("figures", "hgb_alt_plot_without_outliers.tiff")
+ggsave(filename_correlation_plot, plot = hgb_alt_plot_without_outliers, width = 7, height = 7, dpi = 300)
+```
+
+
+```{r}
+
+
+
+# Statistical test to investigate if the remission is depended on chloride ----
+
+## Count the number of patients in each category of remission
+patient_data %>%
+  group_by(remission) %>%
+  count()
+
+## Boxplot to visualize chloride levels by remission status.
+remission_chloride_plot <- ggplot(patient_data, aes(remission, chloride, color = remission)) +
+  geom_boxplot() +
+  theme_minimal() +
+  theme(
+    legend.position = "none"
+  ) +
+  labs(title = "Chloride level by Remission Status",
+       x = "Chloride level",
+       y = "Remission status") +
+  theme(
+    axis.title.x = element_text(face = "bold", size = 9),
+    axis.title.y = element_text(face = "bold", size = 9),
+    plot.title = element_text(hjust = 0.5, size = 12)
+  ) +
+  scale_color_manual(values = c("No" = "#fe6d01", "Yes" = "#40b0bf"))
+
+remission_chloride_plot
+
+# Save plot as PNG
+filename_correlation_plot <- here("figures", "remission_chloride.tiff")
+ggsave(filename_correlation_plot, plot = remission_chloride_plot, width = 7, height = 7, dpi = 300)
+
+
+# T-test to test difference in mean chloride levels by remission status
+t_test_results <- patient_data %>% 
+  t.test(chloride ~ remission, data = .) %>%
+  broom::tidy()
+
+t_test_results
+# We have used an unpaired t-test for statistical analysis because we are
+# interested in comparing the mean of chloride level between those with and 
+# without remission. 
+
+# The 2808 patients with remission compared to the 2359 patients
+# without remission showed significant difference in chloride levels (t = -0.377, p = 0.000113)
+
+
+
+# Association between calcium and total bilirubin----
+#Plot the data first
+cal_tbil_plot <- patient_data  %>%
+  ggplot(aes(x = tbil, y = cal)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  xlab("Total Bilirubin") + #change x axis label
+  ylab("Calcium") + #y axis labels
+  labs(title = "Association between calcium and total bilirubin") +
+  theme_minimal() + #use the minimal theme
+  theme(
+    panel.grid.major = element_blank(), #remove major grid
+    panel.grid.minor = element_blank(), #remove minor grid
+    axis.line = element_line(colour="grey", linewidth = 0.5), #include x and y axis
+    axis.ticks = element_line(colour = "grey", linewidth = 0.5), #include tick marks
+    plot.title = element_text(size = 16, face = "bold"), #change title font
+    axis.title = element_text(size = 14), #change axis title size
+    axis.text.x = element_text( size = 12), #change x-axis text size
+    axis.text.y = element_text(size=12) #change y-axis text size
+  ) 
+
+cal_tbil_plot
+
+# Save plot as PNG
+filename_correlation_plot <- here("figures", "cal_tbil.tiff")
+ggsave(filename_correlation_plot, plot = cal_tbil_plot, width = 7, height = 7, dpi = 300)
+
+
+# From the plot we see that the data is not well captured by a linear relationships.
+# Most points are located at low levels of total bilirubin, while a few points are located to the right.
+# If the analyse was to be used in a "real" analysis, we should consider measures to improve the 
+# association evaluation.
+
+# However, a linear regression analysis for the association between calcium and total bilirubin is 
+# considered to be sufficient in this project.
+cal_tbil_lm <- patient_data %>% 
+  lm(cal ~ tbil, data = .) %>%
+  broom::tidy()
+
+#View the regression results
+cal_tbil_lm
+
+# The linear regression indicates that there is an association between calcium and total bilirubin.
+# The estimated coefficient is -0.09, with a p-value of 1.8e-104.
+
+
+
+```
+

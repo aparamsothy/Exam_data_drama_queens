@@ -1911,13 +1911,18 @@ values for 15 other columns.</p>
 <li>Stratify the data by <code>hgb_quartiles</code> and report min, max,
 mean and sd of a <code>rbc</code>.</li>
 <li>Stratify the by a <code>hgb_quatiles</code> and report min, max,
-mean and sd of a numeric column for a defined set of observations:</li>
+mean and sd of a `rbc`` for a defined set of observations:</li>
 </ol>
-<p>++ Only for persons with hgb &lt;= 10 ++ Only for persons with
-remission of inflammation ++ Only for persons older than around 40 years
-of age ++ Only for persons with more than 10% of monocytes in WBC 3. Use
-two categorical columns <code>active</code> and <code>remission</code>
-in the dataset to create a table</p>
+<ul>
+<li>Only for persons with hgb &lt;= 10</li>
+<li>Only for persons with remission of inflammation</li>
+<li>Only for persons older than around 40 years of age</li>
+<li>Only for persons with more than 10% of monocytes in WBC</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>Use two categorical columns <code>active</code> and
+<code>remission</code> in the dataset to create a table</li>
+</ol>
 <pre class="r"><code># Stratification by hgb_quartiles and report min, max, mean and sd of rbc (red blood cell counts)
 patient_data %&gt;% 
   group_by(hgb_quartiles) %&gt;%
@@ -1972,7 +1977,7 @@ patient_data %&gt;%
 <pre class="r"><code># among patients older than around 40 years of age
 patient_data %&gt;%
   group_by(hgb_quartiles) %&gt;%
-  filter(age_years &gt; 40) %&gt;% # Already created a variable for age in years earlier
+  filter(age_years &gt; 40) %&gt;% # Previously created age variable
   summarize(mean_rbc_age = mean(rbc, na.rm = TRUE),
             min_rbc_age = min(rbc, na.rm = TRUE),
             max_rbc_age = max(rbc, na.rm = TRUE),
@@ -2008,8 +2013,8 @@ table(patient_data$remission, patient_data$active)</code></pre>
 ##   No     0 2359
 ##   Yes 2808    0</code></pre>
 </div>
-<div id="saving-the-joined-dataset" class="section level3">
-<h3>Saving the joined dataset</h3>
+<div id="saving-the-manipulated-dataset" class="section level3">
+<h3>Saving the manipulated dataset</h3>
 <pre class="r"><code># Save the joined data ----
 filename &lt;- paste0(here(&quot;data&quot;, &quot;data_for_analysis&quot;, &quot;20250908-tidy-joined-exam-data.txt&quot;))
 write_delim(
