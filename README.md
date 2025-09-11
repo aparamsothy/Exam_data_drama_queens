@@ -20,7 +20,7 @@ The exam report can be found as an Rmarkdown file and a html file ([20250911-dat
     + [20250911-data-drama-queens-exam-report.html](documentation/20250911-data-drama-queens-exam-report.html): Exam report.
     + [20250911-updated-codebook.Rmd](documentation/20250911-updated-codebook.Rmd): Rmarkdown for the updated codebook. Outputs: [20250911-updated-codebook.html](documentation/20250911-updated-codebook.html)
     + [20250911-updated-codebook.html](documentation/20250911-updated-codebook.html): The updated codebook.
-    + [exam_checklist.md](documentation/exam_checklist.md): The exam check list
+    + [exam_checklist.md](https://github.com/aparamsothy/Exam_data_drama_queens/blob/main/documentation/exam_checklist.md): The exam check list
      
       
 * [script](script)
