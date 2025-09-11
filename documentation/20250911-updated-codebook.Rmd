@@ -13,20 +13,18 @@ library(tidyverse)
 In this document we have included updates to variable names, transformations, and deletions in the dataset [20250905-tidy-exam-data.txt](data/data-for-analysis/20250905-tidy-exam-data.txt). Each variable entry includes its definition, and changes from the previous version.
 
 
-## List of changes introduced
-
-### Changed and added columns: 
+## Changed and Added Columns: 
 
 ```{r, echo=FALSE}
 Changed_data <- tribble(
   ~Var., ~Description, ~Changes,
   "neut_percent", "Percent of Neutrophils in WBC count", "Renamed from %neut",
   "lymph_percent", "Percent of Lymphocytes in WBC count", "Renamed from lymph%",
-  "age_days", "days of life", "Renamed from days of life",
+  "age_days", "Days of life", "Renamed from days of life",
   "sodium", "Sodium", "Renamed from sod",
-  "potassium", "potassium", "Renamed from pot",
-  "chloride", "chloride", "Renamed from chlor",
-  "bicarbonate", "bicarbonate", "Renamed from co2",
+  "potassium", "Potassium", "Renamed from pot",
+  "chloride", "Chloride", "Renamed from chlor",
+  "bicarbonate", "Bicarbonate", "Renamed from co2",
   "blood_urea_nitrogen", "Blood Urea Nitrogen", "Renamed from un",
   "mcv", "Mean Corpuscular (RBC) Volume", "Pivotted from mean_RBC_characteristic and mean_value",
   "mch", "Mean Corpuscular (RBC) Hemoglobin", "Pivotted from mean_RBC_characteristic and mean_value",
@@ -43,9 +41,8 @@ knitr::kable(Changed_data)
 ---
 
 
-## List of deletions introduced
 
-### Deleted columns and justifications:
+## Deleted Columns and Justifications:
 
 ```{r, echo=FALSE}
 deleted_data <- tribble(
