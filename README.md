@@ -13,7 +13,7 @@ The exam report can be found as an Rmarkdown file and a html file ([20250911-dat
       
 
 * [documentation](documentation)
-    + [exam-descri.md](documentation/exam-descri.md): received exam description
+    + [exam-descr.md](documentation/exam-descr.md): received exam description
     + [original-codebook.html](documentation/original-codebook.html): originally received codebook
     + [20250911-data-drama-queens-exam-report.Rmd](documentation/20250911-data-drama-queens-exam-report.Rmd): Rmarkdown for exam report. 
        Outputs   [20250911-data-drama-queens-exam-report.html](documentation/20250911-data-drama-queens-exam-report.html.htlm)
