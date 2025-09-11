@@ -7,7 +7,7 @@ The exam report can be found as an Rmarkdown file and a html file ([20250911-dat
     + [data-for-analysis](data/data-for-analysis)
       + [20250905-tidy-exam-data.txt](data/data-for-analysis/20250905-tidy-exam-data.txt): tidied version of exam dataset ("medicaldata"")
       + [20250908-tidy-joined-exam-data.txt](data/data-for-analysis/20250908-tidy-joined-exam-data.txt): tidied and joint version of exam dataset
-    + [original_data](data/original-data)   
+    + [original-data](data/original-data)   
       + [exam_data.txt](data/original-data/exam_data.txt): received exam data
       + [exam_data_join.txt](data/original-data/exam_data_join.txt): received exam data no. 2
       
