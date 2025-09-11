@@ -143,7 +143,7 @@ We have also explored the dataset by stratifying for variables and reporting sta
 
 ### Read the additional dataset
 
-We have already previously read and saved the tidied dataset (`patiend_data`) to be used for exploration. Here we read the additional dataset that we call `patient_data_join` that we will use to merge with the tidied dataset.
+We have already previously read and saved the tidied dataset (`patient_data`) to be used for exploration. Here we read the additional dataset that we call `patient_data_join` that we will use to merge with the tidied dataset.
 
 ```{r read_data}
 patient_data_join <- read_delim(
@@ -177,7 +177,7 @@ patient_data_join %>%
 The joining data appears to have been read in correctly. We see that all the columns/variables in the joining dataset are numeric. There are a total of `r row_count` rows/observations and `r column_count` columns. There are two variables (`cal`, `alt`) with missing values. There is the same numbers of rows as unique patient IDs which confirms that there are no duplicate IDs. The joining dataset which will be joined to our main dataset looks ok.
 
 
-### Remove unnessary variables abd join the datasets
+### Remove unnessary variables and join the datasets
 
 We remove unnessary columns `hct`and `rdw` and join the two datasets together. By looking at the new combined dataset we see that all the variables are still numeric. We have changed numerical to factor variables as specified in the codebook. After looking at the overview of the dataset again, we see that the variables `active` and `remission` are now factors.
 
@@ -235,7 +235,7 @@ naniar::gg_miss_var(patient_data)
 Here we answer the following:  
 
 1. Stratify the data by `hgb_quartiles` and report min, max, mean and sd of a `rbc`. 
-2. Stratify the by a `hgb_quatiles` and report min, max, mean and sd of a `rbc`` for a defined set of observations: 
+2. Stratify the by a `hgb_quatiles` and report min, max, mean and sd of a `rbc` for a defined set of observations: 
 + Only for persons with hgb \<= 10 
 + Only for persons with remission of inflammation 
 + Only for persons older than around 40 years of age 
