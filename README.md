@@ -20,7 +20,7 @@ The exam report can be found as an Rmarkdown file and a html file ([20250911-dat
     + [20250911-data-drama-queens-exam-report.html](documentation/20250911-data-drama-queens-exam-report.html): Exam report. 
       
 * [script](script)
-    + [20250905-Reading-data.R](script/20250905-Reading-data.R): script for reading and tidying data. Exam task 1. Outputs [20250905-tidy-exam-data.txt]().
+    + [20250905-Reading-data.R](script/20250905-Reading-data.R): script for reading and tidying data. Exam task 1. Outputs [20250905-tidy-exam-data.txt](data/data-for-analysis/20250905-tidy-exam-data.txt).
     + [20250908-tidy-adjust-explore-data.R](script/20250908-tidy-adjust-explore-data.R): script for tidying, adjusting and exploring data. Exam task 2 and 3. Outputs [20250908-tidy-joined-exam-data.txt](data/data-for-analysis/20250908-tidy-joined-exam-data.txt)
     + [20250909-creating-plots.R](script/20250909-creating-plots.R): script for creating and saving plots. Exam task 4. Outputs:
       [correlation-plot.tiff](figures/correlation-plot.tiff),
