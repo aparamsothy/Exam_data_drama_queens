@@ -157,13 +157,7 @@ patient_data_join <- read_delim(
 
 ### Explore the joining dataset
 
-The joining data appears to have been read in correctly. We see that all the columns/variables in the joining dataset are numeric.
-
-There are a total of 5167 rows/observations and 10 columns. There are two variables (cal, alt) with missing values.
-
-There is the same numbers of rows as unique patient IDs which confirms that there are no duplicate IDs.
-
-The joining dataset which will be joined to our main dataset looks ok.
+Here we explore the new joined dataset
 
 ```{r}
 glimpse(patient_data_join)
@@ -171,13 +165,25 @@ head(patient_data_join)
 skimr::skim(patient_data_join)
 naniar::gg_miss_var(patient_data_join)
 
-patient_data_join %>%
+column_count <- ncol(patient_data_join)
+column_count
+
+row_count <- patient_data_join %>%
   count() # Number of rows
+row_count
 
 patient_data_join %>%
   distinct(patient_id) %>%
   count() # Number of unique patient IDs
 ```
+
+The joining data appears to have been read in correctly. We see that all the columns/variables in the joining dataset are numeric.
+
+There are a total of `r row_count` rows/observations and `r column_count` columns. There are two variables (`cal`, `alt`) with missing values.
+
+There is the same numbers of rows as unique patient IDs which confirms that there are no duplicate IDs.
+
+The joining dataset which will be joined to our main dataset looks ok.
 
 ### Remove unnessary variables abd join the datasets
 
