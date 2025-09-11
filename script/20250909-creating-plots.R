@@ -34,6 +34,7 @@ correlation_plot <- ggcorr(patient_data,
   high = "#b2182b",
   midpoint = 0,
   label = FALSE,
+  size = 3
 )
 
 correlation_plot
