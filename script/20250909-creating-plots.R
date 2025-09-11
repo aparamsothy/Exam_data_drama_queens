@@ -40,7 +40,7 @@ correlation_plot <- ggcorr(patient_data,
 correlation_plot
 
 # Save plot as PNG with larger size for clarity
-filename_correlation_plot <- here("figures", "correlation_plot.tiff")
+filename_correlation_plot <- here("figures", "correlation-plot.tiff")
 ggsave(filename_correlation_plot, plot = correlation_plot, width = 7, height = 7, dpi = 300)
 
 
@@ -64,7 +64,7 @@ wbc_pot_plot <- ggplot(patient_data, aes(x = wbc, y = potassium)) + # Assign dat
 wbc_pot_plot
 
 # Save the plot
-filename_wbc_pot_plot <- here("figures", "wbc_potassium_plot.tiff")
+filename_wbc_pot_plot <- here("figures", "wbc-potassium_plot.tiff")
 ggsave(filename_wbc_pot_plot, plot = wbc_pot_plot, width = 7, height = 7, dpi = 300)
 
 
@@ -104,7 +104,7 @@ remission_mono_plot <- ggplot(
 remission_mono_plot
 
 # Save the plot
-filename_remission_mono_plot <- here("figures", "remission_mono_plot.tiff")
+filename_remission_mono_plot <- here("figures", "remission-mono-plot.tiff")
 ggsave(filename_remission_mono_plot, plot = remission_mono_plot, width = 7, height = 7, dpi = 300)
 
 # A visual inspection of the plot suggests that there is no difference in
