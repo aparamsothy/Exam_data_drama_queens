@@ -68,7 +68,7 @@ hgb_alt_aov <- patient_data %>%
   broom::tidy() # Converts results to clean data frame
 
 # View the ANOVA results
-hbg_alt_aov
+hgb_alt_aov
 
 # Save plot
 filename_correlation_plot <- here("figures", "20250910-hgb-alt-plot-without-outliers.tiff")
