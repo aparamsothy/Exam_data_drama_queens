@@ -357,14 +357,10 @@ display: none;
 </div>
 
 
-<div id="in-this-document-we-have-included-updates-to-variable-names-transformations-and-deletions-in-the-datasets-20250905-tidy-exam-data.txt.-each-variable-entry-includes-its-definition-and-changes-from-the-previous-version." class="section level2">
-<h2>In this document we have included updates to variable names,
-transformations, and deletions in the datasets <a href="data/data-for-analysis/20250905-tidy-exam-data.txt">20250905-tidy-exam-data.txt</a>.
+<p>In this document we have included updates to variable names,
+transformations, and deletions in the dataset <a href="data/data-for-analysis/20250905-tidy-exam-data.txt">20250905-tidy-exam-data.txt</a>.
 Each variable entry includes its definition, and changes from the
-previous version.</h2>
-<hr />
-<hr />
-</div>
+previous version.</p>
 <div id="list-of-changes-introduced" class="section level2">
 <h2>List of changes introduced</h2>
 <div id="changed-and-added-columns" class="section level3">
@@ -426,17 +422,20 @@ previous version.</h2>
 <tr class="odd">
 <td align="left">mcv</td>
 <td align="left">Mean Corpuscular (RBC) Volume</td>
-<td align="left">Pivotted from mean_RBC_characteristic</td>
+<td align="left">Pivotted from mean_RBC_characteristic and
+mean_value</td>
 </tr>
 <tr class="even">
 <td align="left">mch</td>
 <td align="left">Mean Corpuscular (RBC) Hemoglobin</td>
-<td align="left">Pivotted from mean_RBC_characteristic</td>
+<td align="left">Pivotted from mean_RBC_characteristic and
+mean_value</td>
 </tr>
 <tr class="odd">
 <td align="left">mchc</td>
 <td align="left">Mean Corpuscular (RBC) Hemoglobin per Cell</td>
-<td align="left">Pivotted from mean_RBC_characteristic</td>
+<td align="left">Pivotted from mean_RBC_characteristic and
+mean_value</td>
 </tr>
 <tr class="even">
 <td align="left">hgb_quartiles</td>
@@ -456,9 +455,14 @@ is above 30</td>
 </tr>
 <tr class="odd">
 <td align="left">sodium_fraction</td>
-<td align="left">sodium as a fraction of summed sodium, potassium, and
+<td align="left">Sodium as a fraction of summed sodium, potassium, and
 chloride</td>
 <td align="left">Create a column for sodium fraction</td>
+</tr>
+<tr class="even">
+<td align="left">age_years</td>
+<td align="left">Age in years</td>
+<td align="left">New variable created from age_days variable</td>
 </tr>
 </tbody>
 </table>
@@ -470,6 +474,11 @@ chloride</td>
 <div id="deleted-columns-and-justifications" class="section level3">
 <h3>Deleted columns and justifications:</h3>
 <table>
+<colgroup>
+<col width="12%" />
+<col width="72%" />
+<col width="14%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">Var.</th>
@@ -492,6 +501,18 @@ chloride</td>
 <td align="left">rdw</td>
 <td align="left">Red cell Distribution Width</td>
 <td align="left">Removed unnecessary columns</td>
+</tr>
+<tr class="even">
+<td align="left">mean_RBC_characteristic</td>
+<td align="left">one of: mcv = Mean Corpuscular (RBC) Volume; mch = Mean
+Corpuscular (RBC) Hemoglobin; mchc = Mean Corpuscular (RBC) Hemoglobin
+per Cell</td>
+<td align="left">Removed after pivoting</td>
+</tr>
+<tr class="odd">
+<td align="left">mean_value</td>
+<td align="left">value for each of mean_RBD_characteristic</td>
+<td align="left">Removed after pivoting</td>
 </tr>
 </tbody>
 </table>
