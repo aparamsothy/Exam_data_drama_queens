@@ -1,6 +1,6 @@
 # 2025 RMED901A Exam
 This project contains the answers to the exam in RMED901A from the group _Data Drama Queens_.
-The exam report can be found as an Rmarkdown file and a html file ([20250911-data-drama-queens-exam-report.Rmd]() and [20250911-data-drama-queens-exam-report.html]()) in the folder `documentation`. test
+The exam report can be found as an Rmarkdown file and a html file ([20250911-data-drama-queens-exam-report.Rmd]() and [20250911-data-drama-queens-exam-report.html]()) in the folder `documentation`.
 
 ## Folder structure
 * `data`
