@@ -24,13 +24,8 @@ patient_data <- read_delim(
 
 # According to the data, was there a difference of alanine transaminase between quartiles of the hemoglobin level? ----
 # Hemoglobin quartiles - statistical analysis
-# ANOVA test
-hgb_alt_aov <- patient_data %>%
-  aov(alt ~ hgb_quartiles, data = .) %>% # Performs one-way ANOVA
-  broom::tidy() # Converts results to clean data frame
 
-
-# Plot 1 - Hemoglobin quartiles vs Alanine Transaminase
+# Plot of Hemoglobin quartiles vs Alanine Transaminase
 hgb_alt_plot <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_quartiles)) +
   geom_boxplot() + # Creates box plots
   scale_fill_manual(
@@ -46,7 +41,7 @@ hgb_alt_plot <- ggplot(patient_data, aes(x = hgb_quartiles, y = alt, fill = hgb_
 
 hgb_alt_plot
 
-# Save plot as PNG
+# Save plot
 filename_correlation_plot <- here("figures", "20250910-hgb-alt-plot.tiff")
 ggsave(filename_correlation_plot, plot = hgb_alt_plot, width = 7, height = 7, dpi = 300)
 
@@ -67,7 +62,15 @@ hgb_alt_plot_without_outliers <- ggplot(patient_data, aes(x = hgb_quartiles, y =
 
 hgb_alt_plot_without_outliers
 
-# Save plot as PNG
+# ANOVA test
+hgb_alt_aov <- patient_data %>%
+  aov(alt ~ hgb_quartiles, data = .) %>% # Performs one-way ANOVA
+  broom::tidy() # Converts results to clean data frame
+
+# View the ANOVA results
+hbg_alt_aov
+
+# Save plot
 filename_correlation_plot <- here("figures", "20250910-hgb-alt-plot-without-outliers.tiff")
 ggsave(filename_correlation_plot, plot = hgb_alt_plot_without_outliers, width = 7, height = 7, dpi = 300)
 
@@ -100,7 +103,7 @@ remission_chloride_plot <- ggplot(patient_data, aes(remission, chloride, color =
 
 remission_chloride_plot
 
-# Save plot as PNG
+# Save plot
 filename_correlation_plot <- here("figures", "20250910-remission-chloride.tiff")
 ggsave(filename_correlation_plot, plot = remission_chloride_plot, width = 7, height = 7, dpi = 300)
 
@@ -143,7 +146,7 @@ cal_tbil_plot <- patient_data %>%
 
 cal_tbil_plot
 
-# Save plot as PNG
+# Save plot
 filename_correlation_plot <- here("figures", "20250910-cal-tbil.tiff")
 ggsave(filename_correlation_plot, plot = cal_tbil_plot, width = 7, height = 7, dpi = 300)
 
