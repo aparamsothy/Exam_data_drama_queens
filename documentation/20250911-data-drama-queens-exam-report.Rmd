@@ -46,7 +46,7 @@ n_cols_original_data <- ncol(patient_data) # Number of columns
 n_rows_original_data <- nrow(patient_data) # Number of rows
 ```
 
-There are `r n_cols_original_data` columns and `r n_rows_original_data` rows in the original dataset. All columns are numeric, expect `mean_RBC_characteristic` (character). We notice that 12 columns have missing data.
+There are `r n_cols_original_data` columns and `r n_rows_original_data` rows in the original dataset. All columns are numeric, except `mean_RBC_characteristic` (character). We notice that 12 columns have missing data.
 
 
 ### Renaming Columns
@@ -71,7 +71,7 @@ patient_data <- patient_data %>%
 ```
 
 ### Removing Duplicate Columns
-The overview of the data further indicates that one column is duplicated (`wbc` and `wbc_copy`). This column is removed.
+The overview of the data further indicates that one column is duplicated (`wbc` and `wbc_copy`). The copy is removed.
 
 ```{r remove_duplicates}
 patient_data <- patient_data %>%
@@ -96,7 +96,7 @@ There are `r unique_obs` unique patient observations out of `r total_obs` rows, 
 
 ### Creating New Columns by Pivoting
 
-To tidy the data, we create three new characteristic from the `mean_RBC_characteristic` and `mean_value` columns using `pivot_wider()`. Furthermore, duplicates are removed by keeping only distinct rows.
+To tidy the data, we create three new characteristics from the `mean_RBC_characteristic` and `mean_value` columns using `pivot_wider()`. Furthermore, duplicates are removed by keeping only distinct rows.
 
 ```{r pivoting, include=TRUE}
 patient_data <- patient_data %>%
@@ -173,12 +173,12 @@ patient_data_join %>%
   count() # Number of unique patient IDs
 ```
 
-The joining data appears to have been read correctly. We see that all the columns/variables in the joining dataset are numeric. There are a total of `r row_count` rows/observations and `r column_count` columns. There are two variables (`cal`, `alt`) with missing values. There is the same numbers of rows as unique patient IDs which suggests that there are no duplicate IDs. The joining dataset which will be joined to our main dataset looks ok.
+The joining data appears to have been read correctly. We see that all the columns/variables in the joining dataset are numeric. There are a total of `r row_count` rows/observations and `r column_count` columns. There are two variables (`cal`, `alt`) with missing values. There is the same numbers of rows as unique patient IDs, which suggests that there are no duplicate IDs. The joining dataset which will be joined to our main dataset looks ok.
 
 
 ### Remove Unnessary Variables and Join the Datasets
 
-We remove unnessary columns `hct`and `rdw` and join the two datasets together. By looking at the new combined dataset we see that all the variables are still numeric. We have changed `active` and `remission` from numerical to factor variables as specified in the received codebook. After looking at the overview of the dataset again, we see that these variables are now factors.
+We remove unnessary columns `hct`and `rdw` and join the two datasets together. By looking at the new combined dataset we see that all the variables are still numeric. Next, we change `active` and `remission` from numerical to factor variables as specified in the received codebook. When looking at the overview of the dataset again, we see that these variables are now factors (see section "Explore the New Dataset After Joining with New Columns").
 
 ```{r}
 patient_data <- patient_data %>%
@@ -194,7 +194,7 @@ patient_data <- patient_data %>%
 
 ### Create New Columns
 
-We create five new columns for later use: `hgb_quartiles`, `blood_ure_nitrogen_over_30`, `lymph_count`, `sodium_fraction` and `age_years`. The dataset is arranged so that `age_days` and `blood_urea_nitrogen` comes after `patient_id`.
+We create five new columns for later use: `hgb_quartiles`, `blood_urea_nitrogen_over_30`, `lymph_count`, `sodium_fraction` and `age_years`. The dataset is arranged so that `age_days` and `blood_urea_nitrogen` comes after `patient_id`. In addition, we arrange the `patient_id` column in increasing order.
 
 ```{r}
 patient_data <- patient_data %>%
@@ -213,7 +213,7 @@ patient_data <- patient_data %>%
 
 We count the categorical variables to confirm that they were created correctly. We see from glimpsing the dataset that the new numerical variables seem to be created correctly. There are now 4 factor and 32 numerical variables.
 
-There is most missing data for blood_urea_nitrogen and the column created from this (blood_urea_nitrogen_over_30). There is also missing values in 15 other columns.
+There is most missing data for `blood_urea_nitrogen` and the column created from this (`blood_urea_nitrogen_over_30`). There is also missing values in 15 other columns.
 
 ```{r}
 patient_data %>%
@@ -234,7 +234,7 @@ naniar::gg_miss_var(patient_data)
 Here we answer the provided tasks (copy-pasted from handout):  
 
 1. Stratify the data by `hgb_quartiles` and report min, max, mean and sd of a `rbc`. 
-2. Stratify the by a `hgb_quatiles` and report min, max, mean and sd of a `rbc` for a defined set of observations: 
+2. Stratify the data by `hgb_quatiles` and report min, max, mean and sd of a `rbc` for a defined set of observations: 
 
   + Only for persons with hgb \<= 10 
   + Only for persons with remission of inflammation 
@@ -327,7 +327,7 @@ The plots are also saved in the original script, but this is not included in thi
 
 ### Correlated Measurements
 
-First, we evaluate the presence of correlated measurements in our dataset. The code and resulting plot are shown below. The plot indicates that some variables are strongly positively correlated:
+First, we evaluate the presence of correlated measurements in our dataset. The code and resulting plot are shown below. The plot indicates that some variables are strongly positively correlated, for example:
 
  * `age_days` and `age_years` (this is reassuring as `age_years` was created as a function of `age_days`.)
  * mean corpuscular (RBC) hemoglobin (`mch`) and mean corpuscular (RBC) volume (`mcv`)
@@ -344,8 +344,8 @@ GGally::ggcorr(patient_data,
   high = "#b2182b", # colour for positive correlation
   midpoint = 0, # midpoint value
   label = FALSE, # do not add number to the plot
-  size = 3
-) # font size
+  size = 3 # font size
+)
 ```
 
 ### White Blood Cell Count and Potassium
@@ -367,8 +367,8 @@ ggplot(patient_data, aes(x = wbc, y = potassium)) + # Assign data, x and y value
   labs(
     title = "White Blood Cell Count by Potassium Level", # Title
     x = "White blood cell count (10,000 cells per microliter)", # x-axis title
-    y = "Potassium level (mmol/L)"
-  ) # y-axis title
+    y = "Potassium level (mmol/L)" # y-axis title
+  ) 
 ```
 
 ### Remission and Monocytes
@@ -415,7 +415,7 @@ We perform statistical analyses to answer the following provided questions (copy
 
 ### Remission and Chloride
 
-Here we investigate if remission is depended in chloride levels. We use a t-test to examine this relationship because we have one continuous variable and one dichotomous categorical variable. We have additionally created a boxplot to show the distribution of chloride levels for each category of remission.
+Here we investigate if remission depends on chloride levels. We use a t-test to examine this relationship because we have one continuous variable and one dichotomous categorical variable. We have additionally created a boxplot to show the distribution of chloride levels for each category of remission.
 
 
 ```{r}
